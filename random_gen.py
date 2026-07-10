@@ -3,6 +3,10 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from collections import defaultdict
 import random
+import math
+import time
+
+start = time.time()
 
 """For n < 41, a list of the maximum number of edges a square-free graph with n vertices can possess.
 For n <= 41 < 50, a list of the known lower bounds on the maximum number of such edges."""
@@ -135,7 +139,7 @@ def edge_adder(A):
     return A
 
 
-def greedy_vs_max(min_n = 5, max_n = 30, iters = 10**2):
+def greedy_vs_max(min_n = 30, max_n = 40, iters = 50**2):
     greedy_vs_max = defaultdict(list)
     for n in range(min_n, max_n + 1):
         max_found = 0
@@ -144,26 +148,32 @@ def greedy_vs_max(min_n = 5, max_n = 30, iters = 10**2):
             A = cycle_remover(A)
             A = edge_adder(A)
             max_found = int(max(max_found, A.sum()/2))
-        greedy_vs_max[n] = [max_found, ex_C4[n]]
+        greedy_vs_max[n] = [max_found, ex_C4[n], math.floor((n/4)*(1 + math.sqrt(4*n - 3)))]
 
     x = sorted(greedy_vs_max.keys())
     greedy_values = [greedy_vs_max[n][0] for n in x]
     max_values = [greedy_vs_max[n][1] for n in x]
+    reiman_values = [greedy_vs_max[n][2] for n in x]
 
     plt.figure(figsize = (12,6))
-    plt.plot(x, greedy_values, marker = 'o', label = 'Greedy')
-    plt.plot(x, max_values, marker = 'o', label = 'Maximum')
+    plt.plot(x, greedy_values, marker = 'o', markersize = 4, label = 'Greedy')
+    plt.plot(x, max_values, marker = 'o', markersize = 4, label = 'Maximum')
+    plt.plot(x, reiman_values, marker = 'o', markersize = 4, label = 'Reiman bound' )
     plt.xlabel('Number of vertices')
     plt.ylabel('Number of edges')
     plt.title(f'Edge count for square-free graphs with $n$ vertices: greedy algorithm ({iters} iterations) vs maximum possible')
     plt.legend()
     plt.grid(True)
 
+    end = time.time()
+    print('Time taken: ', end - start, 'seconds.')
+
     plt.show()
 
 
-
 print(greedy_vs_max())
+
+
 
 
 A = random_adjacency_matrix(5)
