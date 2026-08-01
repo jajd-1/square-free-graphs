@@ -1,0 +1,14 @@
+{
+  "generation": 39,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "bitset_balanced_ejection",
+  "patch_description": "This replaces repeated dense matrix-cube scoring with an incremental bitset-based search. Each graph is represented by 49-bit neighborhood masks, so testing whether an insertion creates a C4 only requires checking whether any edge joins the two endpoint neighborhoods.\n\nThe algorithm builds several genuinely input-derived C4-free scaffolds using randomized source-edge priorities, then performs balanced greedy completion. Candidate insertions are chosen from all legal pairs using a degree-balancing score, with mild preference for edges present in the supplied input. A small elite archive is improved through high-pressure edge ejection moves: edges around overloaded vertices are removed, temporarily banned, and the graph is greedily refilled into a potentially denser basin. Every insertion is locally C4-safe, and final matrix validation is retained defensively.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:42:51.874065",
+  "llm_cost": 0.09854750000000001,
+  "llm_model": "gpt-5.6-terra"
+}

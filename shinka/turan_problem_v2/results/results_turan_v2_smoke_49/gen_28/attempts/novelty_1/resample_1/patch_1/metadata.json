@@ -1,0 +1,14 @@
+{
+  "generation": 28,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "bitset_archive_refill",
+  "patch_description": "This rewrite returns to a faster bitset-based C4-free search while retaining strong input dependence. It builds several C4-free repairs and greedy retained subgraphs from the supplied matrix, saturates them using safe additions biased toward balanced degrees, and performs archive-based deletion/refill exchanges.\n\nThe invariant is preserved by the exact criterion for inserting an edge: there must be no existing edge between the two endpoint neighborhoods. Every archive candidate is explicitly verified using the common-neighbor matrix criterion before retention, and the final result is verified again with a deletion-only fallback.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:36:35.418511",
+  "llm_cost": 0.0807525,
+  "llm_model": "gpt-5.6-terra"
+}

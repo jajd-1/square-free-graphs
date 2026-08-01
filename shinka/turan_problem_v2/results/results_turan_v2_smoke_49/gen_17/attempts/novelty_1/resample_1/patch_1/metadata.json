@@ -1,0 +1,14 @@
+{
+  "generation": 17,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "scaffold_beam_search",
+  "patch_description": "This redesign uses an input-derived scaffold pipeline rather than relying mainly on maximal repairs or neutral empty starts. Multiple bounded source-edge scaffolds are built from different input-sensitive orderings, safely completed to maximal C4-free graphs, and retained in a diverse elite archive. The archive is then improved with obstruction-guided delete/refill kicks, including larger coordinated deletions that can escape saturated local optima.\n\nEvery insertion uses the length-three-path legality characterization, every destructive move is followed by validity verification, and the final result is explicitly checked and conservatively repaired if necessary.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:27:57.366154",
+  "llm_cost": 0.088445,
+  "llm_model": "gpt-5.6-terra"
+}

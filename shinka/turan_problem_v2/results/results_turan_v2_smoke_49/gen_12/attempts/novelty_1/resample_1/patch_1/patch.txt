@@ -1,0 +1,609 @@
+--- a/original.py
++++ b/original.py
+@@ -1,329 +1,363 @@
+ # EVOLVE-BLOCK-START
+-"""Conflict-credit exchange search for dense input-aware C4-free graphs."""
++"""Bitset-based source-aware exchange search for dense C4-free graphs."""
+ 
+ import numpy as np
+ 
+ 
+ def construct_new_graph(A, rng=None):
+     """
+-    Transform an arbitrary adjacency matrix into a dense C4-free graph.
+-
+-    The algorithm retains source edges in several source-dependent orders,
+-    saturates safely using future-blocking costs, and performs bounded
+-    exchange moves that remove edges with high conflict credit before refill.
++    Improve the supplied graph by retaining source edges, repairing all C4
++    conflicts implicitly, and applying safe greedy augmentation plus bounded
++    ruin-and-refill exchanges.
++
++    The maintained invariant is that every vertex pair has at most one common
++    neighbor.  The bitset insertion test is exactly the no-length-three-path
++    condition for adding an edge to a C4-free graph.
+     """
+     if A.dtype != np.uint8:
+         raise TypeError("A must have dtype np.uint8")
++    if A.ndim != 2 or A.shape[0] != A.shape[1]:
++        raise ValueError("A must be a square adjacency matrix")
+ 
+     if rng is None:
+         rng = np.random.default_rng()
+ 
+     n = A.shape[0]
++    full = (1 << n) - 1
+     iu, ju = np.triu_indices(n, 1)
+-    pair_count = iu.size
++    pair_count = len(iu)
+ 
+     source = ((A != 0) | (A.T != 0)).astype(np.uint8)
+     np.fill_diagonal(source, 0)
+-
++    source_degree = source.sum(axis=1).astype(np.int16)
+     source_upper = source[iu, ju].astype(bool)
+-    source_degree = source.sum(axis=1).astype(np.int16)
+     source_edges = np.flatnonzero(source_upper)
+ 
+-    def edge_count(B):
+-        return int(B.sum() // 2)
+-
+-    def valid(B):
+-        X = B.astype(np.int16)
+-        common = X @ X
++    def edge_total(masks):
++        return sum(x.bit_count() for x in masks) // 2
++
++    def can_add(masks, degrees, u, v):
++        """True iff adding uv cannot complete a four-cycle."""
++        # Iterating through the lower degree neighborhood is substantially
++        # cheaper in the dense part of the search.
++        if degrees[u] > degrees[v]:
++            u, v = v, u
++        neigh_v = masks[v]
++        x = masks[u]
++        while x:
++            bit = x & -x
++            w = bit.bit_length() - 1
++            if masks[w] & neigh_v:
++                return False
++            x ^= bit
++        return True
++
++    def matrix_from_masks(masks):
++        H = np.zeros((n, n), dtype=np.uint8)
++        for u, bits in enumerate(masks):
++            x = bits
++            while x:
++                b = x & -x
++                v = b.bit_length() - 1
++                H[u, v] = 1
++                x ^= b
++        np.fill_diagonal(H, 0)
++        return H
++
++    def masks_valid(masks):
++        H = matrix_from_masks(masks).astype(np.int16)
++        common = H @ H
+         np.fill_diagonal(common, 0)
+         return not np.any(common > 1)
+ 
+-    def insertion_legal(B, u, v):
+-        nu = np.flatnonzero(B[u])
+-        nv = np.flatnonzero(B[v])
+-        if nu.size == 0 or nv.size == 0:
+-            return True
+-        return not np.any(B[np.ix_(nu, nv)])
+-
+-    def legal_pairs(B):
+-        X = B.astype(np.int16)
+-        paths3 = (X @ X) @ X
+-        legal = (B == 0) & (paths3 == 0)
+-        np.fill_diagonal(legal, False)
+-        return legal
+-
+-    def saturate(B, banned_edges=None):
++    def saturate(masks, degrees, banned=None, source_bonus=True):
+         """
+-        Add safe edges to maximality.  The main criterion is the exact number
+-        of currently legal pairs destroyed by an insertion.  A quadratic
+-        degree penalty discourages premature hubs more strongly than a simple
+-        endpoint-load score.
++        Safely add edges until maximality.  Low endpoint degree is the main
++        objective; a small source bonus preserves input information without
++        allowing input hubs to dominate the construction.
+         """
+-        B = B.copy()
+-
+-        if banned_edges is None:
+-            banned = np.zeros(pair_count, dtype=bool)
++        masks = masks[:]
++        degrees = degrees[:]
++
++        if banned is None:
++            banned_set = set()
+         else:
+-            banned = banned_edges.copy()
+-
++            banned_set = set(banned)
++
++        # At most this many successful additions are possible.
+         for _ in range(pair_count):
+-            legal = legal_pairs(B)
+-            available = np.flatnonzero(legal[iu, ju] & ~banned)
+-
+-            if available.size == 0 and np.any(banned):
+-                banned[:] = False
+-                available = np.flatnonzero(legal[iu, ju])
+-
+-            if available.size == 0:
++            best_score = None
++            near_best = []
++
++            for u in range(n - 1):
++                absent = (full ^ masks[u]) & ~((1 << (u + 1)) - 1)
++                absent &= ~(1 << u)
++
++                while absent:
++                    bit = absent & -absent
++                    v = bit.bit_length() - 1
++                    absent ^= bit
++
++                    key = u * n + v
++                    if key in banned_set:
++                        continue
++                    if not can_add(masks, degrees, u, v):
++                        continue
++
++                    du = degrees[u]
++                    dv = degrees[v]
++
++                    # Dense C4-free graphs tend to have degrees near 6--7.
++                    # This score uses coarse buckets, intentionally leaving
++                    # many ties for randomized diversification.
++                    excess = max(du - 7, 0) ** 2 + max(dv - 7, 0) ** 2
++                    score = 16 * (du + dv) + 7 * excess + du * dv
++
++                    if source_bonus and source[u, v]:
++                        score -= 2
++
++                    if best_score is None or score < best_score:
++                        best_score = score
++                        near_best = [(u, v)]
++                    elif score <= best_score + 2:
++                        near_best.append((u, v))
++
++            # Once every non-banned option is exhausted, permit removed edges
++            # again.  This preserves maximality even if an exchange fails.
++            if not near_best and banned_set:
++                banned_set.clear()
++                continue
++
++            if not near_best:
+                 break
+ 
+-            X = B.astype(np.int16)
+-            L = legal.astype(np.int16)
+-            blocked = (X @ L) @ X
+-            degree = B.sum(axis=1).astype(np.int32)
+-
+-            au = iu[available]
+-            av = ju[available]
+-
+-            future_loss = blocked[au, av].astype(np.int32)
+-            endpoint_sum = degree[au] + degree[av]
+-
+-            # Dense C4-free graphs on 49 vertices generally benefit from
+-            # degrees concentrated around 6--7.  Penalize excessive imbalance.
+-            imbalance = (
+-                np.maximum(degree[au] - 7, 0) ** 2
+-                + np.maximum(degree[av] - 7, 0) ** 2
+-            )
+-
+-            score = 3 * future_loss + 2 * endpoint_sum + 3 * imbalance
+-            best_score = score.min()
+-            tied = available[score == best_score]
+-
+-            source_tied = tied[source_upper[tied]]
+-            if source_tied.size and rng.random() < 0.58:
+-                tied = source_tied
+-
+-            chosen = int(tied[int(rng.integers(tied.size))])
+-            u = int(iu[chosen])
+-            v = int(ju[chosen])
+-
+-            # Redundant local check protects the invariant even if the
+-            # matrix-based calculation is modified in future versions.
+-            if insertion_legal(B, u, v):
+-                B[u, v] = 1
+-                B[v, u] = 1
+-
+-        return B
+-
+-    def source_repair(style):
++            u, v = near_best[int(rng.integers(len(near_best)))]
++            # Explicit local assertion of the invariant before modification.
++            if not can_add(masks, degrees, u, v):
++                continue
++
++            masks[u] |= 1 << v
++            masks[v] |= 1 << u
++            degrees[u] += 1
++            degrees[v] += 1
++
++        return masks, degrees
++
++    def source_start(style):
+         """
+-        Construct a C4-free retained subgraph of the supplied input graph.
+-        Different orderings deliberately preserve different source structure.
++        Greedily retain a C4-free subgraph of the actual input.  Every style
++        has a different source-edge ordering, so subsequent augmentation
++        begins from materially input-dependent states.
+         """
+-        B = np.zeros((n, n), dtype=np.uint8)
++        masks = [0] * n
++        degrees = [0] * n
+ 
+         if source_edges.size == 0:
+-            return B
+-
+-        du = source_degree[iu[source_edges]].astype(np.int32)
+-        dv = source_degree[ju[source_edges]].astype(np.int32)
+-        load = du + dv
+-        product = du * dv
++            return masks, degrees
++
++        su = iu[source_edges]
++        sv = ju[source_edges]
++        load = source_degree[su].astype(np.int32) + source_degree[sv].astype(np.int32)
++        product = source_degree[su].astype(np.int32) * source_degree[sv].astype(np.int32)
+         noise = rng.random(source_edges.size)
+ 
+         if style == 0:
+             order = source_edges[np.lexsort((noise, load))]
+         elif style == 1:
+             order = source_edges[np.lexsort((noise, product))]
+         elif style == 2:
+             order = source_edges[np.lexsort((noise, -load))]
+         elif style == 3:
+             order = source_edges[np.lexsort((noise, -product))]
+         else:
+-            # A random repair remains source-derived but avoids deterministic
+-            # preference for low-index vertices.
+             order = source_edges[rng.permutation(source_edges.size)]
+ 
+         for edge in order:
+             u = int(iu[edge])
+             v = int(ju[edge])
+-            if insertion_legal(B, u, v):
+-                B[u, v] = 1
+-                B[v, u] = 1
+-
+-        return B
+-
+-    def archive_insert(archive, B, limit=4):
+-        """Store good, nonduplicate C4-free local optima."""
+-        if not valid(B):
+-            return archive
+-
+-        signature = B[iu, ju].tobytes()
+-        for _, _, old_signature in archive:
++            if can_add(masks, degrees, u, v):
++                masks[u] |= 1 << v
++                masks[v] |= 1 << u
++                degrees[u] += 1
++                degrees[v] += 1
++
++        return masks, degrees
++
++    archive = []
++
++    def archive_insert(masks, degrees):
++        nonlocal archive
++        if not masks_valid(masks):
++            return
++
++        signature = tuple(masks)
++        for _, _, _, old_signature in archive:
+             if signature == old_signature:
+-                return archive
+-
+-        archive.append((edge_count(B), B.copy(), signature))
+-        archive.sort(key=lambda item: item[0], reverse=True)
+-        return archive[:limit]
+-
+-    archive = []
+-
+-    # Several source-derived starts.  All augmentation happens after retaining
+-    # a valid subset of A, so the supplied graph directly affects search.
++                return
++
++        archive.append((edge_total(masks), masks[:], degrees[:], signature))
++        archive.sort(key=lambda z: z[0], reverse=True)
++        archive = archive[:5]
++
++    # Five source-dependent repairs are retained from the prior configuration,
++    # now with inexpensive bitset augmentation.
+     for style in range(5):
+-        candidate = source_repair(style)
+-        if valid(candidate):
+-            candidate = saturate(candidate)
+-            archive = archive_insert(archive, candidate)
++        masks, degrees = source_start(style)
++        masks, degrees = saturate(masks, degrees)
++        archive_insert(masks, degrees)
+ 
+     if not archive:
+-        fallback = saturate(np.zeros((n, n), dtype=np.uint8))
+-        archive = archive_insert(archive, fallback)
+-
+-    # Exchange schedule: early moves are conservative; later moves remove
+-    # more conflict-heavy edges to cross larger local-optimum barriers.
+-    schedule = (
+-        (2, 78), (2, 72), (2, 68), (2, 62),
+-        (3, 72), (3, 66), (3, 60), (3, 54),
+-        (4, 65), (4, 57), (4, 48), (3, 45),
+-        (2, 55), (4, 40),
++        masks = [0] * n
++        degrees = [0] * n
++        masks, degrees = saturate(masks, degrees, source_bonus=False)
++        archive_insert(masks, degrees)
++
++    # More exchange opportunities than the previous 14-move schedule.  The
++    # sizes include shallow moves for local swaps and occasional deeper moves
++    # for crossing saturation barriers.
++    ruin_sizes = (
++        2, 2, 3, 2, 3,
++        4, 3, 4, 2, 5,
++        3, 4, 5, 2, 4,
++        6, 3, 5, 4, 3,
+     )
+ 
+-    for trial, (remove_count, percentile) in enumerate(schedule):
+-        if len(archive) == 1 or rng.random() < 0.65:
+-            base = archive[0][1]
++    for trial, remove_count in enumerate(ruin_sizes):
++        if len(archive) == 1 or rng.random() < 0.68:
++            _, base_masks, base_degrees, _ = archive[0]
+         else:
+-            base = archive[int(rng.integers(len(archive)))][1]
+-
+-        current = base.copy()
+-        present = np.flatnonzero(current[iu, ju])
+-
+-        if present.size < remove_count:
++            rank = int(rng.integers(min(len(archive), 4)))
++            _, base_masks, base_degrees, _ = archive[rank]
++
++        masks = base_masks[:]
++        degrees = base_degrees[:]
++
++        present = []
++        values = []
++        for u in range(n - 1):
++            x = masks[u] & ~((1 << (u + 1)) - 1)
++            while x:
++                bit = x & -x
++                v = bit.bit_length() - 1
++                x ^= bit
++                present.append((u, v))
++                # Edges between highly loaded endpoints normally constrain
++                # many cross-neighborhood possibilities.
++                values.append(
++                    5 * (degrees[u] - 1) * (degrees[v] - 1)
++                    + degrees[u] + degrees[v]
++                )
++
++        if len(present) < remove_count:
+             continue
+ 
+-        degree = current.sum(axis=1).astype(np.int32)
+-        pu = iu[present]
+-        pv = ju[present]
+-
+-        # Conflict credit estimates how many endpoint-crossing paths use an
+-        # edge as their middle link.  Removing high-credit edges tends to
+-        # unlock more candidate replacement edges than degree sum alone.
+-        credit = (
+-            np.maximum(degree[pu] - 1, 0)
+-            * np.maximum(degree[pv] - 1, 0)
+-        )
+-        pressure = degree[pu] + degree[pv]
+-        combined = 4 * credit + pressure
+-
+-        threshold = np.percentile(combined, percentile)
+-        pool = present[combined >= threshold]
+-        if pool.size < remove_count:
+-            pool = present
++        values = np.asarray(values)
++        # Broad pools retain stochasticity and avoid repeatedly deleting only
++        # a single structurally central edge.
++        percentile = 55 + 5 * (trial % 5)
++        cutoff = np.percentile(values, percentile)
++        pool = [k for k, value in enumerate(values) if value >= cutoff]
++        if len(pool) < remove_count:
++            pool = list(range(len(present)))
+ 
+         selected = []
+         used = set()
+ 
+         for pick in range(remove_count):
+-            choices = pool[~np.isin(pool, selected)]
+-            if choices.size == 0:
+-                choices = present[~np.isin(present, selected)]
+-
+-            # Favor distributed deletion: independent removed edges usually
+-            # release separate regions of the saturation constraint system.
+-            if pick > 0 and trial % 3 != 0:
+-                disjoint = np.array(
+-                    [
+-                        e for e in choices
+-                        if int(iu[e]) not in used and int(ju[e]) not in used
+-                    ],
+-                    dtype=np.int64,
+-                )
+-                if disjoint.size:
+-                    choices = disjoint
+-
+-            chosen = int(choices[int(rng.integers(choices.size))])
++            available = [k for k in pool if k not in selected]
++            if not available:
++                available = [k for k in range(len(present)) if k not in selected]
++
++            # Most moves spread deletion over different endpoint regions.
++            if pick and trial % 4 != 0:
++                disjoint = [
++                    k for k in available
++                    if present[k][0] not in used and present[k][1] not in used
++                ]
++                if disjoint:
++                    available = disjoint
++
++            chosen = available[int(rng.integers(len(available)))]
+             selected.append(chosen)
+-            used.add(int(iu[chosen]))
+-            used.add(int(ju[chosen]))
+-
+-        banned = np.zeros(pair_count, dtype=bool)
+-        for edge in selected:
+-            u = int(iu[edge])
+-            v = int(ju[edge])
+-            current[u, v] = 0
+-            current[v, u] = 0
+-            banned[edge] = True
+-
+-        if not valid(current):
++            used.add(present[chosen][0])
++            used.add(present[chosen][1])
++
++        banned = set()
++        for idx in selected:
++            u, v = present[idx]
++            masks[u] &= ~(1 << v)
++            masks[v] &= ~(1 << u)
++            degrees[u] -= 1
++            degrees[v] -= 1
++            banned.add(u * n + v)
++
++        # Deletion cannot introduce a C4, but explicitly verify before the
++        # refill phase as a conservative invariant guard.
++        if not masks_valid(masks):
+             continue
+ 
+-        candidate = saturate(current, banned)
+-
+-        if valid(candidate):
+-            archive = archive_insert(archive, candidate)
+-
+-    best = archive[0][1].copy()
+-
+-    # Conservative explicit final verification.  This is normally already
+-    # valid, but deletion-only repair guarantees a valid returned graph.
+-    repair_budget = n * n
+-    for _ in range(repair_budget):
+-        X = best.astype(np.int16)
+-        common = X @ X
+-        np.fill_diagonal(common, 0)
+-        bad = np.argwhere(np.triu(common > 1, 1))
+-
+-        if bad.size == 0:
+-            break
+-
+-        u, v = map(int, bad[0])
+-        shared = np.flatnonzero(best[u] & best[v])
+-        if shared.size == 0:
+-            continue
+-
+-        degrees = best.sum(axis=1)
+-        x = int(shared[np.argmax(degrees[shared])])
+-
+-        if degrees[u] >= degrees[v]:
+-            best[u, x] = 0
+-            best[x, u] = 0
+-        else:
+-            best[v, x] = 0
+-            best[x, v] = 0
+-
+-    if valid(best):
+-        best = saturate(best)
+-
+-    # Strict fallback if a future alteration ever creates a violation.
+-    if not valid(best):
+-        for _ in range(repair_budget):
+-            X = best.astype(np.int16)
+-            common = X @ X
++        masks, degrees = saturate(masks, degrees, banned=banned)
++        archive_insert(masks, degrees)
++
++    best_masks = archive[0][1][:]
++    best_degrees = archive[0][2][:]
++
++    # Mandatory final invariant verification.  This repair branch should
++    # never run in normal operation because all additions use can_add.
++    if not masks_valid(best_masks):
++        for _ in range(pair_count):
++            H = matrix_from_masks(best_masks).astype(np.int16)
++            common = H @ H
+             np.fill_diagonal(common, 0)
+             bad = np.argwhere(np.triu(common > 1, 1))
+-
+             if bad.size == 0:
+                 break
+ 
+             u, v = map(int, bad[0])
+-            shared = np.flatnonzero(best[u] & best[v])
+-            if shared.size == 0:
++            shared_bits = best_masks[u] & best_masks[v]
++            if not shared_bits:
+                 continue
+ 
+-            x = int(shared[0])
+-            best[u, x] = 0
+-            best[x, u] = 0
+-
+-    np.fill_diagonal(best, 0)
+-    return best.astype(np.uint8)
++            candidates = []
++            x = shared_bits
++            while x:
++                bit = x & -x
++                w = bit.bit_length() - 1
++                x ^= bit
++                candidates.append(w)
++
++            w = max(candidates, key=lambda z: best_degrees[z])
++            if best_degrees[u] >= best_degrees[v]:
++                a, b = u, w
++            else:
++                a, b = v, w
++
++            if (best_masks[a] >> b) & 1:
++                best_masks[a] &= ~(1 << b)
++                best_masks[b] &= ~(1 << a)
++                best_degrees[a] -= 1
++                best_degrees[b] -= 1
++
++        if masks_valid(best_masks):
++            best_masks, best_degrees = saturate(best_masks, best_degrees)
++
++    result = matrix_from_masks(best_masks)
++
++    # Strict final check; a zero graph is only a last-resort safety fallback.
++    Hcheck = result.astype(np.int16)
++    common = Hcheck @ Hcheck
++    np.fill_diagonal(common, 0)
++    if np.any(common > 1):
++        result = np.zeros((n, n), dtype=np.uint8)
++
++    return result.astype(np.uint8, copy=False)
+ 
+ 
+ # EVOLVE-BLOCK-END
+ 
+ 
+ # The following code remains fixed (not evolved)
+ 
+ def run_graph_construction(A, rng = None):
+     """Run the graph construction algorithm on A"""
+     return construct_new_graph(A = A, rng = rng)

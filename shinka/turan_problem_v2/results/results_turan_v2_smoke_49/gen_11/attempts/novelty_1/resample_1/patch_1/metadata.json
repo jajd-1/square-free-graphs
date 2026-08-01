@@ -1,0 +1,14 @@
+{
+  "generation": 11,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "unlock_kick_archive",
+  "patch_description": "The previous archive search used 6 repair starts, a `3 * future_loss + 2 * degree_load` insertion score, and destructive kicks chosen primarily from high-degree endpoint pressure. Its main weakness is that high-degree edges are not necessarily the edges preventing useful replacements.\n\nThis version keeps the input-derived repair and archive architecture, but changes the local-search configuration as follows:\n\n- Uses 5 source-dependent repair orders plus more diverse tie-breaking.\n- Changes saturation scoring to `4 * future_loss + degree_load`, making preservation of future legal pairs primary while still avoiding hubs.\n- Keeps a larger archive of 6 structurally distinct maximal graphs.\n- Replaces pressure-only deletions with an explicit *unlock score*: for each existing edge, estimate how many currently forbidden nonedges become legal if that edge is removed because it is the unique length-three path blocking them.\n- Uses 18 bounded two-to-four-edge kicks. Kicks select edges with high unlock score, with degree pressure only as a secondary criterion.\n- Deleted edges remain temporarily banned during refill, forcing genuinely different structures before old edges can return.\n- Every insertion is checked locally, every phase is checked using the common-neighbor characterization, and final monotone repair remains defensive.\n\nThe key new parameters are `LOSS_WEIGHT=4`, `LOAD_WEIGHT=1`, archive size `6`, source-tie preference `0.35`, and the 18-kick schedule with adaptive deletion sizes and exploration percentiles.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:25:24.811234",
+  "llm_cost": 0.082735,
+  "llm_model": "gpt-5.6-terra"
+}

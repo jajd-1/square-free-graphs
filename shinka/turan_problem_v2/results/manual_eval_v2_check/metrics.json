@@ -1,0 +1,12 @@
+{
+    "combined_score": 0.0,
+    "public": {
+        "mean_edges": 131.54,
+        "median_edges": 134,
+        "max_edges": 147,
+        "mean_improvement_over_seed": 0.0,
+        "max_improvement_over_seed": 0
+    },
+    "private": {
+        "num_graphs": 100,
+        "edge_count_list": 

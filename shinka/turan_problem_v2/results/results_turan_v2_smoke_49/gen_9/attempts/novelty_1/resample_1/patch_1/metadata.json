@@ -1,0 +1,14 @@
+{
+  "generation": 9,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "beam_ruin_refill",
+  "patch_description": "This version uses a multi-start repair phase followed by a small beam-style ruin-and-refill search. It still starts from the supplied adjacency matrix and only modifies it through deletions and safe additions.\n\nThe key difference is that it keeps several strong maximal C4-free states rather than following one local-search trajectory. Each round destroys a carefully selected set of high-blocking edges from several beam members, refills using a balanced bitset-based saturation rule, and retains the best diverse outcomes. This reduces sensitivity to unlucky repair and refill choices while preserving the mandatory invariant that every pair has at most one common neighbor.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:24:31.800387",
+  "llm_cost": 0.0669575,
+  "llm_model": "gpt-5.6-terra"
+}

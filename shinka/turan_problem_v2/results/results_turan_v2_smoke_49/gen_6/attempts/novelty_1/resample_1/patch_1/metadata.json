@@ -1,0 +1,14 @@
+{
+  "generation": 6,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "balanced_multistart_swap",
+  "patch_description": "The current approach uses 3 input-repair orders, a blocked-cost saturation score of `4 * blocked_cost + degree_sum`, and 9 delete/refill trials. The new version keeps the same input-dependent repair principle but changes the search configuration:\n\n- Uses 4 distinct input-retention orders, including endpoint-load, dense-region, random, and degree-product orders.\n- Uses a more balance-sensitive saturation score `3 * blocked_cost + 2 * degree_sum`, encouraging near-regular dense C4-free graphs instead of over-prioritizing short-term blocking cost.\n- Uses 14 bounded perturbation trials with adaptive deletion sizes of 2, 3, and 4 edges.\n- Allows controlled equal-quality moves so that the search can leave one saturated local optimum and discover a different one.\n- Keeps all construction stages C4-safe using the length-three-path test, and explicitly verifies the common-neighbor invariant before returning.\n- Uses only edits derived from the supplied adjacency matrix: retained input edges form every initial state, then additions/deletions improve those states.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:22:26.757574",
+  "llm_cost": 0.083325,
+  "llm_model": "gpt-5.6-terra"
+}

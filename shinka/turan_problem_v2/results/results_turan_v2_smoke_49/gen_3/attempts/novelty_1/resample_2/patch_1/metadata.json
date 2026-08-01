@@ -1,0 +1,14 @@
+{
+  "generation": 3,
+  "novelty_attempt": 1,
+  "resample_attempt": 2,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "repair_refill_search",
+  "patch_description": "This algorithm treats the supplied matrix as a genuine starting state rather than replacing it with a fixed construction. It first symmetrizes and repairs the input using targeted deletions: edges participating in the largest number of common-neighbor violations are removed first. This preserves more useful structure than deleting arbitrary edges.\n\nAfter repair, it repeatedly adds only edges with no existing length-three path between their endpoints. That condition is exactly the safe edge-addition criterion for maintaining C4-freeness. Additions are selected with a degree-balancing score, favoring lower-degree endpoints and lower estimated blocking cost.\n\nSeveral randomized repair trajectories are tried from the original input. The best saturated result is then improved with bounded one- and two-edge perturbations: remove structurally expensive edges, greedily refill, and retain only strictly better C4-free graphs. Every repair and refill stage explicitly checks the common-neighbor invariant.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:21:28.928740",
+  "llm_cost": 0.066585,
+  "llm_model": "gpt-5.6-terra"
+}

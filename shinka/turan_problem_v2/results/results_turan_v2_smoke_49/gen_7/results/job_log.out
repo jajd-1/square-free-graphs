@@ -1,0 +1,214 @@
+Evaluating program: results/results_turan_v2_smoke_49/gen_7/main.py
+Saving results to: results/results_turan_v2_smoke_49/gen_7/results
+==========Running program evaluation 1/100...==========
+==========Run 1/100 completed in 0.05 seconds==========
+==========Running program evaluation 2/100...==========
+==========Run 2/100 completed in 0.06 seconds==========
+==========Running program evaluation 3/100...==========
+==========Run 3/100 completed in 0.06 seconds==========
+==========Running program evaluation 4/100...==========
+==========Run 4/100 completed in 0.05 seconds==========
+==========Running program evaluation 5/100...==========
+==========Run 5/100 completed in 0.05 seconds==========
+==========Running program evaluation 6/100...==========
+==========Run 6/100 completed in 0.05 seconds==========
+==========Running program evaluation 7/100...==========
+==========Run 7/100 completed in 0.05 seconds==========
+==========Running program evaluation 8/100...==========
+==========Run 8/100 completed in 0.05 seconds==========
+==========Running program evaluation 9/100...==========
+==========Run 9/100 completed in 0.05 seconds==========
+==========Running program evaluation 10/100...==========
+==========Run 10/100 completed in 0.06 seconds==========
+==========Running program evaluation 11/100...==========
+==========Run 11/100 completed in 0.05 seconds==========
+==========Running program evaluation 12/100...==========
+==========Run 12/100 completed in 0.05 seconds==========
+==========Running program evaluation 13/100...==========
+==========Run 13/100 completed in 0.04 seconds==========
+==========Running program evaluation 14/100...==========
+==========Run 14/100 completed in 0.05 seconds==========
+==========Running program evaluation 15/100...==========
+==========Run 15/100 completed in 0.05 seconds==========
+==========Running program evaluation 16/100...==========
+==========Run 16/100 completed in 0.05 seconds==========
+==========Running program evaluation 17/100...==========
+==========Run 17/100 completed in 0.04 seconds==========
+==========Running program evaluation 18/100...==========
+==========Run 18/100 completed in 0.05 seconds==========
+==========Running program evaluation 19/100...==========
+==========Run 19/100 completed in 0.05 seconds==========
+==========Running program evaluation 20/100...==========
+==========Run 20/100 completed in 0.05 seconds==========
+==========Running program evaluation 21/100...==========
+==========Run 21/100 completed in 0.05 seconds==========
+==========Running program evaluation 22/100...==========
+==========Run 22/100 completed in 0.04 seconds==========
+==========Running program evaluation 23/100...==========
+==========Run 23/100 completed in 0.05 seconds==========
+==========Running program evaluation 24/100...==========
+==========Run 24/100 completed in 0.04 seconds==========
+==========Running program evaluation 25/100...==========
+==========Run 25/100 completed in 0.04 seconds==========
+==========Running program evaluation 26/100...==========
+==========Run 26/100 completed in 0.04 seconds==========
+==========Running program evaluation 27/100...==========
+==========Run 27/100 completed in 0.04 seconds==========
+==========Running program evaluation 28/100...==========
+==========Run 28/100 completed in 0.05 seconds==========
+==========Running program evaluation 29/100...==========
+==========Run 29/100 completed in 0.05 seconds==========
+==========Running program evaluation 30/100...==========
+==========Run 30/100 completed in 0.05 seconds==========
+==========Running program evaluation 31/100...==========
+==========Run 31/100 completed in 0.05 seconds==========
+==========Running program evaluation 32/100...==========
+==========Run 32/100 completed in 0.04 seconds==========
+==========Running program evaluation 33/100...==========
+==========Run 33/100 completed in 0.04 seconds==========
+==========Running program evaluation 34/100...==========
+==========Run 34/100 completed in 0.05 seconds==========
+==========Running program evaluation 35/100...==========
+==========Run 35/100 completed in 0.05 seconds==========
+==========Running program evaluation 36/100...==========
+==========Run 36/100 completed in 0.04 seconds==========
+==========Running program evaluation 37/100...==========
+==========Run 37/100 completed in 0.04 seconds==========
+==========Running program evaluation 38/100...==========
+==========Run 38/100 completed in 0.05 seconds==========
+==========Running program evaluation 39/100...==========
+==========Run 39/100 completed in 0.07 seconds==========
+==========Running program evaluation 40/100...==========
+==========Run 40/100 completed in 0.05 seconds==========
+==========Running program evaluation 41/100...==========
+==========Run 41/100 completed in 0.07 seconds==========
+==========Running program evaluation 42/100...==========
+==========Run 42/100 completed in 0.06 seconds==========
+==========Running program evaluation 43/100...==========
+==========Run 43/100 completed in 0.06 seconds==========
+==========Running program evaluation 44/100...==========
+==========Run 44/100 completed in 0.07 seconds==========
+==========Running program evaluation 45/100...==========
+==========Run 45/100 completed in 0.07 seconds==========
+==========Running program evaluation 46/100...==========
+==========Run 46/100 completed in 0.07 seconds==========
+==========Running program evaluation 47/100...==========
+==========Run 47/100 completed in 0.07 seconds==========
+==========Running program evaluation 48/100...==========
+==========Run 48/100 completed in 0.06 seconds==========
+==========Running program evaluation 49/100...==========
+==========Run 49/100 completed in 0.06 seconds==========
+==========Running program evaluation 50/100...==========
+==========Run 50/100 completed in 0.07 seconds==========
+==========Running program evaluation 51/100...==========
+==========Run 51/100 completed in 0.08 seconds==========
+==========Running program evaluation 52/100...==========
+==========Run 52/100 completed in 0.07 seconds==========
+==========Running program evaluation 53/100...==========
+==========Run 53/100 completed in 0.07 seconds==========
+==========Running program evaluation 54/100...==========
+==========Run 54/100 completed in 0.06 seconds==========
+==========Running program evaluation 55/100...==========
+==========Run 55/100 completed in 0.07 seconds==========
+==========Running program evaluation 56/100...==========
+==========Run 56/100 completed in 0.07 seconds==========
+==========Running program evaluation 57/100...==========
+==========Run 57/100 completed in 0.07 seconds==========
+==========Running program evaluation 58/100...==========
+==========Run 58/100 completed in 0.07 seconds==========
+==========Running program evaluation 59/100...==========
+==========Run 59/100 completed in 0.07 seconds==========
+==========Running program evaluation 60/100...==========
+==========Run 60/100 completed in 0.06 seconds==========
+==========Running program evaluation 61/100...==========
+==========Run 61/100 completed in 0.09 seconds==========
+==========Running program evaluation 62/100...==========
+==========Run 62/100 completed in 0.09 seconds==========
+==========Running program evaluation 63/100...==========
+==========Run 63/100 completed in 0.08 seconds==========
+==========Running program evaluation 64/100...==========
+==========Run 64/100 completed in 0.09 seconds==========
+==========Running program evaluation 65/100...==========
+==========Run 65/100 completed in 0.09 seconds==========
+==========Running program evaluation 66/100...==========
+==========Run 66/100 completed in 0.09 seconds==========
+==========Running program evaluation 67/100...==========
+==========Run 67/100 completed in 0.09 seconds==========
+==========Running program evaluation 68/100...==========
+==========Run 68/100 completed in 0.08 seconds==========
+==========Running program evaluation 69/100...==========
+==========Run 69/100 completed in 0.08 seconds==========
+==========Running program evaluation 70/100...==========
+==========Run 70/100 completed in 0.08 seconds==========
+==========Running program evaluation 71/100...==========
+==========Run 71/100 completed in 0.09 seconds==========
+==========Running program evaluation 72/100...==========
+==========Run 72/100 completed in 0.11 seconds==========
+==========Running program evaluation 73/100...==========
+==========Run 73/100 completed in 0.09 seconds==========
+==========Running program evaluation 74/100...==========
+==========Run 74/100 completed in 0.09 seconds==========
+==========Running program evaluation 75/100...==========
+==========Run 75/100 completed in 0.09 seconds==========
+==========Running program evaluation 76/100...==========
+==========Run 76/100 completed in 0.09 seconds==========
+==========Running program evaluation 77/100...==========
+==========Run 77/100 completed in 0.08 seconds==========
+==========Running program evaluation 78/100...==========
+==========Run 78/100 completed in 0.08 seconds==========
+==========Running program evaluation 79/100...==========
+==========Run 79/100 completed in 0.08 seconds==========
+==========Running program evaluation 80/100...==========
+==========Run 80/100 completed in 0.08 seconds==========
+==========Running program evaluation 81/100...==========
+==========Run 81/100 completed in 0.11 seconds==========
+==========Running program evaluation 82/100...==========
+==========Run 82/100 completed in 0.11 seconds==========
+==========Running program evaluation 83/100...==========
+==========Run 83/100 completed in 0.11 seconds==========
+==========Running program evaluation 84/100...==========
+==========Run 84/100 completed in 0.10 seconds==========
+==========Running program evaluation 85/100...==========
+==========Run 85/100 completed in 0.11 seconds==========
+==========Running program evaluation 86/100...==========
+==========Run 86/100 completed in 0.11 seconds==========
+==========Running program evaluation 87/100...==========
+==========Run 87/100 completed in 0.11 seconds==========
+==========Running program evaluation 88/100...==========
+==========Run 88/100 completed in 0.12 seconds==========
+==========Running program evaluation 89/100...==========
+==========Run 89/100 completed in 0.12 seconds==========
+==========Running program evaluation 90/100...==========
+==========Run 90/100 completed in 0.11 seconds==========
+==========Running program evaluation 91/100...==========
+==========Run 91/100 completed in 0.11 seconds==========
+==========Running program evaluation 92/100...==========
+==========Run 92/100 completed in 0.11 seconds==========
+==========Running program evaluation 93/100...==========
+==========Run 93/100 completed in 0.11 seconds==========
+==========Running program evaluation 94/100...==========
+==========Run 94/100 completed in 0.11 seconds==========
+==========Running program evaluation 95/100...==========
+==========Run 95/100 completed in 0.11 seconds==========
+==========Running program evaluation 96/100...==========
+==========Run 96/100 completed in 0.10 seconds==========
+==========Running program evaluation 97/100...==========
+==========Run 97/100 completed in 0.11 seconds==========
+==========Running program evaluation 98/100...==========
+==========Run 98/100 completed in 0.11 seconds==========
+==========Running program evaluation 99/100...==========
+==========Run 99/100 completed in 0.11 seconds==========
+==========Running program evaluation 100/100...==========
+==========Run 100/100 completed in 0.11 seconds==========
+Correctness and error status saved to results/results_turan_v2_smoke_49/gen_7/results/correct.json
+Metrics saved to results/results_turan_v2_smoke_49/gen_7/results/metrics.json
+Evaluation and Validation completed successfully.
+Metrics:
+  combined_score: 14.56
+  public: {'mean_edges': 146.1, 'median_edges': 146, 'max_edges': 151, 'mean_improvement_over_seed': 14.56, 'max_improvement_over_seed': 34}
+  private: {'num_graphs': 100, 'edge_count_list': [147, 146, 144, 142, 144, 142, 146, 144, 144, 145, 145, 144, 144, 146, 145, 145, 147, 144, 145, 143, 145, 146, 144, 142, 144, 145, 146, 145, 148, 144, 147, 144, 147, 144, 147, 147, 148, 145, 145, 146, 148, 146, 148, 145, 146, 145, 147, 147, 145, 147, 147, 147, 144, 147, 147, 146, 146, 148, 149, 148, 150, 145, 146, 146, 148, 147, 147, 145, 147, 148, 146, 145, 147, 147, 148, 149, 147, 147, 147, 149, 144, 146, 145, 147, 146, 147, 145, 144, 147, 145, 149, 147, 148, 147, 146, 148, 147, 151, 149, 147], 'seed_algorithm_edge_count_list': [141, 131, 133, 140, 140, 135, 134, 136, 139, 137, 142, 139, 144, 136, 136, 140, 134, 135, 139, 141, 137, 143, 142, 140, 140, 140, 142, 143, 139, 135, 141, 142, 141, 135, 147, 137, 137, 140, 139, 142, 130, 137, 136, 136, 137, 127, 133, 134, 133, 132, 134, 127, 138, 138, 136, 134, 140, 129, 137, 135, 116, 124, 124, 124, 132, 126, 131, 129, 131, 134, 119, 126, 117, 125, 121, 129, 136, 129, 123, 125, 116, 114, 126, 126, 118, 126, 120, 118, 119, 118, 121, 120, 123, 118, 118, 115, 113, 127, 121, 119], 'edge_improvement_over_seed_list': [6, 15, 11, 2, 4, 7, 12, 8, 5, 8, 3, 5, 0, 10, 9, 5, 13, 9, 6, 2, 8, 3, 2, 2, 4, 5, 4, 2, 9, 9, 6, 2, 6, 9, 0, 10, 11, 5, 6, 4, 18, 9, 12, 9, 9, 18, 14, 13, 12, 15, 13, 20, 6, 9, 11, 12, 6, 19, 12, 13, 34, 21, 22, 22, 16, 21, 16, 16, 16, 14, 27, 19, 30, 22, 27, 20, 11, 18, 24, 24, 28, 32, 19, 21, 28, 21, 25, 26, 28, 27, 28, 27, 25, 29, 28, 33, 34, 24, 28, 28], 'matrix_seed_list': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19], 'improved_graph_seed_list': [12345, 12346, 12347, 12348, 12349, 12350, 12351, 12352, 12353, 12354, 12355, 12356, 12357, 12358, 12359, 12360, 12361, 12362, 12363, 12364, 12365, 12366, 12367, 12368, 12369, 12370, 12371, 12372, 12373, 12374, 12375, 12376, 12377, 12378, 12379, 12380, 12381, 12382, 12383, 12384, 12385, 12386, 12387, 12388, 12389, 12390, 12391, 12392, 12393, 12394, 12395, 12396, 12397, 12398, 12399, 12400, 12401, 12402, 12403, 12404, 12405, 12406, 12407, 12408, 12409, 12410, 12411, 12412, 12413, 12414, 12415, 12416, 12417, 12418, 12419, 12420, 12421, 12422, 12423, 12424, 12425, 12426, 12427, 12428, 12429, 12430, 12431, 12432, 12433, 12434, 12435, 12436, 12437, 12438, 12439, 12440, 12441, 12442, 12443, 12444], 'initial_density_list': [0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.10000000149011612, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.20000000298023224, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.30000001192092896, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.4000000059604645, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]}
+  execution_time_mean: 0.07221283958060667
+  execution_time_std: 0.024263813629605314
+  num_valid_runs: 100
+  num_invalid_runs: 0
+  all_validation_errors: []

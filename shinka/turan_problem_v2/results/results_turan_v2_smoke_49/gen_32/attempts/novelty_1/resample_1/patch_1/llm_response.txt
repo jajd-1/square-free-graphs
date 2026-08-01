@@ -1,0 +1,53 @@
+<NAME>
+deeper_archive_exchange
+</NAME>
+
+<DESCRIPTION>
+Restore a larger elite archive and a longer, more varied ruin-and-refill schedule. Dense C4-free graphs commonly sit behind multi-edge saturation barriers: deleting only two or three edges may refill to the same maximal graph, whereas occasional 5--6 edge moves can reach a different degree distribution and then gain edges after refill. Retaining six archive states also prevents the search from repeatedly exploring only the current best basin.
+
+This is still fully input-aware: every base state comes from repairing or greedily retaining edges from the supplied matrix, and every proposal is produced by deleting and adding edges to those states. Validity remains preserved because deletions cannot create C4s and all refill additions use `legal_add`, followed by explicit `valid` checks.
+</DESCRIPTION>
+
+<DIFF>
+<<<<<<< SEARCH
+    def add_archive(archive, masks, degrees, limit=5):
+=======
+    def add_archive(archive, masks, degrees, limit=6):
+>>>>>>> REPLACE
+</DIFF>
+
+<DIFF>
+<<<<<<< SEARCH
+    # Conflict-directed repairs directly preserve substantial portions of A.
+    for style in range(5):
+=======
+    # Conflict-directed repairs directly preserve substantial portions of A.
+    # An additional tie policy gives a materially different input-derived
+    # repair state before balanced augmentation.
+    for style in range(6):
+>>>>>>> REPLACE
+</DIFF>
+
+<DIFF>
+<<<<<<< SEARCH
+    schedule = (
+        (2, False, 0), (3, False, 1), (3, True, 2),
+        (4, False, 0), (4, True, 1), (5, False, 2),
+        (3, True, 0), (5, True, 1), (2, True, 2),
+        (4, False, 0), (6, True, 1), (3, False, 2),
+    )
+=======
+    # Include both shallow exchanges and several deeper escapes.  The latter
+    # are important because a saturated C4-free graph can require releasing
+    # several pair-budget constraints before a denser near-regular completion
+    # becomes reachable.
+    schedule = (
+        (2, False, 0), (2, True, 1), (3, False, 2),
+        (3, True, 0), (4, False, 1), (3, False, 2),
+        (4, True, 0), (5, False, 1), (2, True, 2),
+        (4, False, 0), (5, True, 1), (3, True, 2),
+        (6, True, 0), (4, False, 1), (2, False, 2),
+        (5, True, 0), (3, False, 1), (4, True, 2),
+    )
+>>>>>>> REPLACE
+</DIFF>

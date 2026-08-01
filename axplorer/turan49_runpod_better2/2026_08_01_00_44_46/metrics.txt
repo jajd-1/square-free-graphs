@@ -1,0 +1,12 @@
+command: python train.py --env_name square2 --exp_name turan49_runpod_better2 --N 49 --encoding_tokens single_integer --max_len 500 --gensize 100000 --pop_size 5000 --ntest 500 --max_epochs 10 --max_steps 10000 --num_samples_from_model 50000 --gen_batch_size 1000 --batch_size 64 --n_layer 6 --n_embd 256 --num_workers 12 --exp_id "2026_08_01_00_44_46"
+epoch: 0 | mean: 144.31511111111112 | median: 144.0 | top_1_percentile: 147.0 | max: 149
+epoch: 1 | mean: 155.9412 | median: 157.0 | top_1_percentile: 159.0 | max: 161
+epoch: 2 | mean: 157.3612 | median: 157.0 | top_1_percentile: 159.0 | max: 162
+epoch: 3 | mean: 157.6634 | median: 158.0 | top_1_percentile: 159.0 | max: 162
+epoch: 4 | mean: 158.0624 | median: 158.0 | top_1_percentile: 160.0 | max: 162
+epoch: 5 | mean: 158.4288 | median: 158.0 | top_1_percentile: 160.0 | max: 162
+epoch: 6 | mean: 158.869 | median: 159.0 | top_1_percentile: 161.0 | max: 162
+epoch: 7 | mean: 159.4622 | median: 159.0 | top_1_percentile: 161.0 | max: 162
+epoch: 8 | mean: 159.9794 | median: 160.0 | top_1_percentile: 162.0 | max: 163
+epoch: 9 | mean: 160.397 | median: 160.0 | top_1_percentile: 162.0 | max: 163
+epoch: 10 | mean: 160.6836 | median: 161.0 | top_1_percentile: 162.0 | max: 164

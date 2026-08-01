@@ -1,0 +1,14 @@
+{
+  "generation": 1,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "dynamic_repair_swap",
+  "patch_description": "This approach keeps the input graph as the initial state, repairs it using an incrementally maintained common-neighbor matrix, and then performs degree-balanced saturation. Unlike the original one-pass repair, every deletion is chosen to eliminate many current C4 violations. After reaching a valid C4-free graph, it repeatedly adds the legal non-edge with the best degree-balancing score.\n\nIt then applies several bounded \u201cdestroy and refill\u201d local-search rounds: remove a few highly blocking edges, greedily refill the resulting gaps, and retain the best valid graph found. All additions are checked through the invariant that every off-diagonal entry of the common-neighbor matrix remains at most one. A final explicit validation-and-repair pass is included for safety.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:19:41.985622",
+  "llm_cost": 0.06605,
+  "llm_model": "gpt-5.6-terra"
+}

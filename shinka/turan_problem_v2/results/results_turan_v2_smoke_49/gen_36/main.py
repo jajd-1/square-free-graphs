@@ -1,0 +1,428 @@
+# EVOLVE-BLOCK-START
+"""Bitset archive search with C4-safe saturation and ruin/refill exchanges."""
+
+import numpy as np
+
+
+def construct_new_graph(A, rng=None):
+    if A.dtype != np.uint8:
+        raise TypeError("A must have dtype np.uint8")
+    if A.ndim != 2 or A.shape[0] != A.shape[1]:
+        raise ValueError("A must be a square adjacency matrix")
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    n = A.shape[0]
+    iu, ju = np.triu_indices(n, 1)
+    pair_count = len(iu)
+
+    source = ((A != 0) | (A.T != 0)).astype(np.uint8)
+    np.fill_diagonal(source, 0)
+    source_upper = source[iu, ju].astype(bool)
+    source_degree = source.sum(axis=1).astype(np.int16)
+    source_edges = np.flatnonzero(source_upper)
+
+    ARCHIVE_LIMIT = 6
+
+    def valid(H):
+        X = H.astype(np.int16, copy=False)
+        common = X @ X
+        np.fill_diagonal(common, 0)
+        return not np.any(common > 1)
+
+    def matrix_to_masks(H):
+        masks = [0] * n
+        for u in range(n):
+            bits = 0
+            for v in np.flatnonzero(H[u]):
+                bits |= 1 << int(v)
+            masks[u] = bits
+        return masks
+
+    def masks_to_matrix(masks):
+        H = np.zeros((n, n), dtype=np.uint8)
+        for u, bits in enumerate(masks):
+            x = bits
+            while x:
+                low = x & -x
+                v = low.bit_length() - 1
+                H[u, v] = 1
+                x ^= low
+        np.fill_diagonal(H, 0)
+        return H
+
+    def edge_count(masks):
+        return sum(x.bit_count() for x in masks) // 2
+
+    def legal_add(masks, u, v):
+        """uv is legal iff no current length-three u-v path exists."""
+        nv = masks[v]
+        x = masks[u]
+        while x:
+            low = x & -x
+            w = low.bit_length() - 1
+            if masks[w] & nv:
+                return False
+            x ^= low
+        return True
+
+    def repair(H, style):
+        """Conflict-directed deletion repair of the actual input graph."""
+        H = H.copy()
+
+        for _ in range(pair_count):
+            X = H.astype(np.int16, copy=False)
+            common = X @ X
+            bad = common > 1
+            np.fill_diagonal(bad, False)
+
+            if not np.any(bad):
+                return H
+
+            support = bad.astype(np.int16) @ X
+            score = (support + support.T) * X
+            best = int(score.max())
+            deg = H.sum(axis=1).astype(np.int16)
+
+            if best > 0:
+                choices = np.argwhere(np.triu(score == best, 1))
+                if style % 4 == 0:
+                    weight = deg[choices[:, 0]] + deg[choices[:, 1]]
+                elif style % 4 == 1:
+                    weight = deg[choices[:, 0]] * deg[choices[:, 1]]
+                elif style % 4 == 2:
+                    weight = np.maximum(deg[choices[:, 0]], deg[choices[:, 1]])
+                else:
+                    weight = np.abs(deg[choices[:, 0]] - deg[choices[:, 1]])
+                choices = choices[weight == weight.max()]
+                u, v = choices[int(rng.integers(len(choices)))]
+                u, v = int(u), int(v)
+            else:
+                pairs = np.argwhere(np.triu(bad, 1))
+                a, b = pairs[int(rng.integers(len(pairs)))]
+                shared = np.flatnonzero(H[a] & H[b])
+                w = int(shared[int(rng.integers(len(shared)))])
+                if deg[a] >= deg[b]:
+                    u, v = int(a), w
+                else:
+                    u, v = int(b), w
+
+            H[u, v] = 0
+            H[v, u] = 0
+
+        # Conservative guaranteed deletion-only completion.
+        for _ in range(pair_count):
+            X = H.astype(np.int16, copy=False)
+            common = X @ X
+            bad_pairs = np.argwhere(np.triu(common > 1, 1))
+            if bad_pairs.size == 0:
+                break
+            a, b = map(int, bad_pairs[0])
+            shared = np.flatnonzero(H[a] & H[b])
+            if shared.size:
+                w = int(shared[0])
+                if H[a].sum() >= H[b].sum():
+                    H[a, w] = H[w, a] = 0
+                else:
+                    H[b, w] = H[w, b] = 0
+        return H
+
+    def source_greedy(style):
+        """Retain a C4-free input-derived subgraph under varied edge orders."""
+        masks = [0] * n
+        degree = [0] * n
+
+        if source_edges.size == 0:
+            return masks, degree
+
+        a = iu[source_edges]
+        b = ju[source_edges]
+        da = source_degree[a].astype(np.int32)
+        db = source_degree[b].astype(np.int32)
+        load = da + db
+        product = da * db
+        imbalance = np.abs(da - db)
+        noise = rng.random(source_edges.size)
+
+        if style == 0:
+            order = source_edges[np.lexsort((noise, load))]
+        elif style == 1:
+            order = source_edges[np.lexsort((noise, product))]
+        elif style == 2:
+            order = source_edges[np.lexsort((noise, imbalance))]
+        elif style == 3:
+            order = source_edges[np.lexsort((noise, -load))]
+        else:
+            order = source_edges[rng.permutation(source_edges.size)]
+
+        for e in order:
+            u, v = int(iu[e]), int(ju[e])
+            if legal_add(masks, u, v):
+                masks[u] |= 1 << v
+                masks[v] |= 1 << u
+                degree[u] += 1
+                degree[v] += 1
+
+        return masks, degree
+
+    def saturate(masks, degree, mode=0, taboo=None):
+        """
+        C4-safe maximal completion with an obstruction-aware edge order.
+
+        For a legal proposed edge uv, each currently legal pair xy with
+        x in N(u) and y in N(v) is destroyed by the new length-three path
+        x-u-v-y.  Counting these cross-neighborhood legal pairs is a cheap
+        bitset version of the future-loss score and is much more informative
+        than endpoint degrees alone.
+        """
+        masks = masks[:]
+        degree = degree[:]
+        taboo = set() if taboo is None else set(taboo)
+        taboo_active = bool(taboo)
+
+        for _ in range(pair_count):
+            candidates = []
+            legal_masks = [0] * n
+
+            # Enumerate once, both to find insertion candidates and to retain
+            # the current legal-pair relation for future-loss scoring.
+            for u in range(n - 1):
+                row = masks[u]
+                for v in range(u + 1, n):
+                    if (row >> v) & 1:
+                        continue
+                    if not legal_add(masks, u, v):
+                        continue
+
+                    legal_masks[u] |= 1 << v
+                    legal_masks[v] |= 1 << u
+                    if not taboo_active or u * n + v not in taboo:
+                        candidates.append((u, v))
+
+            if not candidates:
+                if taboo_active:
+                    taboo_active = False
+                    continue
+                break
+
+            best_key = None
+            best = []
+            for u, v in candidates:
+                # This is the number of presently legal pairs blocked through
+                # the newly introduced u-v middle edge.
+                nv = masks[v]
+                x = masks[u]
+                loss = 0
+                while x:
+                    low = x & -x
+                    w = low.bit_length() - 1
+                    loss += (legal_masks[w] & nv).bit_count()
+                    x ^= low
+
+                du = degree[u]
+                dv = degree[v]
+                total = du + dv
+                high = max(du, dv)
+                product = du * dv
+                imbalance = abs(du - dv)
+                excess = max(0, du - 7) ** 2 + max(0, dv - 7) ** 2
+
+                if mode % 3 == 0:
+                    key = (6 * loss, total, excess, high, product, imbalance)
+                elif mode % 3 == 1:
+                    key = (5 * loss, product, total, excess, high, imbalance)
+                else:
+                    key = (
+                        7 * loss,
+                        total + 2 * excess,
+                        imbalance,
+                        high,
+                        product,
+                    )
+
+                if best_key is None or key < best_key:
+                    best_key = key
+                    best = [(u, v)]
+                elif key == best_key:
+                    best.append((u, v))
+
+            if mode % 3 == 2 and len(best) > 1 and rng.random() < 0.42:
+                preferred = [(u, v) for u, v in best if source[u, v]]
+                if preferred:
+                    best = preferred
+
+            u, v = best[int(rng.integers(len(best)))]
+            masks[u] |= 1 << v
+            masks[v] |= 1 << u
+            degree[u] += 1
+            degree[v] += 1
+
+        return masks, degree
+
+    def normalize(masks, degree, mode):
+        H = masks_to_matrix(masks)
+        if not valid(H):
+            H = repair(H, mode)
+            masks = matrix_to_masks(H)
+            degree = [x.bit_count() for x in masks]
+
+        masks, degree = saturate(masks, degree, mode)
+        H = masks_to_matrix(masks)
+
+        if not valid(H):
+            H = repair(H, mode + 1)
+            masks = matrix_to_masks(H)
+            degree = [x.bit_count() for x in masks]
+            masks, degree = saturate(masks, degree, mode)
+
+        return masks, degree
+
+    def add_archive(archive, masks, degree):
+        H = masks_to_matrix(masks)
+        if not valid(H):
+            return archive
+
+        signature = tuple(masks)
+        if any(signature == old[3] for old in archive):
+            return archive
+
+        archive.append((edge_count(masks), masks[:], degree[:], signature))
+        archive.sort(key=lambda z: z[0], reverse=True)
+        return archive[:ARCHIVE_LIMIT]
+
+    def removal_candidates(masks, degree, count, broad):
+        scored = []
+        for u in range(n - 1):
+            x = masks[u] >> (u + 1)
+            v = u + 1
+            while x:
+                if x & 1:
+                    unlock = (degree[u] - 1) * (degree[v] - 1)
+                    score = 8 * unlock + degree[u] + degree[v]
+                    scored.append((score, u, v))
+                x >>= 1
+                v += 1
+
+        if not scored:
+            return []
+
+        scored.sort(reverse=True)
+        divisor = 2 if broad else 4
+        pool = scored[:max(count + 3, len(scored) // divisor + 4)]
+
+        selected = []
+        used = set()
+        for pick in range(count):
+            available = [
+                e for e in pool
+                if (e[1], e[2]) not in [(q[1], q[2]) for q in selected]
+            ]
+            if pick and available and pick % 3 != 2:
+                disjoint = [
+                    e for e in available
+                    if e[1] not in used and e[2] not in used
+                ]
+                if disjoint:
+                    available = disjoint
+            if not available:
+                break
+            chosen = available[int(rng.integers(len(available)))]
+            selected.append(chosen)
+            used.add(chosen[1])
+            used.add(chosen[2])
+
+        return selected
+
+    archive = []
+
+    for style in range(6):
+        H = repair(source, style)
+        masks = matrix_to_masks(H)
+        degree = [x.bit_count() for x in masks]
+        masks, degree = normalize(masks, degree, style)
+        archive = add_archive(archive, masks, degree)
+
+    for style in range(5):
+        masks, degree = source_greedy(style)
+        masks, degree = normalize(masks, degree, style + 1)
+        archive = add_archive(archive, masks, degree)
+
+    if not archive:
+        masks = [0] * n
+        degree = [0] * n
+        masks, degree = saturate(masks, degree)
+        archive = add_archive(archive, masks, degree)
+
+    schedule = (
+        (2, False, 0), (2, True, 1), (3, False, 2),
+        (3, True, 0), (4, False, 1), (3, False, 2),
+        (4, True, 0), (5, False, 1), (2, True, 2),
+        (4, False, 0), (5, True, 1), (3, True, 2),
+        (6, True, 0), (4, False, 1), (2, False, 2),
+        (5, True, 0), (3, False, 1), (4, True, 2),
+    )
+
+    for round_id, (remove_count, broad, mode) in enumerate(schedule):
+        bases = archive[:min(4, len(archive))]
+        proposals = []
+
+        for rank, (_, base_masks, base_degree, _) in enumerate(bases):
+            attempts = 2 if rank == 0 else 1
+            for attempt in range(attempts):
+                masks = base_masks[:]
+                degree = base_degree[:]
+
+                removed = removal_candidates(
+                    masks, degree, remove_count,
+                    broad=(broad or ((round_id + attempt) % 4 == 0)),
+                )
+                if not removed:
+                    continue
+
+                taboo = set()
+                for _, u, v in removed:
+                    if (masks[u] >> v) & 1:
+                        masks[u] &= ~(1 << v)
+                        masks[v] &= ~(1 << u)
+                        degree[u] -= 1
+                        degree[v] -= 1
+                        taboo.add(u * n + v)
+
+                masks, degree = saturate(
+                    masks, degree,
+                    mode=(mode + rank + attempt) % 3,
+                    taboo=taboo,
+                )
+
+                H = masks_to_matrix(masks)
+                if valid(H):
+                    proposals.append((masks, degree))
+
+        for masks, degree in proposals:
+            archive = add_archive(archive, masks, degree)
+
+    result = masks_to_matrix(archive[0][1])
+
+    if not valid(result):
+        result = repair(result, 0)
+        masks = matrix_to_masks(result)
+        degree = [x.bit_count() for x in masks]
+        masks, degree = saturate(masks, degree, 0)
+        result = masks_to_matrix(masks)
+
+    if not valid(result):
+        result = repair(result, 1)
+
+    np.fill_diagonal(result, 0)
+    return result.astype(np.uint8, copy=False)
+
+
+# EVOLVE-BLOCK-END
+
+
+# The following code remains fixed (not evolved)
+
+def run_graph_construction(A, rng = None):
+    """Run the graph construction algorithm on A"""
+    return construct_new_graph(A = A, rng = rng)

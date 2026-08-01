@@ -1,0 +1,14 @@
+{
+  "generation": 7,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "multistart_bitset_exchange",
+  "patch_description": "This version uses two independent input-derived repair paths, keeping the better repaired-and-saturated graph rather than relying on one deletion trajectory. It then performs a stronger bounded exchange search using compact integer bitsets for very fast C4 legality checks. Saturation is dynamically degree-balanced: at every step it selects among currently legal missing edges with the smallest endpoint-degree score, preserving the nearly regular structure associated with dense C4-free graphs. All local-search candidates are produced only by deleting and re-adding edges from the supplied graph state, and every phase is explicitly verified using the common-neighbor characterization.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:23:12.219865",
+  "llm_cost": 0.07226250000000001,
+  "llm_model": "gpt-5.6-terra"
+}

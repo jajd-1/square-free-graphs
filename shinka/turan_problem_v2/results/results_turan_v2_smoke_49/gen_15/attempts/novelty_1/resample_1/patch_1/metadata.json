@@ -1,0 +1,14 @@
+{
+  "generation": 15,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "pathincidence_archive",
+  "patch_description": "This version keeps the input-aware repair-and-augment framework, but replaces the previous deletion heuristic with an exact obstruction-incidence score.\n\nFor every currently blocked missing edge `x-y` having exactly one length-three path `x-a-b-y`, the algorithm credits all three edges of that path: `x-a`, `a-b`, and `b-y`. Deleting any one of these edges unlocks `x-y`, so destructive moves are selected from edges that participate in many unique obstructions rather than only treating the middle edge of a path as useful.\n\nThe search uses several source-derived repairs, plus a small number of source-biased neutral completions from an empty edit state. All constructions remain guided by the supplied matrix through edge-retention orders and tie-breaking preferences. Each candidate is greedily saturated using a future-loss score, then archive-based obstruction-targeted ruin/refill moves search for improvements. Every addition is guarded by the C4 invariant and final validation is explicit.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:27:09.502008",
+  "llm_cost": 0.09437999999999999,
+  "llm_model": "gpt-5.6-terra"
+}

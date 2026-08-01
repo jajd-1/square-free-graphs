@@ -1,0 +1,458 @@
+<NAME>
+pair_budget_refill
+</NAME>
+
+<DESCRIPTION>
+This version combines conflict-directed repair with a new pair-budget guided refill strategy.  It treats a C4-free graph as a resource allocation problem: every new edge consumes potential cross-neighborhood pairs, so saturation prioritizes low-degree endpoint pairs while avoiding excessive degree concentration.
+
+The algorithm remains genuinely input-dependent. It begins from several differently repaired versions of the supplied adjacency matrix and from several source-edge retention orders. Each valid candidate is saturated using safe bitset additions. A small archive is then improved through tabu ruin-and-refill moves: high-pressure edges are deleted temporarily, their immediate re-addition is forbidden, and the newly opened space is refilled using balanced safe additions. Every completed candidate is explicitly verified using the common-neighbor characterization of C4-freeness.
+</DESCRIPTION>
+
+<CODE>
+```python
+# EVOLVE-BLOCK-START
+import numpy as np
+
+
+def construct_new_graph(A, rng=None):
+    """
+    Input-aware C4-free graph improvement using conflict repair, balanced
+    safe saturation, and tabu pair-budget ruin-and-refill search.
+    """
+    if A.dtype != np.uint8:
+        raise TypeError("A must have dtype np.uint8")
+    if A.ndim != 2 or A.shape[0] != A.shape[1]:
+        raise ValueError("A must be a square adjacency matrix")
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    n = A.shape[0]
+    pair_count = n * (n - 1) // 2
+    iu, ju = np.triu_indices(n, 1)
+
+    source = ((A != 0) | (A.T != 0)).astype(np.uint8)
+    np.fill_diagonal(source, 0)
+    source_degree = source.sum(axis=1).astype(np.int16)
+    source_present = np.flatnonzero(source[iu, ju])
+
+    def common_counts(H):
+        X = H.astype(np.int16, copy=False)
+        return X @ X
+
+    def valid(H):
+        C = common_counts(H)
+        return not np.any(np.triu(C > 1, 1))
+
+    def to_masks(H):
+        masks = [0] * n
+        for u in range(n):
+            bits = 0
+            for v in np.flatnonzero(H[u]):
+                bits |= 1 << int(v)
+            masks[u] = bits
+        return masks
+
+    def from_masks(masks):
+        H = np.zeros((n, n), dtype=np.uint8)
+        for u, bits in enumerate(masks):
+            x = bits
+            while x:
+                low = x & -x
+                v = low.bit_length() - 1
+                H[u, v] = 1
+                x ^= low
+        np.fill_diagonal(H, 0)
+        return H
+
+    def edge_count(masks):
+        return sum(x.bit_count() for x in masks) // 2
+
+    def legal_add(masks, u, v):
+        """
+        uv is safe exactly when no existing edge joins N(u) and N(v).
+        Such an edge would otherwise form a length-three path which becomes
+        a C4 after uv is inserted.
+        """
+        nv = masks[v]
+        x = masks[u]
+        while x:
+            low = x & -x
+            w = low.bit_length() - 1
+            if masks[w] & nv:
+                return False
+            x ^= low
+        return True
+
+    def repair(H, style):
+        """
+        Delete edges covering many currently violating common-neighbor pairs.
+        Different tie policies preserve several input-derived repair paths.
+        """
+        H = H.copy()
+
+        for _ in range(pair_count):
+            C = common_counts(H)
+            bad = C > 1
+            np.fill_diagonal(bad, False)
+
+            if not np.any(bad):
+                return H
+
+            X = H.astype(np.int16, copy=False)
+            support = bad.astype(np.int16) @ X
+            score = (support + support.T) * X
+            best = int(score.max())
+            deg = H.sum(axis=1).astype(np.int16)
+
+            if best > 0:
+                choices = np.argwhere(np.triu(score == best, 1))
+
+                if style % 4 == 0:
+                    weight = deg[choices[:, 0]] + deg[choices[:, 1]]
+                    choices = choices[weight == weight.max()]
+                elif style % 4 == 1:
+                    weight = deg[choices[:, 0]] * deg[choices[:, 1]]
+                    choices = choices[weight == weight.max()]
+                elif style % 4 == 2:
+                    weight = np.maximum(deg[choices[:, 0]], deg[choices[:, 1]])
+                    choices = choices[weight == weight.max()]
+                else:
+                    weight = np.abs(deg[choices[:, 0]] - deg[choices[:, 1]])
+                    choices = choices[weight == weight.max()]
+
+                u, v = choices[int(rng.integers(len(choices)))]
+                u, v = int(u), int(v)
+            else:
+                pairs = np.argwhere(np.triu(bad, 1))
+                a, b = pairs[int(rng.integers(len(pairs)))]
+                a, b = int(a), int(b)
+                shared = np.flatnonzero(H[a] & H[b])
+                w = int(shared[int(rng.integers(len(shared)))])
+                if deg[a] >= deg[b]:
+                    u, v = a, w
+                else:
+                    u, v = b, w
+
+            H[u, v] = 0
+            H[v, u] = 0
+
+        # Conservative deletion-only completion.
+        for _ in range(pair_count):
+            C = common_counts(H)
+            bad_pairs = np.argwhere(np.triu(C > 1, 1))
+            if bad_pairs.size == 0:
+                break
+            a, b = map(int, bad_pairs[0])
+            shared = np.flatnonzero(H[a] & H[b])
+            if shared.size == 0:
+                continue
+            w = int(shared[0])
+            if H[a].sum() >= H[b].sum():
+                H[a, w] = H[w, a] = 0
+            else:
+                H[b, w] = H[w, b] = 0
+
+        return H
+
+    def source_start(style):
+        """
+        Build a valid source-preserving subgraph using several input-sensitive
+        edge orders before allowing non-source edges during saturation.
+        """
+        masks = [0] * n
+        degrees = [0] * n
+
+        if source_present.size == 0:
+            return masks, degrees
+
+        a = iu[source_present]
+        b = ju[source_present]
+        load = source_degree[a].astype(np.int32) + source_degree[b].astype(np.int32)
+        product = source_degree[a].astype(np.int32) * source_degree[b].astype(np.int32)
+        imbalance = np.abs(
+            source_degree[a].astype(np.int32) - source_degree[b].astype(np.int32)
+        )
+        noise = rng.random(source_present.size)
+
+        if style == 0:
+            order = source_present[np.lexsort((noise, load))]
+        elif style == 1:
+            order = source_present[np.lexsort((noise, product))]
+        elif style == 2:
+            order = source_present[np.lexsort((noise, imbalance))]
+        elif style == 3:
+            order = source_present[np.lexsort((noise, -load))]
+        else:
+            order = source_present[rng.permutation(source_present.size)]
+
+        for e in order:
+            u, v = int(iu[e]), int(ju[e])
+            if legal_add(masks, u, v):
+                masks[u] |= 1 << v
+                masks[v] |= 1 << u
+                degrees[u] += 1
+                degrees[v] += 1
+
+        return masks, degrees
+
+    def saturate(masks, degrees, mode=0, taboo=None):
+        """
+        Complete a valid state to maximality.  The score approximates pair
+        budget consumption: low degree endpoints are favored, and vertices
+        above the natural degree 6--7 range receive increasing pressure.
+        """
+        masks = masks[:]
+        degrees = degrees[:]
+        taboo = set() if taboo is None else set(taboo)
+        taboo_active = bool(taboo)
+
+        for _ in range(pair_count):
+            best_key = None
+            candidates = []
+
+            for u in range(n - 1):
+                mu = masks[u]
+                du = degrees[u]
+
+                for v in range(u + 1, n):
+                    if (mu >> v) & 1:
+                        continue
+
+                    edge_id = u * n + v
+                    if taboo_active and edge_id in taboo:
+                        continue
+                    if not legal_add(masks, u, v):
+                        continue
+
+                    dv = degrees[v]
+                    total = du + dv
+                    high = max(du, dv)
+                    product = du * dv
+                    imbalance = abs(du - dv)
+                    excess = max(0, du - 7) ** 2 + max(0, dv - 7) ** 2
+
+                    if mode % 3 == 0:
+                        key = (total, excess, high, product, imbalance)
+                    elif mode % 3 == 1:
+                        key = (product, total, excess, high, imbalance)
+                    else:
+                        key = (total + 2 * excess, high, product, imbalance)
+
+                    if best_key is None or key < best_key:
+                        best_key = key
+                        candidates = [(u, v)]
+                    elif key == best_key:
+                        candidates.append((u, v))
+
+            if not candidates:
+                if taboo_active:
+                    taboo_active = False
+                    continue
+                break
+
+            # A weak source preference makes the result depend on A without
+            # sacrificing the balanced extremal search objective.
+            if mode % 3 == 2 and len(candidates) > 1 and rng.random() < 0.40:
+                preferred = [(u, v) for u, v in candidates if source[u, v]]
+                if preferred:
+                    candidates = preferred
+
+            u, v = candidates[int(rng.integers(len(candidates)))]
+            masks[u] |= 1 << v
+            masks[v] |= 1 << u
+            degrees[u] += 1
+            degrees[v] += 1
+
+        return masks, degrees
+
+    def normalize(masks, degrees, mode):
+        H = from_masks(masks)
+        if not valid(H):
+            H = repair(H, mode)
+            masks = to_masks(H)
+            degrees = [x.bit_count() for x in masks]
+
+        masks, degrees = saturate(masks, degrees, mode=mode)
+        H = from_masks(masks)
+
+        if not valid(H):
+            H = repair(H, mode + 1)
+            masks = to_masks(H)
+            degrees = [x.bit_count() for x in masks]
+            masks, degrees = saturate(masks, degrees, mode=mode)
+
+        return masks, degrees
+
+    def add_archive(archive, masks, degrees, limit=5):
+        H = from_masks(masks)
+        if not valid(H):
+            return archive
+
+        signature = tuple(masks)
+        for _, _, _, old_signature in archive:
+            if signature == old_signature:
+                return archive
+
+        archive.append((edge_count(masks), masks[:], degrees[:], signature))
+        archive.sort(key=lambda item: item[0], reverse=True)
+        return archive[:limit]
+
+    def choose_removals(masks, degrees, count, broad):
+        """
+        Removing uv opens roughly (deg(u)-1)(deg(v)-1) cross-neighborhood
+        opportunities.  Prefer such restrictive edges but sample from a
+        broad elite pool periodically to avoid repeated identical moves.
+        """
+        scored = []
+
+        for u in range(n - 1):
+            x = masks[u] >> (u + 1)
+            v = u + 1
+            while x:
+                if x & 1:
+                    unlock = (degrees[u] - 1) * (degrees[v] - 1)
+                    pressure = degrees[u] + degrees[v]
+                    imbalance = abs(degrees[u] - degrees[v])
+                    scored.append((8 * unlock + pressure - imbalance, u, v))
+                x >>= 1
+                v += 1
+
+        if not scored:
+            return []
+
+        scored.sort(reverse=True)
+        divisor = 2 if broad else 4
+        pool = scored[:max(count + 3, len(scored) // divisor + 3)]
+
+        chosen = []
+        used = set()
+
+        for r in range(count):
+            available = [
+                item for item in pool
+                if (item[1], item[2]) not in [(q[1], q[2]) for q in chosen]
+            ]
+            if r % 3 != 2:
+                disjoint = [
+                    item for item in available
+                    if item[1] not in used and item[2] not in used
+                ]
+                if disjoint:
+                    available = disjoint
+
+            if not available:
+                break
+
+            item = available[int(rng.integers(len(available)))]
+            chosen.append(item)
+            used.add(item[1])
+            used.add(item[2])
+
+        return chosen
+
+    archive = []
+
+    # Conflict-directed repairs directly preserve substantial portions of A.
+    for style in range(5):
+        H = repair(source, style)
+        masks = to_masks(H)
+        degrees = [x.bit_count() for x in masks]
+        masks, degrees = normalize(masks, degrees, style)
+        archive = add_archive(archive, masks, degrees)
+
+    # Constructive source retention provides complementary trajectories.
+    for style in range(5):
+        masks, degrees = source_start(style)
+        masks, degrees = normalize(masks, degrees, style + 1)
+        archive = add_archive(archive, masks, degrees)
+
+    if not archive:
+        masks = [0] * n
+        degrees = [0] * n
+        masks, degrees = saturate(masks, degrees, mode=0)
+        archive = add_archive(archive, masks, degrees)
+
+    schedule = (
+        (2, False, 0), (3, False, 1), (3, True, 2),
+        (4, False, 0), (4, True, 1), (5, False, 2),
+        (3, True, 0), (5, True, 1), (2, True, 2),
+        (4, False, 0), (6, True, 1), (3, False, 2),
+    )
+
+    for round_id, (remove_count, broad, mode) in enumerate(schedule):
+        bases = archive[:min(4, len(archive))]
+        proposals = []
+
+        for rank, (_, base_masks, base_degrees, _) in enumerate(bases):
+            attempts = 2 if rank == 0 else 1
+
+            for attempt in range(attempts):
+                masks = base_masks[:]
+                degrees = base_degrees[:]
+
+                removed = choose_removals(
+                    masks,
+                    degrees,
+                    remove_count,
+                    broad=(broad or ((round_id + attempt) % 4 == 0)),
+                )
+                if not removed:
+                    continue
+
+                taboo = set()
+                for _, u, v in removed:
+                    if (masks[u] >> v) & 1:
+                        masks[u] &= ~(1 << v)
+                        masks[v] &= ~(1 << u)
+                        degrees[u] -= 1
+                        degrees[v] -= 1
+                        taboo.add(u * n + v)
+
+                # Deletions preserve validity, but verify explicitly before
+                # launching the large refill phase.
+                H = from_masks(masks)
+                if not valid(H):
+                    H = repair(H, round_id)
+                    masks = to_masks(H)
+                    degrees = [x.bit_count() for x in masks]
+
+                masks, degrees = saturate(
+                    masks,
+                    degrees,
+                    mode=(mode + rank + attempt) % 3,
+                    taboo=taboo,
+                )
+
+                H = from_masks(masks)
+                if valid(H):
+                    proposals.append((masks, degrees))
+
+        for masks, degrees in proposals:
+            archive = add_archive(archive, masks, degrees)
+
+    result = from_masks(archive[0][1])
+
+    # Mandatory conservative final invariant verification.
+    if not valid(result):
+        result = repair(result, 0)
+        masks = to_masks(result)
+        degrees = [x.bit_count() for x in masks]
+        masks, degrees = saturate(masks, degrees, mode=0)
+        result = from_masks(masks)
+
+    if not valid(result):
+        result = repair(result, 1)
+
+    np.fill_diagonal(result, 0)
+    return result.astype(np.uint8, copy=False)
+
+
+# EVOLVE-BLOCK-END
+
+
+def run_graph_construction(A, rng=None):
+    """Run the graph construction algorithm on A"""
+    return construct_new_graph(A=A, rng=rng)
+``` 
+</CODE>

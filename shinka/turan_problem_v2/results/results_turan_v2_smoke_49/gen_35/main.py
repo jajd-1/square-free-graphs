@@ -1,0 +1,412 @@
+# EVOLVE-BLOCK-START
+import numpy as np
+
+
+def construct_new_graph(A, rng=None):
+    """
+    Input-derived archive search for dense C4-free graphs.
+
+    The search has four stages:
+      1. Build several C4-free subgraphs using differently ordered edges of A.
+      2. Saturate each state using exact length-three-path legality.
+      3. Keep a small elite archive of distinct dense candidates.
+      4. Apply obstruction-aware delete/refill exchanges to the archive.
+
+    A graph is accepted only if every distinct vertex pair has at most one
+    common neighbor.
+    """
+    if A.dtype != np.uint8:
+        raise TypeError("A must have dtype np.uint8")
+    if A.ndim != 2 or A.shape[0] != A.shape[1]:
+        raise ValueError("A must be a square adjacency matrix")
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    n = A.shape[0]
+    iu, ju = np.triu_indices(n, 1)
+    m = iu.size
+
+    # Treat asymmetric input defensively as an undirected edge suggestion.
+    source = ((A != 0) | (A.T != 0)).astype(np.uint8)
+    np.fill_diagonal(source, 0)
+
+    source_upper = source[iu, ju].astype(bool)
+    source_edges = np.flatnonzero(source_upper)
+    source_degree = source.sum(axis=1).astype(np.int32)
+
+    edge_id = -np.ones((n, n), dtype=np.int32)
+    edge_id[iu, ju] = np.arange(m, dtype=np.int32)
+    edge_id[ju, iu] = np.arange(m, dtype=np.int32)
+
+    ARCHIVE_LIMIT = 10
+
+    def edge_count(H):
+        return int(H.sum() // 2)
+
+    def common_counts(H):
+        X = H.astype(np.int16, copy=False)
+        return X @ X
+
+    def valid(H):
+        C = common_counts(H)
+        return not np.any(np.triu(C > 1, 1))
+
+    def insertion_legal(H, u, v):
+        """
+        Adding uv is legal iff there is no length-three u-v path.
+        Equivalently, no edge joins N(u) to N(v).
+        """
+        nu = np.flatnonzero(H[u])
+        nv = np.flatnonzero(H[v])
+        if nu.size == 0 or nv.size == 0:
+            return True
+        return not np.any(H[np.ix_(nu, nv)])
+
+    def legal_pairs(H):
+        """
+        p3[u,v] counts length-three walks.  For a missing uv in a C4-free
+        graph, p3[u,v] == 0 is exactly the insertion condition.
+        """
+        X = H.astype(np.int16, copy=False)
+        p2 = X @ X
+        p3 = p2 @ X
+        legal = (H == 0) & (p3 == 0)
+        np.fill_diagonal(legal, False)
+        return legal, p3
+
+    def saturate(H, policy=0, banned=None):
+        """
+        Greedily complete a valid graph.  Candidate scoring estimates how many
+        currently legal future edges are destroyed by the proposed insertion.
+        """
+        H = H.copy()
+        forbidden = np.zeros(m, dtype=bool) if banned is None else banned.copy()
+        forbid_active = bool(np.any(forbidden))
+
+        for _ in range(m):
+            legal, _ = legal_pairs(H)
+            available = np.flatnonzero(legal[iu, ju] & ~forbidden)
+
+            if available.size == 0 and forbid_active:
+                forbidden[:] = False
+                forbid_active = False
+                available = np.flatnonzero(legal[iu, ju])
+
+            if available.size == 0:
+                break
+
+            X = H.astype(np.int16, copy=False)
+            L = legal.astype(np.int16, copy=False)
+
+            # For candidate uv, this is an estimate of legal pairs blocked
+            # through the newly created endpoint-neighborhood interaction.
+            future_loss = (X @ L) @ X
+            degree = H.sum(axis=1).astype(np.int32)
+
+            au = iu[available]
+            av = ju[available]
+            du = degree[au]
+            dv = degree[av]
+
+            loss = future_loss[au, av].astype(np.int32)
+            total = du + dv
+            high = np.maximum(du, dv)
+            imbalance = np.abs(du - dv)
+            excess6 = np.maximum(du - 6, 0) + np.maximum(dv - 6, 0)
+            excess7 = (
+                np.maximum(du - 7, 0) ** 2
+                + np.maximum(dv - 7, 0) ** 2
+            )
+
+            mode = policy % 5
+            if mode == 0:
+                score = 6 * loss + total + excess6
+            elif mode == 1:
+                score = 5 * loss + 2 * total + imbalance + excess7
+            elif mode == 2:
+                score = 7 * loss + imbalance + 2 * excess6
+            elif mode == 3:
+                score = 5 * loss + high + excess7
+            else:
+                score = 6 * loss + total + 2 * imbalance + excess6
+
+            best = score.min()
+            # Small tie bands make different input-derived starts genuinely
+            # explore different maximal completions.
+            band = available[score <= best + 1]
+            if band.size == 0:
+                band = available[score == best]
+
+            preferred = band[source_upper[band]]
+            if preferred.size and rng.random() < 0.46:
+                band = preferred
+
+            chosen = int(band[int(rng.integers(band.size))])
+            u = int(iu[chosen])
+            v = int(ju[chosen])
+
+            # Local invariant guard, even though legal_pairs already tested it.
+            if insertion_legal(H, u, v):
+                H[u, v] = 1
+                H[v, u] = 1
+
+        return H
+
+    def source_order(style):
+        """Generate varied orderings using genuine edges from the input."""
+        if source_edges.size == 0:
+            return source_edges
+
+        a = iu[source_edges]
+        b = ju[source_edges]
+        da = source_degree[a]
+        db = source_degree[b]
+
+        load = da + db
+        product = da * db
+        imbalance = np.abs(da - db)
+        minimum = np.minimum(da, db)
+        noise = rng.random(source_edges.size)
+
+        mode = style % 8
+        if mode == 0:
+            return source_edges[np.lexsort((noise, load))]
+        if mode == 1:
+            return source_edges[np.lexsort((noise, product))]
+        if mode == 2:
+            return source_edges[np.lexsort((noise, imbalance))]
+        if mode == 3:
+            return source_edges[np.lexsort((noise, -load))]
+        if mode == 4:
+            return source_edges[np.lexsort((noise, -product))]
+        if mode == 5:
+            return source_edges[np.lexsort((noise, minimum))]
+        if mode == 6:
+            return source_edges[np.lexsort((noise, -minimum))]
+        return source_edges[rng.permutation(source_edges.size)]
+
+    def build_scaffold(style, limit=None):
+        """
+        Retain a C4-free subset of A.  No fixed external construction is used:
+        every initial edge comes directly from the supplied matrix.
+        """
+        H = np.zeros((n, n), dtype=np.uint8)
+        order = source_order(style)
+
+        if limit is not None:
+            order = order[:min(int(limit), order.size)]
+
+        for e in order:
+            u = int(iu[e])
+            v = int(ju[e])
+            if insertion_legal(H, u, v):
+                H[u, v] = 1
+                H[v, u] = 1
+
+        return H
+
+    def archive_insert(archive, H):
+        """Store only valid, distinct, dense candidates."""
+        if not valid(H):
+            return archive
+
+        signature = H[iu, ju].tobytes()
+        for _, _, old_signature in archive:
+            if signature == old_signature:
+                return archive
+
+        archive.append((edge_count(H), H.copy(), signature))
+        archive.sort(key=lambda item: item[0], reverse=True)
+        return archive[:ARCHIVE_LIMIT]
+
+    def repair(H):
+        """
+        Conservative deletion-only invariant repair.  This is used solely as
+        a final guard and cannot introduce a C4.
+        """
+        H = H.copy()
+
+        for _ in range(m):
+            C = common_counts(H)
+            bad = np.argwhere(np.triu(C > 1, 1))
+            if bad.size == 0:
+                break
+
+            u, v = map(int, bad[0])
+            shared = np.flatnonzero(H[u] & H[v])
+            if shared.size == 0:
+                continue
+
+            deg = H.sum(axis=1)
+            x = int(shared[np.argmax(deg[shared])])
+
+            if deg[u] >= deg[v]:
+                H[u, x] = 0
+                H[x, u] = 0
+            else:
+                H[v, x] = 0
+                H[x, v] = 0
+
+        return H
+
+    def obstruction_scores(H, present):
+        """
+        Credit edges that lie on unique length-three paths blocking absent
+        pairs.  Deleting these edges is more likely to unlock productive
+        refill opportunities than deleting arbitrary edges.
+        """
+        _, p3 = legal_pairs(H)
+        credit = np.zeros(m, dtype=np.int32)
+
+        blocked = np.argwhere(np.triu((H == 0) & (p3 == 1), 1))
+        for x, y in blocked:
+            x = int(x)
+            y = int(y)
+
+            nx = np.flatnonzero(H[x])
+            ny = np.flatnonzero(H[y])
+            if nx.size == 0 or ny.size == 0:
+                continue
+
+            possible_a = nx[np.any(H[np.ix_(nx, ny)], axis=1)]
+            if possible_a.size != 1:
+                continue
+
+            a = int(possible_a[0])
+            possible_b = ny[H[a, ny] != 0]
+            if possible_b.size != 1:
+                continue
+
+            b = int(possible_b[0])
+            credit[int(edge_id[x, a])] += 1
+            credit[int(edge_id[a, b])] += 1
+            credit[int(edge_id[b, y])] += 1
+
+        degree = H.sum(axis=1).astype(np.int32)
+        score = 18 * credit[present]
+        score += degree[iu[present]] + degree[ju[present]]
+        score += (degree[iu[present]] - 6) ** 2
+        score += (degree[ju[present]] - 6) ** 2
+        return score
+
+    archive = []
+
+    # Input-sensitive scaffold family.  Prefix states avoid allowing a dense
+    # input graph to force all trajectories into the same retained subgraph.
+    scaffold_plan = (
+        (0, None), (1, None), (2, None), (3, None),
+        (4, None), (5, None), (6, None), (7, None),
+        (7, None), (7, None), (0, 22), (1, 30),
+        (2, 40), (3, 50), (5, 58), (7, 66),
+    )
+
+    for trial, (style, limit) in enumerate(scaffold_plan):
+        state = build_scaffold(style, limit)
+        if valid(state):
+            state = saturate(state, policy=trial)
+            if valid(state):
+                archive = archive_insert(archive, state)
+
+    # Empty input still goes through the same incremental edge-addition
+    # mechanism.  It is only a fallback if the input-derived archive failed.
+    if not archive:
+        empty = np.zeros((n, n), dtype=np.uint8)
+        archive = archive_insert(archive, saturate(empty, policy=0))
+
+    # Bounded ruin-and-refill search over archive candidates.
+    kick_schedule = (
+        (2, 82), (2, 74), (3, 76), (3, 68),
+        (4, 70), (3, 58), (4, 60), (5, 58),
+        (2, 66), (4, 50), (5, 48), (3, 48),
+        (4, 40), (2, 54), (3, 44), (4, 46),
+        (5, 42), (3, 38), (4, 34), (2, 62),
+    )
+
+    for trial, (remove_count, percentile) in enumerate(kick_schedule):
+        if len(archive) == 1 or rng.random() < 0.52:
+            base = archive[0][1]
+        else:
+            rank_limit = min(6, len(archive))
+            base = archive[int(rng.integers(rank_limit))][1]
+
+        current = base.copy()
+        present = np.flatnonzero(current[iu, ju])
+        if present.size < remove_count:
+            continue
+
+        score = obstruction_scores(current, present)
+        cutoff = np.percentile(score, percentile)
+        pool = present[score >= cutoff]
+        if pool.size < remove_count:
+            pool = present
+
+        selected = []
+        used = set()
+
+        for pick in range(remove_count):
+            chosen_mask = ~np.isin(pool, selected)
+            remaining = pool[chosen_mask]
+
+            if remaining.size == 0:
+                remaining = present[~np.isin(present, selected)]
+
+            # Usually distribute deletions across neighborhoods; occasional
+            # concentrated moves deliberately permit larger structural shifts.
+            if pick > 0 and trial % 3 != 0:
+                disjoint = np.array(
+                    [
+                        e for e in remaining
+                        if int(iu[e]) not in used and int(ju[e]) not in used
+                    ],
+                    dtype=np.int64,
+                )
+                if disjoint.size:
+                    remaining = disjoint
+
+            e = int(remaining[int(rng.integers(remaining.size))])
+            selected.append(e)
+            used.add(int(iu[e]))
+            used.add(int(ju[e]))
+
+        banned = np.zeros(m, dtype=bool)
+        for e in selected:
+            u = int(iu[e])
+            v = int(ju[e])
+            current[u, v] = 0
+            current[v, u] = 0
+            banned[e] = True
+
+        # Deletions preserve C4-freeness, but retain an explicit check.
+        if not valid(current):
+            current = repair(current)
+
+        if valid(current):
+            candidate = saturate(current, policy=trial + 2, banned=banned)
+            if valid(candidate):
+                archive = archive_insert(archive, candidate)
+
+    result = archive[0][1].copy()
+
+    # Mandatory final invariant verification and conservative recovery.
+    if not valid(result):
+        result = repair(result)
+
+    if valid(result):
+        result = saturate(result, policy=1)
+
+    if not valid(result):
+        result = repair(result)
+
+    np.fill_diagonal(result, 0)
+    return result.astype(np.uint8, copy=False)
+
+
+# EVOLVE-BLOCK-END
+
+
+# The following code remains fixed (not evolved)
+
+def run_graph_construction(A, rng = None):
+    """Run the graph construction algorithm on A"""
+    return construct_new_graph(A = A, rng = rng)

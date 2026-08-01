@@ -211,60 +211,58 @@ def parallel_trials(min_n, max_n, iters, num_workers, base_seed):
     
     return dict(global_best)
 
-if __name__ == '__main__':
-    for workers in [4, 6, 8, 10]:
-        start = time.perf_counter()
-
-        result = parallel_trials(
-            min_n=30,
-            max_n=40,
-            iters=1000,
-            num_workers=workers,
-            base_seed=1
-        )
-
-        end = time.perf_counter()
-
-        print(f"{workers} workers: {end - start:.2f} seconds")
-
-
-
-
 # if __name__ == '__main__':
-#     iters = [10, 100, 1000, 5000]
-#     greedy_results = defaultdict(dict)
+#     for workers in [4, 6, 8, 10]:
+#         start = time.perf_counter()
 
-#     for iter in iters:
-#         greedy_results[iter] = parallel_trials(min_n = 20, max_n = 40, iters = iter, num_workers = None, base_seed = 1)
+#         result = parallel_trials(
+#             min_n=30,
+#             max_n=40,
+#             iters=1000,
+#             num_workers=workers,
+#             base_seed=1
+#         )
+
+#         end = time.perf_counter()
+
+#         print(f"{workers} workers: {end - start:.2f} seconds")
+
+
+if __name__ == '__main__':
+    iters = [10, 100, 1000, 5000]
+    greedy_results = defaultdict(dict)
+
+    for iter in iters:
+        greedy_results[iter] = parallel_trials(min_n = 20, max_n = 40, iters = iter, num_workers = None, base_seed = 1)
     
-#     comparison = defaultdict(int)
+    comparison = defaultdict(int)
 
-#     for n in greedy_results[iters[0]].keys():
-#         comparison[n] = [greedy_results[iter][n] for iter in iters] +  [ex_C4[n], math.floor((n/4)*(1 + math.sqrt(4*n - 3)))]
+    for n in greedy_results[iters[0]].keys():
+        comparison[n] = [greedy_results[iter][n] for iter in iters] +  [ex_C4[n], math.floor((n/4)*(1 + math.sqrt(4*n - 3)))]
 
-#     print(comparison)
+    print(comparison)
     
-#     x = sorted(comparison.keys())
+    x = sorted(comparison.keys())
 
-#     greedy_values = []
-#     for i in range(len(iters)):
-#         greedy_values.append([comparison[n][i] for n in x])
+    greedy_values = []
+    for i in range(len(iters)):
+        greedy_values.append([comparison[n][i] for n in x])
         
-#     max_values = [comparison[n][-2] for n in x]
-#     reiman_values = [comparison[n][-1] for n in x]
+    max_values = [comparison[n][-2] for n in x]
+    reiman_values = [comparison[n][-1] for n in x]
 
-#     plt.figure(figsize = (12,6))
-#     for i, iter in enumerate(iters):
-#         plt.plot(x, greedy_values[i], marker = 'o', markersize = 4, label = f'Greedy with {iter} iterations')
-#     plt.plot(x, max_values, marker = 'o', markersize = 4, label = 'Maximum')
-#     plt.plot(x, reiman_values, marker = 'o', markersize = 4, label = 'Reiman bound' )
-#     plt.xlabel('Number of vertices')
-#     plt.ylabel('Number of edges')
-#     plt.title(f'Edge count for square-free graphs with $n$ vertices')
-#     plt.legend()
-#     plt.grid(True)
+    plt.figure(figsize = (12,6))
+    for i, iter in enumerate(iters):
+        plt.plot(x, greedy_values[i], marker = 'o', markersize = 4, label = f'Greedy with {iter} iterations')
+    plt.plot(x, max_values, marker = 'o', markersize = 4, label = 'Maximum')
+    plt.plot(x, reiman_values, marker = 'o', markersize = 4, label = 'Reiman bound' )
+    plt.xlabel('Number of vertices')
+    plt.ylabel('Number of edges')
+    plt.title(f'Edge count for square-free graphs with $n$ vertices')
+    plt.legend()
+    plt.grid(True)
 
-#     plt.show()
+    plt.show()
 
 
 

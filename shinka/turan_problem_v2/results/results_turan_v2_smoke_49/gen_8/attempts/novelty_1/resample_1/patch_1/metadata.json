@@ -1,0 +1,14 @@
+{
+  "generation": 8,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "archive_kick_search",
+  "patch_description": "This redesign uses an archive-based search architecture rather than repeatedly perturbing only one incumbent. It builds several input-derived C4-free repairs, saturates them with blocked-opportunity and degree-balance scoring, retains a small archive of diverse high-quality states, and launches structured delete/refill kicks from multiple archive members. All insertions are checked using the length-three-path criterion, and every major phase is explicitly validated with the common-neighbor invariant.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:23:56.393701",
+  "llm_cost": 0.07739750000000001,
+  "llm_model": "gpt-5.6-terra"
+}

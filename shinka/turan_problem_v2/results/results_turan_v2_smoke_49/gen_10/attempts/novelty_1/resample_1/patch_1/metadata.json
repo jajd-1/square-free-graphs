@@ -1,0 +1,14 @@
+{
+  "generation": 10,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "conflict_credit_exchange",
+  "patch_description": "This version keeps the successful input-repair and safe-saturation ideas from the prior programs, but changes the escape mechanism into a conflict-credit exchange search.\n\nThe main additions are:\n\n- Several genuinely input-derived repairs use complementary source-degree and source-product orderings.\n- Saturation scores legal insertions using both exact future blocking cost and a stronger near-regular degree penalty.\n- Instead of deleting merely high-degree edges, destructive moves prioritize edges with high conflict credit, approximately `(deg(u)-1)*(deg(v)-1)`. Such edges are central to many blocked length-three paths, so removing them is more likely to unlock several new edges.\n- A compact elite archive keeps several structurally different saturated graphs rather than only one incumbent.\n- Deleted edges are temporarily banned during refill, forcing genuine exchanges before allowing restoration.\n- Every repair, exchange, and final result is explicitly checked using the common-neighbor characterization of C4-freeness.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:25:22.521175",
+  "llm_cost": 0.0780475,
+  "llm_model": "gpt-5.6-terra"
+}

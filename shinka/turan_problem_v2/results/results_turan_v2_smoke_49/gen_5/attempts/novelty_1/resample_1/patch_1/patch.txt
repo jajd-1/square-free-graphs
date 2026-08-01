@@ -1,0 +1,467 @@
+--- a/original.py
++++ b/original.py
+@@ -1,230 +1,311 @@
+ # EVOLVE-BLOCK-START
+-"""Input-dependent local search for dense C4-free graphs."""
++"""Input-aware blocked-cost local search for dense C4-free graphs."""
+ 
+ import numpy as np
+ 
+ 
+ def construct_new_graph(A, rng=None):
+     """
+-    Delete conflicting input edges, add valid edges, and use a few bounded
+-    delete/refill moves to improve the resulting C4-free graph.
++    Transform the supplied adjacency matrix into a dense C4-free graph.
++
++    The search has three stages:
++      1. retain a large C4-free subgraph of input edges;
++      2. saturate with safe additions chosen by future-blocking cost;
++      3. perform bounded delete/refill moves to escape saturated local optima.
+     """
+ 
+     if A.dtype != np.uint8:
+         raise TypeError("A must have dtype np.uint8")
+ 
+     if rng is None:
+         rng = np.random.default_rng()
+ 
+     n = A.shape[0]
+-
+-    # Work with an undirected simple version of the supplied graph.  This is
+-    # still an edit of A: every retained edge originated in the input.
+-    original = ((A != 0) | (A.T != 0)).astype(np.uint8)
+-    np.fill_diagonal(original, 0)
+-
+     iu, ju = np.triu_indices(n, 1)
+-    input_mask = original[iu, ju].astype(bool)
+-    input_edges = np.flatnonzero(input_mask)
+-    original_degree = original.sum(axis=1).astype(np.int32)
+-
+-    def valid(B):
+-        """Explicit C4-free verification by the common-neighbor criterion."""
+-        common = B.astype(np.int32) @ B.astype(np.int32)
++    pair_count = iu.size
++
++    # Interpret arbitrary input robustly as an undirected simple graph.
++    source = ((A != 0) | (A.T != 0)).astype(np.uint8)
++    np.fill_diagonal(source, 0)
++    source_upper = source[iu, ju].astype(bool)
++    source_degree = source.sum(axis=1).astype(np.int16)
++
++    def is_valid(B):
++        """Explicitly check the common-neighbor C4-free characterization."""
++        X = B.astype(np.int16)
++        common = X @ X
+         np.fill_diagonal(common, 0)
+         return not np.any(common > 1)
+ 
+-    def legal_pairs(B):
+-        """
+-        A missing uv can be inserted iff there is no length-three u--v path.
+-        Such a path would become a 4-cycle after insertion.
+-        """
+-        X = B.astype(np.int32)
++    def insertion_is_legal(B, u, v):
++        """
++        In a C4-free graph uv is legal exactly when no edge joins a neighbor
++        of u to a neighbor of v.
++        """
++        nu = np.flatnonzero(B[u])
++        nv = np.flatnonzero(B[v])
++        if nu.size == 0 or nv.size == 0:
++            return True
++        return not np.any(B[np.ix_(nu, nv)])
++
++    def legal_matrix(B):
++        """
++        Return legal missing pairs.  A missing uv is forbidden iff a
++        length-three u--v path already exists.
++        """
++        X = B.astype(np.int16)
+         paths3 = (X @ X) @ X
+-        missing = (B == 0)
+-        np.fill_diagonal(missing, False)
+-        return missing & (paths3 == 0)
+-
+-    def saturate(B):
+-        """
+-        Repeatedly add a legal edge.  Among legal choices prefer endpoints
+-        of low current degree, which avoids early hubs and tends to produce
+-        the near-regular degree profiles useful for this problem.
++        legal = (B == 0) & (paths3 == 0)
++        np.fill_diagonal(legal, False)
++        return legal
++
++    def saturate(B, temporarily_banned=None):
++        """
++        Add safe edges until maximal.
++
++        The cost of uv is the number of currently legal pairs xy which become
++        blocked by the new paths x-u-v-y.  Low-cost edges preserve more future
++        options; degree is a secondary balancing criterion.
+         """
+         B = B.copy()
+-        max_steps = n * (n - 1) // 2
+-
+-        for _ in range(max_steps):
+-            can_add = legal_pairs(B)
+-            candidates = np.flatnonzero(can_add[iu, ju])
+-            if candidates.size == 0:
++
++        if temporarily_banned is None:
++            banned = np.zeros(pair_count, dtype=bool)
++        else:
++            banned = temporarily_banned.copy()
++
++        # At most this many successful insertions are possible.
++        for _ in range(pair_count):
++            legal = legal_matrix(B)
++            upper_legal = legal[iu, ju]
++
++            available = np.flatnonzero(upper_legal & ~banned)
++
++            # Once all non-deleted alternatives have been explored, permit
++            # deleted edges again so that the returned graph is saturated.
++            if available.size == 0 and np.any(banned):
++                banned[:] = False
++                available = np.flatnonzero(upper_legal)
++
++            if available.size == 0:
+                 break
+ 
+-            deg = B.sum(axis=1).astype(np.int32)
+-            scores = deg[iu[candidates]] + deg[ju[candidates]]
+-            best_score = scores.min()
+-            tied = candidates[scores == best_score]
+-
+-            # Random tie breaking gives different but reproducible searches
+-            # under the evaluator's supplied RNG.
+-            chosen = tied[int(rng.integers(tied.size))]
++            X = B.astype(np.int16)
++            L = legal.astype(np.int16)
++
++            # (X L X)[u,v] counts legal cross pairs between N(u), N(v).
++            # Each such pair loses its legality when uv is inserted.
++            blocked_cost = (X @ L) @ X
++            degrees = B.sum(axis=1).astype(np.int16)
++
++            endpoints_u = iu[available]
++            endpoints_v = ju[available]
++            costs = blocked_cost[endpoints_u, endpoints_v].astype(np.int32)
++            balance = (
++                degrees[endpoints_u].astype(np.int32)
++                + degrees[endpoints_v].astype(np.int32)
++            )
++
++            # Blocking future opportunities is primary; balanced degrees are
++            # secondary and prevent early hub formation.
++            score = 4 * costs + balance
++            best_score = score.min()
++            tied = available[score == best_score]
++
++            # Prefer a retained input relationship when scores tie, while
++            # retaining randomness for useful search diversity.
++            input_tied = tied[source_upper[tied]]
++            if input_tied.size and rng.random() < 0.70:
++                tied = input_tied
++
++            chosen = int(tied[int(rng.integers(tied.size))])
+             u, v = int(iu[chosen]), int(ju[chosen])
++
++            # The legal matrix is an explicit pre-insertion invariant check.
++            if not insertion_is_legal(B, u, v):
++                continue
++
+             B[u, v] = 1
+             B[v, u] = 1
+ 
+         return B
+ 
+-    def repair_from_input(order_kind):
+-        """
+-        Construct a C4-free subgraph solely by retaining input edges in an
+-        input-dependent order, then complete it by safe additions.
++    def repair_input(order_style):
++        """
++        Build a C4-free subgraph by retaining input edges in an
++        input-dependent order.  All edges in this initial state are edits
++        directly derived from the supplied matrix.
+         """
+         B = np.zeros((n, n), dtype=np.uint8)
+-
+-        if input_edges.size:
+-            endpoint_score = (
+-                original_degree[iu[input_edges]] +
+-                original_degree[ju[input_edges]]
+-            ).astype(np.int32)
+-
+-            noise = rng.random(input_edges.size)
+-            if order_kind == 0:
+-                # Preserve edges around less overloaded input vertices first.
+-                order = input_edges[np.lexsort((noise, endpoint_score))]
+-            elif order_kind == 1:
+-                # A complementary order is useful on graphs with structure.
+-                order = input_edges[np.lexsort((noise, -endpoint_score))]
+-            else:
+-                order = input_edges[rng.permutation(input_edges.size)]
+-
+-            # Since B is always C4-free, testing before every retained edge
+-            # preserves the invariant throughout the repair process.
+-            for e in order:
+-                u, v = int(iu[e]), int(ju[e])
+-                if B[u, v]:
+-                    continue
+-                nbr_u = np.flatnonzero(B[u])
+-                nbr_v = np.flatnonzero(B[v])
+-                if nbr_u.size == 0 or nbr_v.size == 0:
+-                    B[u, v] = 1
+-                    B[v, u] = 1
+-                elif not np.any(B[np.ix_(nbr_u, nbr_v)]):
+-                    B[u, v] = 1
+-                    B[v, u] = 1
+-
+-        return saturate(B)
+-
+-    # Multiple repair orders are cheap at n=49 and make performance much less
+-    # sensitive to accidental ordering in the supplied matrix.
++        input_edges = np.flatnonzero(source_upper)
++
++        if input_edges.size == 0:
++            return B
++
++        du = source_degree[iu[input_edges]].astype(np.int32)
++        dv = source_degree[ju[input_edges]].astype(np.int32)
++        endpoint_load = du + dv
++
++        noise = rng.random(input_edges.size)
++
++        if order_style == 0:
++            # Avoid retaining overloaded input neighborhoods too early.
++            order = input_edges[np.lexsort((noise, endpoint_load))]
++        elif order_style == 1:
++            # Complementary ordering preserves dense input regions first.
++            order = input_edges[np.lexsort((noise, -endpoint_load))]
++        else:
++            # Random ordering prevents a deterministic structural bias.
++            order = input_edges[rng.permutation(input_edges.size)]
++
++        for edge in order:
++            u, v = int(iu[edge]), int(ju[edge])
++            if insertion_is_legal(B, u, v):
++                B[u, v] = 1
++                B[v, u] = 1
++
++        return B
++
++    def edge_count(B):
++        return int(B.sum() // 2)
++
++    # Build several distinct, input-derived repaired states and keep the best
++    # saturated result.  This is intentionally bounded for predictable time.
+     best = None
+-    best_edges = -1
+-    for kind in range(3):
+-        candidate = repair_from_input(kind)
+-        if not valid(candidate):
++    best_count = -1
++
++    for style in range(3):
++        candidate = repair_input(style)
++
++        # Repair construction itself preserves validity; check explicitly
++        # before proceeding into the more expensive saturation phase.
++        if not is_valid(candidate):
+             continue
+-        count = int(candidate.sum() // 2)
+-        if count > best_edges:
+-            best = candidate
+-            best_edges = count
++
++        candidate = saturate(candidate)
++
++        if is_valid(candidate):
++            count = edge_count(candidate)
++            if count > best_count:
++                best = candidate
++                best_count = count
+ 
+     if best is None:
+-        best = np.zeros((n, n), dtype=np.uint8)
+-        best = saturate(best)
+-        best_edges = int(best.sum() // 2)
+-
+-    # Small deletion/refill moves escape saturated one-edge local optima.
+-    # The first moves target expensive high-degree edges; later moves add
+-    # random diversity while remaining entirely input-state dependent.
+-    for trial in range(5):
+-        trial_graph = best.copy()
+-        edges = np.flatnonzero(trial_graph[iu, ju])
+-        if edges.size == 0:
++        best = saturate(np.zeros((n, n), dtype=np.uint8))
++        best_count = edge_count(best)
++
++    # Delete/refill moves.  Deleted edges are temporarily banned so a refill
++    # must first discover genuinely new replacements instead of immediately
++    # restoring the same local optimum.
++    for trial in range(9):
++        current = best.copy()
++        present = np.flatnonzero(current[iu, ju])
++        if present.size < 2:
+             break
+ 
+-        deg = trial_graph.sum(axis=1).astype(np.int32)
+-        edge_score = deg[iu[edges]] + deg[ju[edges]]
+-
+-        if trial < 3:
+-            pool = edges[edge_score >= np.percentile(edge_score, 70)]
+-            if pool.size == 0:
+-                pool = edges
+-        else:
+-            pool = edges
+-
+-        remove_count = 2 if edges.size > 2 else 1
+-        selected = []
+-        available = pool.copy()
++        degrees = current.sum(axis=1).astype(np.int16)
++        pressure = (
++            degrees[iu[present]].astype(np.int32)
++            + degrees[ju[present]].astype(np.int32)
++        )
++
++        # High-degree edges are normally expensive because they participate in
++        # many length-three paths.  Keep a broad pool for diversity.
++        cutoff = 65 if trial < 6 else 45
++        threshold = np.percentile(pressure, cutoff)
++        pool = present[pressure >= threshold]
++        if pool.size == 0:
++            pool = present
++
++        remove_count = 2 if trial < 6 else 3
++        remove_count = min(remove_count, present.size)
++
++        banned = np.zeros(pair_count, dtype=bool)
++        chosen_edges = []
++
+         for _ in range(remove_count):
+-            if available.size == 0:
+-                available = edges.copy()
+-            pick_pos = int(rng.integers(available.size))
+-            chosen = int(available[pick_pos])
+-            selected.append(chosen)
+-            available = available[available != chosen]
+-
+-        for e in selected:
+-            u, v = int(iu[e]), int(ju[e])
+-            trial_graph[u, v] = 0
+-            trial_graph[v, u] = 0
+-
+-        trial_graph = saturate(trial_graph)
+-
+-        if valid(trial_graph):
+-            count = int(trial_graph.sum() // 2)
+-            if count > best_edges:
+-                best = trial_graph
+-                best_edges = count
+-
+-    # Conservative final verification/repair.  It should normally do nothing,
+-    # but guarantees validity even if future modifications alter search logic.
+-    repair_limit = n * n
+-    for _ in range(repair_limit):
+-        common = best.astype(np.int32) @ best.astype(np.int32)
++            choices = pool[~np.isin(pool, chosen_edges)]
++            if choices.size == 0:
++                choices = present[~np.isin(present, chosen_edges)]
++            chosen = int(choices[int(rng.integers(choices.size))])
++            chosen_edges.append(chosen)
++
++        for edge in chosen_edges:
++            u, v = int(iu[edge]), int(ju[edge])
++            current[u, v] = 0
++            current[v, u] = 0
++            banned[edge] = True
++
++        # Deletion cannot violate C4-freeness.  Verify before refill anyway.
++        if not is_valid(current):
++            continue
++
++        candidate = saturate(current, banned)
++
++        if is_valid(candidate):
++            count = edge_count(candidate)
++            if count > best_count:
++                best = candidate
++                best_count = count
++            elif count == best_count and rng.random() < 0.20:
++                # Equal-quality movement makes later swaps less correlated.
++                best = candidate
++
++    # Defensive explicit final repair.  Normal search never enters this path,
++    # but deletion is monotone with respect to C4-freeness.
++    repair_budget = n * n
++    for _ in range(repair_budget):
++        X = best.astype(np.int16)
++        common = X @ X
+         np.fill_diagonal(common, 0)
+         bad = np.argwhere(np.triu(common > 1, 1))
++
+         if bad.size == 0:
+             break
+ 
+         u, v = map(int, bad[0])
+         shared = np.flatnonzero(best[u] & best[v])
+         if shared.size < 2:
+             continue
+ 
+-        # Delete one incident edge from the more highly connected shared
+-        # neighbor; deletion cannot create a new C4.
+-        x = int(shared[np.argmax(best.sum(axis=1)[shared])])
+-        if best[u].sum() >= best[v].sum():
++        degrees = best.sum(axis=1)
++        x = int(shared[np.argmax(degrees[shared])])
++
++        if degrees[u] >= degrees[v]:
+             best[u, x] = 0
+             best[x, u] = 0
+         else:
+             best[v, x] = 0
+             best[x, v] = 0
+ 
+-    # Refill after any conservative repair and verify the invariant once more.
+-    best = saturate(best)
+-    if not valid(best):
+-        # Extremely defensive fallback: remove one edge from each remaining
+-        # offending common-neighbor pair until the invariant is restored.
+-        for _ in range(repair_limit):
+-            common = best.astype(np.int32) @ best.astype(np.int32)
++    # Refill after any defensive deletion, then validate the final invariant.
++    if is_valid(best):
++        best = saturate(best)
++
++    if not is_valid(best):
++        # Strict final fallback: one deleted edge per violation eventually
++        # terminates because deletions cannot introduce a C4.
++        for _ in range(repair_budget):
++            X = best.astype(np.int16)
++            common = X @ X
+             np.fill_diagonal(common, 0)
+             bad = np.argwhere(np.triu(common > 1, 1))
+             if bad.size == 0:
+                 break
+             u, v = map(int, bad[0])
+             x = int(np.flatnonzero(best[u] & best[v])[0])
+             best[u, x] = 0
+             best[x, u] = 0
+ 
+     np.fill_diagonal(best, 0)
+     return best.astype(np.uint8)
+ 
+ 
+ # EVOLVE-BLOCK-END
+ 
+ 
+ # The following code remains fixed (not evolved)
+ 
+ def run_graph_construction(A, rng = None):
+     """Run the graph construction algorithm on A"""
+     return construct_new_graph(A = A, rng = rng)

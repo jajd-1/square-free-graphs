@@ -1,0 +1,14 @@
+{
+  "generation": 20,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "exact_unlock_archive",
+  "patch_description": "The current program lost performance mainly because its `unlock_scores` routine evaluates each present edge independently with nested neighborhood loops, while its saturation modes over-emphasize degree-six balancing. This replacement restores the stronger exact obstruction-incidence scoring used by the best prior archive approach: every missing pair with one unique length-three path credits all three edges on that path, so deletions are selected based on directly unlocked insertions.\n\nKey configuration changes:\n- `ARCHIVE_LIMIT = 10` instead of 8, preserving more distinct high-quality basins.\n- Six full input-derived repairs plus four bounded input-derived scaffolds, rather than relying only on full repairs.\n- Saturation uses future legal-edge loss as the dominant criterion (`4 * loss + load`), with only mild degree balancing.\n- Source-edge preference is retained as a tie bias (`0.40`) so the graph is genuinely edited from the supplied input.\n- 24 bounded delete/refill kicks use exact unique-obstruction credits and temporary edge bans.\n- Every scaffold, refill state, archive insertion, and final state is explicitly checked for the C4-free invariant.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:33:24.665540",
+  "llm_cost": 0.08032,
+  "llm_model": "gpt-5.6-terra"
+}

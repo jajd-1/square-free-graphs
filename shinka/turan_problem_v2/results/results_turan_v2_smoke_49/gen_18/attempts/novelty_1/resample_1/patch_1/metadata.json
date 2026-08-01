@@ -1,0 +1,14 @@
+{
+  "generation": 18,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "tabu_beam_refill",
+  "patch_description": "This redesign uses a population-based input-preserving search. It creates several distinct C4-free subgraphs by repairing and greedily retaining edges from the supplied matrix, then saturates them with a balanced bitset-based insertion routine. The local search architecture uses tabu refill: removed edges are temporarily forbidden during augmentation, encouraging genuine exchanges rather than immediately restoring the deleted edges. Every construction, repair, and exchange phase is explicitly validated using the common-neighbor invariant.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:28:23.397426",
+  "llm_cost": 0.080045,
+  "llm_model": "gpt-5.6-terra"
+}

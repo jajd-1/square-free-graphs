@@ -1,0 +1,14 @@
+{
+  "generation": 29,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "multistart_exchange_archive",
+  "patch_description": "This redesign uses a multistart archive architecture with more genuinely input-derived scaffold orders, diversified saturation policies, and bounded obstruction-guided exchange moves. States are always built from subsets of edges of the supplied matrix before augmentation, then improved through safe additions and delete/refill perturbations. The common-neighbor invariant is checked before archive insertion, after each exchange, and at final return.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:37:11.956568",
+  "llm_cost": 0.0853325,
+  "llm_model": "gpt-5.6-terra"
+}

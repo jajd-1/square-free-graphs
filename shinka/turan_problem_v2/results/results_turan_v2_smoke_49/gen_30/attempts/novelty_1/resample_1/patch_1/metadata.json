@@ -1,0 +1,14 @@
+{
+  "generation": 30,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "adaptive_ruin_refill",
+  "patch_description": "This version keeps the input-derived scaffold requirement, but increases search diversity and adds stronger ruin/refill moves.\n\nIt builds multiple C4-free subsets of the supplied input edges using degree-based and randomized source orders. Each scaffold is saturated using a legal insertion rule based on the no-common-neighbor characterization. Saturation scores insertions by estimated future candidate loss, degree balance, and source-edge preference.\n\nCompared with the previous version, the archive is larger and local search includes targeted one-edge, medium, and larger obstruction-aware deletion phases. Larger removals can escape locally maximal C4-free configurations that cannot be improved by only removing two or three edges. All inserted states are explicitly validated, and final repair is deletion-only if needed.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:38:40.994028",
+  "llm_cost": 0.09260750000000001,
+  "llm_model": "gpt-5.6-terra"
+}

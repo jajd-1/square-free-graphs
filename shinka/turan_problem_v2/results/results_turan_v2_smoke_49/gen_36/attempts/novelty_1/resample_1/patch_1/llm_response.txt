@@ -1,0 +1,176 @@
+<NAME>
+future_loss_saturation
+</NAME>
+
+<DESCRIPTION>
+Replace the degree-only saturation score with a C4-specific future-loss estimate.  When a legal edge uv is inserted, it creates new length-three paths x-u-v-y for pairs x in N(u), y in N(v).  Every currently legal missing pair xy of this form becomes unavailable afterwards.  Thus the number of legal cross-neighborhood pairs is a direct estimate of how many future insertions uv destroys.
+
+The existing code already enumerates all legal insertions in every saturation iteration.  This edit records those legal pairs as bit masks and scores each candidate using the exact current cross-neighborhood legal-pair count, while retaining balanced-degree secondary criteria and the source preference.  This should avoid early edges which rapidly consume the pair budget and improve the chance of reaching near-regular 154+ edge maximal graphs.
+</DESCRIPTION>
+
+<DIFF>
+<<<<<<< SEARCH
+    def saturate(masks, degree, mode=0, taboo=None):
+        """
+        C4-safe maximal completion. Low-degree endpoints are preferred, which
+        tends to preserve the pair budget needed for near-regular dense graphs.
+        """
+        masks = masks[:]
+        degree = degree[:]
+        taboo = set() if taboo is None else set(taboo)
+        taboo_active = bool(taboo)
+
+        for _ in range(pair_count):
+            best_key = None
+            candidates = []
+
+            for u in range(n - 1):
+                du = degree[u]
+                row = masks[u]
+                for v in range(u + 1, n):
+                    if (row >> v) & 1:
+                        continue
+                    if taboo_active and u * n + v in taboo:
+                        continue
+                    if not legal_add(masks, u, v):
+                        continue
+
+                    dv = degree[v]
+                    total = du + dv
+                    high = max(du, dv)
+                    product = du * dv
+                    imbalance = abs(du - dv)
+                    excess = max(0, high - 7)
+
+                    if mode % 3 == 0:
+                        key = (total, high, product, imbalance)
+                    elif mode % 3 == 1:
+                        key = (product, total, high, imbalance)
+                    else:
+                        key = (
+                            total + 2 * excess * excess,
+                            product,
+                            imbalance,
+                            high,
+                        )
+
+                    if best_key is None or key < best_key:
+                        best_key = key
+                        candidates = [(u, v)]
+                    elif key == best_key:
+                        candidates.append((u, v))
+
+            if not candidates:
+                if taboo_active:
+                    taboo_active = False
+                    continue
+                break
+
+            if mode % 3 == 2 and rng.random() < 0.42:
+                preferred = [(u, v) for u, v in candidates if source[u, v]]
+                if preferred:
+                    candidates = preferred
+
+            u, v = candidates[int(rng.integers(len(candidates)))]
+            masks[u] |= 1 << v
+            masks[v] |= 1 << u
+            degree[u] += 1
+            degree[v] += 1
+
+        return masks, degree
+=======
+    def saturate(masks, degree, mode=0, taboo=None):
+        """
+        C4-safe maximal completion with an obstruction-aware edge order.
+
+        For a legal proposed edge uv, each currently legal pair xy with
+        x in N(u) and y in N(v) is destroyed by the new length-three path
+        x-u-v-y.  Counting these cross-neighborhood legal pairs is a cheap
+        bitset version of the future-loss score and is much more informative
+        than endpoint degrees alone.
+        """
+        masks = masks[:]
+        degree = degree[:]
+        taboo = set() if taboo is None else set(taboo)
+        taboo_active = bool(taboo)
+
+        for _ in range(pair_count):
+            candidates = []
+            legal_masks = [0] * n
+
+            # Enumerate once, both to find insertion candidates and to retain
+            # the current legal-pair relation for future-loss scoring.
+            for u in range(n - 1):
+                row = masks[u]
+                for v in range(u + 1, n):
+                    if (row >> v) & 1:
+                        continue
+                    if not legal_add(masks, u, v):
+                        continue
+
+                    legal_masks[u] |= 1 << v
+                    legal_masks[v] |= 1 << u
+                    if not taboo_active or u * n + v not in taboo:
+                        candidates.append((u, v))
+
+            if not candidates:
+                if taboo_active:
+                    taboo_active = False
+                    continue
+                break
+
+            best_key = None
+            best = []
+            for u, v in candidates:
+                # This is the number of presently legal pairs blocked through
+                # the newly introduced u-v middle edge.
+                nv = masks[v]
+                x = masks[u]
+                loss = 0
+                while x:
+                    low = x & -x
+                    w = low.bit_length() - 1
+                    loss += (legal_masks[w] & nv).bit_count()
+                    x ^= low
+
+                du = degree[u]
+                dv = degree[v]
+                total = du + dv
+                high = max(du, dv)
+                product = du * dv
+                imbalance = abs(du - dv)
+                excess = max(0, du - 7) ** 2 + max(0, dv - 7) ** 2
+
+                if mode % 3 == 0:
+                    key = (6 * loss, total, excess, high, product, imbalance)
+                elif mode % 3 == 1:
+                    key = (5 * loss, product, total, excess, high, imbalance)
+                else:
+                    key = (
+                        7 * loss,
+                        total + 2 * excess,
+                        imbalance,
+                        high,
+                        product,
+                    )
+
+                if best_key is None or key < best_key:
+                    best_key = key
+                    best = [(u, v)]
+                elif key == best_key:
+                    best.append((u, v))
+
+            if mode % 3 == 2 and len(best) > 1 and rng.random() < 0.42:
+                preferred = [(u, v) for u, v in best if source[u, v]]
+                if preferred:
+                    best = preferred
+
+            u, v = best[int(rng.integers(len(best)))]
+            masks[u] |= 1 << v
+            masks[v] |= 1 << u
+            degree[u] += 1
+            degree[v] += 1
+
+        return masks, degree
+>>>>>>> REPLACE
+</DIFF>

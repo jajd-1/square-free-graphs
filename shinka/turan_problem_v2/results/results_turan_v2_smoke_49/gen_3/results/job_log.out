@@ -1,0 +1,163 @@
+Evaluating program: results/results_turan_v2_smoke_49/gen_3/main.py
+Saving results to: results/results_turan_v2_smoke_49/gen_3/results
+==========Running program evaluation 1/100...==========
+==========Run 1/100 completed in 0.03 seconds==========
+==========Running program evaluation 2/100...==========
+==========Run 2/100 completed in 0.04 seconds==========
+==========Running program evaluation 3/100...==========
+==========Run 3/100 completed in 0.03 seconds==========
+==========Running program evaluation 4/100...==========
+==========Run 4/100 completed in 0.04 seconds==========
+==========Running program evaluation 5/100...==========
+==========Run 5/100 completed in 0.04 seconds==========
+==========Running program evaluation 6/100...==========
+==========Run 6/100 completed in 0.06 seconds==========
+==========Running program evaluation 7/100...==========
+==========Run 7/100 completed in 0.04 seconds==========
+==========Running program evaluation 8/100...==========
+==========Run 8/100 completed in 0.04 seconds==========
+==========Running program evaluation 9/100...==========
+==========Run 9/100 completed in 0.05 seconds==========
+==========Running program evaluation 10/100...==========
+==========Run 10/100 completed in 0.03 seconds==========
+==========Running program evaluation 11/100...==========
+==========Run 11/100 completed in 0.05 seconds==========
+==========Running program evaluation 12/100...==========
+==========Run 12/100 completed in 0.05 seconds==========
+==========Running program evaluation 13/100...==========
+==========Run 13/100 completed in 0.05 seconds==========
+==========Running program evaluation 14/100...==========
+==========Run 14/100 completed in 0.05 seconds==========
+==========Running program evaluation 15/100...==========
+==========Run 15/100 completed in 0.04 seconds==========
+==========Running program evaluation 16/100...==========
+==========Run 16/100 completed in 0.03 seconds==========
+==========Running program evaluation 17/100...==========
+==========Run 17/100 completed in 0.04 seconds==========
+==========Running program evaluation 18/100...==========
+==========Run 18/100 completed in 0.04 seconds==========
+==========Running program evaluation 19/100...==========
+==========Run 19/100 completed in 0.05 seconds==========
+==========Running program evaluation 20/100...==========
+==========Run 20/100 completed in 0.04 seconds==========
+==========Running program evaluation 21/100...==========
+==========Run 21/100 completed in 0.88 seconds==========
+==========Running program evaluation 22/100...==========
+==========Run 22/100 completed in 0.59 seconds==========
+==========Running program evaluation 23/100...==========
+==========Run 23/100 completed in 0.94 seconds==========
+==========Running program evaluation 24/100...==========
+==========Run 24/100 completed in 0.61 seconds==========
+==========Running program evaluation 25/100...==========
+==========Run 25/100 completed in 0.63 seconds==========
+==========Running program evaluation 26/100...==========
+==========Run 26/100 completed in 0.55 seconds==========
+==========Running program evaluation 27/100...==========
+==========Run 27/100 completed in 0.51 seconds==========
+==========Running program evaluation 28/100...==========
+==========Run 28/100 completed in 0.62 seconds==========
+==========Running program evaluation 29/100...==========
+==========Run 29/100 completed in 0.67 seconds==========
+==========Running program evaluation 30/100...==========
+==========Run 30/100 completed in 0.46 seconds==========
+==========Running program evaluation 31/100...==========
+==========Run 31/100 completed in 0.91 seconds==========
+==========Running program evaluation 32/100...==========
+==========Run 32/100 completed in 0.71 seconds==========
+==========Running program evaluation 33/100...==========
+==========Run 33/100 completed in 0.59 seconds==========
+==========Running program evaluation 34/100...==========
+==========Run 34/100 completed in 1.03 seconds==========
+==========Running program evaluation 35/100...==========
+==========Run 35/100 completed in 0.92 seconds==========
+==========Running program evaluation 36/100...==========
+==========Run 36/100 completed in 0.50 seconds==========
+==========Running program evaluation 37/100...==========
+==========Run 37/100 completed in 0.60 seconds==========
+==========Running program evaluation 38/100...==========
+==========Run 38/100 completed in 0.79 seconds==========
+==========Running program evaluation 39/100...==========
+==========Run 39/100 completed in 1.05 seconds==========
+==========Running program evaluation 40/100...==========
+==========Run 40/100 completed in 0.88 seconds==========
+==========Running program evaluation 41/100...==========
+==========Run 41/100 completed in 3.55 seconds==========
+==========Running program evaluation 42/100...==========
+==========Run 42/100 completed in 2.46 seconds==========
+==========Running program evaluation 43/100...==========
+==========Run 43/100 completed in 2.38 seconds==========
+==========Running program evaluation 44/100...==========
+==========Run 44/100 completed in 2.98 seconds==========
+==========Running program evaluation 45/100...==========
+==========Run 45/100 completed in 2.44 seconds==========
+==========Running program evaluation 46/100...==========
+==========Run 46/100 completed in 3.38 seconds==========
+==========Running program evaluation 47/100...==========
+==========Run 47/100 completed in 2.91 seconds==========
+==========Running program evaluation 48/100...==========
+==========Run 48/100 completed in 3.09 seconds==========
+==========Running program evaluation 49/100...==========
+==========Run 49/100 completed in 2.72 seconds==========
+==========Running program evaluation 50/100...==========
+==========Run 50/100 completed in 2.93 seconds==========
+==========Running program evaluation 51/100...==========
+==========Run 51/100 completed in 2.93 seconds==========
+==========Running program evaluation 52/100...==========
+==========Run 52/100 completed in 3.15 seconds==========
+==========Running program evaluation 53/100...==========
+==========Run 53/100 completed in 2.29 seconds==========
+==========Running program evaluation 54/100...==========
+==========Run 54/100 completed in 2.64 seconds==========
+==========Running program evaluation 55/100...==========
+==========Run 55/100 completed in 3.34 seconds==========
+==========Running program evaluation 56/100...==========
+==========Run 56/100 completed in 3.23 seconds==========
+==========Running program evaluation 57/100...==========
+==========Run 57/100 completed in 2.79 seconds==========
+==========Running program evaluation 58/100...==========
+==========Run 58/100 completed in 2.95 seconds==========
+==========Running program evaluation 59/100...==========
+==========Run 59/100 completed in 3.29 seconds==========
+==========Running program evaluation 60/100...==========
+==========Run 60/100 completed in 2.54 seconds==========
+==========Running program evaluation 61/100...==========
+==========Run 61/100 completed in 5.85 seconds==========
+==========Running program evaluation 62/100...==========
+==========Run 62/100 completed in 5.98 seconds==========
+==========Running program evaluation 63/100...==========
+==========Run 63/100 completed in 5.59 seconds==========
+==========Running program evaluation 64/100...==========
+==========Run 64/100 completed in 6.07 seconds==========
+==========Running program evaluation 65/100...==========
+==========Run 65/100 completed in 6.62 seconds==========
+==========Running program evaluation 66/100...==========
+==========Run 66/100 completed in 6.07 seconds==========
+==========Running program evaluation 67/100...==========
+==========Run 67/100 completed in 5.99 seconds==========
+==========Running program evaluation 68/100...==========
+==========Run 68/100 completed in 5.75 seconds==========
+==========Running program evaluation 69/100...==========
+==========Run 69/100 completed in 5.53 seconds==========
+==========Running program evaluation 70/100...==========
+==========Run 70/100 completed in 6.05 seconds==========
+==========Running program evaluation 71/100...==========
+==========Run 71/100 completed in 6.09 seconds==========
+==========Running program evaluation 72/100...==========
+==========Run 72/100 completed in 6.42 seconds==========
+==========Running program evaluation 73/100...==========
+==========Run 73/100 completed in 5.95 seconds==========
+==========Running program evaluation 74/100...==========
+==========Run 74/100 completed in 6.97 seconds==========
+==========Running program evaluation 75/100...==========
+==========Run 75/100 completed in 5.60 seconds==========
+==========Running program evaluation 76/100...==========
+==========Run 76/100 completed in 6.18 seconds==========
+==========Running program evaluation 77/100...==========
+==========Run 77/100 completed in 5.87 seconds==========
+==========Running program evaluation 78/100...==========
+==========Run 78/100 completed in 5.94 seconds==========
+==========Running program evaluation 79/100...==========
+==========Run 79/100 completed in 5.63 seconds==========
+==========Running program evaluation 80/100...==========
+==========Run 80/100 completed in 6.24 seconds==========
+==========Running program evaluation 81/100...==========

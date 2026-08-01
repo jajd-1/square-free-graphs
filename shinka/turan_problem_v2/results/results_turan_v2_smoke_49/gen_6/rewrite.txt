@@ -1,0 +1,315 @@
+# EVOLVE-BLOCK-START
+"""Balanced multi-start input-aware local search for dense C4-free graphs."""
+
+import numpy as np
+
+
+def construct_new_graph(A, rng=None):
+    """
+    Convert an arbitrary adjacency matrix into a dense C4-free graph.
+
+    The algorithm first retains different C4-free subgraphs of the supplied
+    graph, then safely saturates them, and finally uses bounded delete/refill
+    perturbations to escape maximal but low-quality C4-free states.
+    """
+    if A.dtype != np.uint8:
+        raise TypeError("A must have dtype np.uint8")
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    n = A.shape[0]
+    iu, ju = np.triu_indices(n, 1)
+    pair_count = iu.size
+
+    # Symmetrize arbitrary input while preserving its role as the source state.
+    source = ((A != 0) | (A.T != 0)).astype(np.uint8)
+    np.fill_diagonal(source, 0)
+
+    source_upper = source[iu, ju].astype(bool)
+    source_degree = source.sum(axis=1).astype(np.int32)
+    input_edges = np.flatnonzero(source_upper)
+
+    def edge_count(B):
+        return int(B.sum() // 2)
+
+    def is_valid(B):
+        """C4-free iff no distinct pair has more than one common neighbor."""
+        X = B.astype(np.int32)
+        common = X @ X
+        np.fill_diagonal(common, 0)
+        return not np.any(common > 1)
+
+    def insertion_is_legal(B, u, v):
+        """
+        A missing uv is legal iff there is no existing u--x--y--v path.
+        Equivalently, no edge joins N(u) to N(v).
+        """
+        nu = np.flatnonzero(B[u])
+        nv = np.flatnonzero(B[v])
+
+        if nu.size == 0 or nv.size == 0:
+            return True
+
+        return not np.any(B[np.ix_(nu, nv)])
+
+    def legal_matrix(B):
+        """
+        Return all legal missing edges.  paths3[u,v] is nonzero precisely when
+        inserting uv would close an existing length-three path into a C4.
+        """
+        X = B.astype(np.int32)
+        paths3 = (X @ X) @ X
+        legal = (B == 0) & (paths3 == 0)
+        np.fill_diagonal(legal, False)
+        return legal
+
+    def saturate(B, banned=None):
+        """
+        Greedily add legal edges until maximal.
+
+        blocked_cost measures currently legal cross-pairs between N(u), N(v)
+        that become unavailable after adding uv.  Degree balance receives a
+        larger relative weight than in the previous configuration, which is
+        useful because dense extremal C4-free graphs tend to be nearly regular.
+        """
+        B = B.copy()
+
+        if banned is None:
+            forbidden = np.zeros(pair_count, dtype=bool)
+        else:
+            forbidden = banned.copy()
+
+        for _ in range(pair_count):
+            legal = legal_matrix(B)
+            available = np.flatnonzero(legal[iu, ju] & ~forbidden)
+
+            # After trying alternative replacements, permit deleted edges too.
+            if available.size == 0 and np.any(forbidden):
+                forbidden[:] = False
+                available = np.flatnonzero(legal[iu, ju])
+
+            if available.size == 0:
+                break
+
+            X = B.astype(np.int32)
+            L = legal.astype(np.int32)
+
+            # Exact number of currently legal pairs blocked through u-v.
+            blocked = (X @ L) @ X
+            degree = B.sum(axis=1).astype(np.int32)
+
+            au = iu[available]
+            av = ju[available]
+
+            costs = blocked[au, av].astype(np.int32)
+            balance = degree[au] + degree[av]
+
+            # Parameter choice:
+            #   blocking weight = 3
+            #   balancing weight = 2
+            score = 3 * costs + 2 * balance
+            minimum = score.min()
+            tied = available[score == minimum]
+
+            # Retaining a source edge on ties keeps the construction
+            # input-sensitive without forcing poor source structure.
+            source_tied = tied[source_upper[tied]]
+            if source_tied.size and rng.random() < 0.55:
+                tied = source_tied
+
+            chosen = int(tied[int(rng.integers(tied.size))])
+            u, v = int(iu[chosen]), int(ju[chosen])
+
+            # Explicit local invariant check before every insertion.
+            if insertion_is_legal(B, u, v):
+                B[u, v] = 1
+                B[v, u] = 1
+
+        return B
+
+    def repair_input(style):
+        """
+        Retain input edges in an input-dependent order, only keeping edges
+        whose insertion preserves the C4-free invariant.
+        """
+        B = np.zeros((n, n), dtype=np.uint8)
+
+        if input_edges.size == 0:
+            return B
+
+        du = source_degree[iu[input_edges]]
+        dv = source_degree[ju[input_edges]]
+        load = du + dv
+        product = du * dv
+        noise = rng.random(input_edges.size)
+
+        if style == 0:
+            # Low-load edges establish balanced neighborhoods first.
+            order = input_edges[np.lexsort((noise, load))]
+        elif style == 1:
+            # Dense input regions first can preserve useful correlations.
+            order = input_edges[np.lexsort((noise, -load))]
+        elif style == 2:
+            # Product distinguishes edges joining two simultaneously dense
+            # source neighborhoods from edges incident to one hub.
+            order = input_edges[np.lexsort((noise, product))]
+        else:
+            # Independent randomized order avoids deterministic bias.
+            order = input_edges[rng.permutation(input_edges.size)]
+
+        for edge in order:
+            u, v = int(iu[edge]), int(ju[edge])
+            if insertion_is_legal(B, u, v):
+                B[u, v] = 1
+                B[v, u] = 1
+
+        return B
+
+    # Four genuinely input-derived starts.
+    best = None
+    best_count = -1
+
+    for style in range(4):
+        candidate = repair_input(style)
+
+        if not is_valid(candidate):
+            continue
+
+        candidate = saturate(candidate)
+
+        if is_valid(candidate):
+            count = edge_count(candidate)
+            if count > best_count:
+                best = candidate
+                best_count = count
+
+    # This fallback is only reached for pathological input handling failures.
+    if best is None:
+        best = saturate(np.zeros((n, n), dtype=np.uint8))
+        best_count = edge_count(best)
+
+    # Adaptive bounded perturbation schedule.  Later, larger deletions permit
+    # escape from stronger local optima while retaining predictable runtime.
+    deletion_schedule = (2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4)
+
+    for trial, remove_count in enumerate(deletion_schedule):
+        current = best.copy()
+        present = np.flatnonzero(current[iu, ju])
+
+        if present.size < remove_count:
+            continue
+
+        degree = current.sum(axis=1).astype(np.int32)
+        pressure = degree[iu[present]] + degree[ju[present]]
+
+        # Earlier moves focus on high-pressure edges.  Later moves broaden
+        # the pool, adding structural diversity after local improvements stall.
+        percentile = 70 if trial < 5 else (55 if trial < 11 else 35)
+        threshold = np.percentile(pressure, percentile)
+        pool = present[pressure >= threshold]
+
+        if pool.size < remove_count:
+            pool = present
+
+        banned = np.zeros(pair_count, dtype=bool)
+        selected = []
+
+        for _ in range(remove_count):
+            choices = pool[~np.isin(pool, selected)]
+            if choices.size == 0:
+                choices = present[~np.isin(present, selected)]
+
+            chosen = int(choices[int(rng.integers(choices.size))])
+            selected.append(chosen)
+
+        for edge in selected:
+            u, v = int(iu[edge]), int(ju[edge])
+            current[u, v] = 0
+            current[v, u] = 0
+            banned[edge] = True
+
+        # Deletion preserves validity, but check before the refill phase.
+        if not is_valid(current):
+            continue
+
+        candidate = saturate(current, banned)
+
+        if not is_valid(candidate):
+            continue
+
+        count = edge_count(candidate)
+
+        if count > best_count:
+            best = candidate
+            best_count = count
+        elif count == best_count:
+            # Equal-score movement is deliberately retained with moderate
+            # probability, making future perturbations less correlated.
+            move_probability = 0.35 if trial < 10 else 0.50
+            if rng.random() < move_probability:
+                best = candidate
+
+    # Conservative final validation and monotone deletion repair.
+    repair_budget = n * n
+    for _ in range(repair_budget):
+        X = best.astype(np.int32)
+        common = X @ X
+        np.fill_diagonal(common, 0)
+        bad = np.argwhere(np.triu(common > 1, 1))
+
+        if bad.size == 0:
+            break
+
+        u, v = map(int, bad[0])
+        shared = np.flatnonzero(best[u] & best[v])
+
+        if shared.size < 2:
+            continue
+
+        degree = best.sum(axis=1)
+        x = int(shared[np.argmax(degree[shared])])
+
+        if degree[u] >= degree[v]:
+            best[u, x] = 0
+            best[x, u] = 0
+        else:
+            best[v, x] = 0
+            best[x, v] = 0
+
+    # Refill after any defensive deletion.
+    if is_valid(best):
+        best = saturate(best)
+
+    # Strict final fallback, guaranteed to terminate through deletions.
+    if not is_valid(best):
+        for _ in range(repair_budget):
+            X = best.astype(np.int32)
+            common = X @ X
+            np.fill_diagonal(common, 0)
+            bad = np.argwhere(np.triu(common > 1, 1))
+
+            if bad.size == 0:
+                break
+
+            u, v = map(int, bad[0])
+            shared = np.flatnonzero(best[u] & best[v])
+            if shared.size == 0:
+                continue
+
+            x = int(shared[0])
+            best[u, x] = 0
+            best[x, u] = 0
+
+    np.fill_diagonal(best, 0)
+    return best.astype(np.uint8)
+
+
+# EVOLVE-BLOCK-END
+
+
+# The following code remains fixed (not evolved)
+
+def run_graph_construction(A, rng=None):
+    """Run the graph construction algorithm on A"""
+    return construct_new_graph(A=A, rng=rng)

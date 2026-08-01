@@ -1,0 +1,33 @@
+<NAME>
+degree_seven_target
+</NAME>
+
+<DESCRIPTION>
+The current augmentation penalizes every endpoint degree above six, despite dense C4-free graphs on 49 vertices typically requiring many degree-seven vertices to reach the best edge counts. The ordinary endpoint-load term already discourages excessive hubs. Moving the explicit excess penalty threshold to seven allows useful seventh incident edges while retaining a stronger penalty once degree eight is reached. This only changes the ranking of already legal insertions; the C4-free invariant and all explicit validation remain untouched.
+</DESCRIPTION>
+
+<DIFF>
+<<<<<<< SEARCH
+            loss = future_loss[au, av].astype(np.int32)
+            load = degree[au] + degree[av]
+            excess = (
+                np.maximum(degree[au] - 6, 0)
+                + np.maximum(degree[av] - 6, 0)
+            )
+
+            score = 4 * loss + load + excess
+=======
+            loss = future_loss[au, av].astype(np.int32)
+            load = degree[au] + degree[av]
+
+            # A near-extremal 49-vertex C4-free graph has average degree
+            # around seven.  Load already controls degree growth, so only
+            # add a dedicated hub penalty beyond that useful plateau.
+            excess = (
+                np.maximum(degree[au] - 7, 0)
+                + np.maximum(degree[av] - 7, 0)
+            )
+
+            score = 4 * loss + load + 2 * excess
+>>>>>>> REPLACE
+</DIFF>

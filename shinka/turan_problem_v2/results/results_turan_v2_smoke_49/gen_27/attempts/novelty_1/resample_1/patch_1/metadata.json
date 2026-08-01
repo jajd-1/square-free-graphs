@@ -1,0 +1,14 @@
+{
+  "generation": 27,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "pair_budget_refill",
+  "patch_description": "This version combines conflict-directed repair with a new pair-budget guided refill strategy.  It treats a C4-free graph as a resource allocation problem: every new edge consumes potential cross-neighborhood pairs, so saturation prioritizes low-degree endpoint pairs while avoiding excessive degree concentration.\n\nThe algorithm remains genuinely input-dependent. It begins from several differently repaired versions of the supplied adjacency matrix and from several source-edge retention orders. Each valid candidate is saturated using safe bitset additions. A small archive is then improved through tabu ruin-and-refill moves: high-pressure edges are deleted temporarily, their immediate re-addition is forbidden, and the newly opened space is refilled using balanced safe additions. Every completed candidate is explicitly verified using the common-neighbor characterization of C4-freeness.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:36:12.999518",
+  "llm_cost": 0.0904125,
+  "llm_model": "gpt-5.6-terra"
+}

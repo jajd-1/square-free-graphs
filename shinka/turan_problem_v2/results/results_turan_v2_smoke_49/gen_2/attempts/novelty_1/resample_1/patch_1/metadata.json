@@ -1,0 +1,14 @@
+{
+  "generation": 2,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "repair_exchange_saturation",
+  "patch_description": "This approach keeps the input graph as the starting state, repairs it by deleting edges that participate in the largest number of current common-neighbor violations, then performs degree-balanced C4-safe saturation.\n\nAfter obtaining a maximal C4-free graph, it applies several small edge-exchange perturbations: delete a few strategically chosen high-degree edges, greedily refill using randomized balanced ordering, and retain the best valid result. Every candidate is explicitly repaired/verified using the common-neighbor characterization before it can be returned.\n\nUnlike the original one-pass repair and fixed lexicographic augmentation, this uses global violation scores and local search around the input-derived graph, which should provide more consistent improvements across different input matrices.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:19:39.880836",
+  "llm_cost": 0.06116,
+  "llm_model": "gpt-5.6-terra"
+}

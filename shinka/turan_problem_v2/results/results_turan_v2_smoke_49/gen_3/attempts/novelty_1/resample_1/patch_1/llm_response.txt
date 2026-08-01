@@ -1,0 +1,182 @@
+<NAME>
+repair_multistart_saturation
+</NAME>
+
+<DESCRIPTION>
+Replace the stale one-pass repair with a dynamically verified repair phase.  Each deletion is chosen from an actual current C4 violation and preferentially removes an edge that resolves many common-neighbor excesses, while avoiding unnecessarily deleting low-degree useful edges.
+
+After repair, construct several candidate augmentations from the repaired input graph.  Edge feasibility is tested using length-three paths: a missing edge uv is safe exactly when there is no existing length-three u-v path.  Among safe edges, the algorithm favors low degree-product endpoints, which discourages hubs and tends to preserve future additions in near-regular C4-free graphs.  Small randomized choices among similarly good candidates produce several input-dependent trajectories.  Finally, bounded two-edge perturbation/refill attempts provide inexpensive local search beyond a single saturated greedy solution.
+
+Every repair, saturation, and perturbation phase is explicitly checked using the common-neighbor characterization before it can become the returned candidate.
+</DESCRIPTION>
+
+<DIFF>
+<<<<<<< SEARCH
+def construct_new_graph(A, rng = None):
+    """First removes all 4-cycles in the given graph with adjacency matrix A,
+    then greedily adds edges in such a way that no 4-cycles are introduced."""
+
+    if A.dtype != np.uint8:
+        raise TypeError("A must have dtype np.uint8")
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    n = A.shape[0]
+    C = A @ A       #C[i,j] is the number of neighbours common to both vertex i and j
+
+    bad_i, bad_j = np.where(np.triu(C > 1, k = 1))
+
+    for i, j in zip(bad_i, bad_j):
+        common = np.flatnonzero(A[i] & A[j])
+
+        if len(common) > 1:
+            keep_index = rng.integers(len(common))
+            keep = common[keep_index]
+            other = common[common != keep]
+
+            choices = rng.integers(0, 2, size = len(other))
+
+            remove_from_row_i = other[choices == 0]
+            remove_from_row_j = other[choices == 1]
+
+            A[i, remove_from_row_i] = 0
+            A[remove_from_row_i, i] = 0
+
+            A[j, remove_from_row_j] = 0
+            A[remove_from_row_j, j] = 0
+    
+    # We have removed all 4-cycles, and now greedily add edges without creating C4s
+
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if A[i][j] == 0:
+                neighbours_i = np.flatnonzero(A[i])
+                neighbours_j = np.flatnonzero(A[j])
+
+                # adding an edge from i to j creates a c4 iff there already exists an edge between a neighbour of i and a neighbour of j
+                creates_c4 = np.any(A[np.ix_(neighbours_i, neighbours_j)])      # submatrix with rows given by indices in neighbours_i and columns given by indices in neighbours_j
+
+                if not creates_c4:
+                    A[i][j] = 1
+                    A[j][i] = 1
+    
+    return A 
+=======
+def construct_new_graph(A, rng = None):
+    """Repair the supplied graph, then perform several balanced C4-free fills."""
+
+    if A.dtype != np.uint8:
+        raise TypeError("A must have dtype np.uint8")
+    if rng is None:
+        rng = np.random.default_rng()
+
+    n = A.shape[0]
+    upper = np.triu(np.ones((n, n), dtype=bool), k=1)
+
+    # Work from the supplied graph, but make its undirected simple interpretation
+    # explicit.  This also prevents diagonal entries from affecting path counts.
+    B = ((A != 0) | (A.T != 0)).astype(np.uint8)
+    np.fill_diagonal(B, 0)
+
+    def valid(G):
+        common = G.astype(np.int32) @ G.astype(np.int32)
+        return not np.any(np.triu(common > 1, k=1))
+
+    # Dynamic repair: unlike a one-pass list of violations, every decision sees
+    # all deletions made before it.
+    for _ in range(n * (n - 1) // 2):
+        common_count = B.astype(np.int32) @ B.astype(np.int32)
+        bad = np.argwhere(np.triu(common_count > 1, k=1))
+        if len(bad) == 0:
+            break
+
+        # Concentrating on a severe violation generally saves more edges.
+        severity = common_count[bad[:, 0], bad[:, 1]]
+        severe = bad[severity == severity.max()]
+        i, j = severe[rng.integers(len(severe))]
+        shared = np.flatnonzero(B[i] & B[j])
+
+        candidates = [(i, int(w)) for w in shared]
+        candidates += [(j, int(w)) for w in shared]
+        best_edge = candidates[0]
+        best_score = -1
+        degrees = B.sum(axis=1)
+
+        for x, y in candidates:
+            nx = np.flatnonzero(B[x])
+            ny = np.flatnonzero(B[y])
+            # Deleting xy lowers common-neighbor counts for these two families.
+            score = int(np.maximum(common_count[y, nx] - 1, 0).sum())
+            score += int(np.maximum(common_count[x, ny] - 1, 0).sum())
+            # If equally effective, remove the edge attached to the larger hub.
+            score = 1000 * score + int(degrees[x] + degrees[y])
+            if score > best_score:
+                best_score = score
+                best_edge = (x, y)
+
+        x, y = best_edge
+        B[x, y] = B[y, x] = 0
+
+    # Conservative final verification fallback.  It is normally unused, but
+    # guarantees that later augmentation starts from the required invariant.
+    for _ in range(n * (n - 1) // 2):
+        if valid(B):
+            break
+        common_count = B.astype(np.int32) @ B.astype(np.int32)
+        bad = np.argwhere(np.triu(common_count > 1, k=1))[0]
+        i, j = int(bad[0]), int(bad[1])
+        w = int(np.flatnonzero(B[i] & B[j])[0])
+        B[i, w] = B[w, i] = 0
+
+    def saturate(G):
+        """Bounded greedy fill; each selected edge is certified by 3-paths."""
+        G = G.copy()
+        for _ in range(n * (n - 1) // 2):
+            H = G.astype(np.int32)
+            three_paths = (H @ H) @ H
+            possible = upper & (G == 0) & (three_paths == 0)
+            edges = np.argwhere(possible)
+            if len(edges) == 0:
+                break
+
+            deg = G.sum(axis=1)
+            # Degree product is a cheap estimate of the number of future pairs
+            # an edge can constrain.  Randomize only among near-best choices.
+            costs = deg[edges[:, 0]] * deg[edges[:, 1]]
+            order = np.argsort(costs, kind="stable")
+            window = min(10, len(order))
+            pick = order[rng.integers(window)]
+            u, v = int(edges[pick, 0]), int(edges[pick, 1])
+            G[u, v] = G[v, u] = 1
+
+        # Adding only edges with no length-three path preserves C4-freeness.
+        # Keep this explicit test as a safety check for the returned state.
+        if not valid(G):
+            return B.copy()
+        return G
+
+    best = B.copy()
+    # Independent edge-order trajectories retain the repaired input structure
+    # but avoid the strong order dependence of a single greedy pass.
+    for _ in range(5):
+        candidate = saturate(B)
+        if candidate.sum() > best.sum():
+            best = candidate
+
+    # A bounded two-edge shake can escape a saturated state whose first few
+    # greedy choices blocked a better refill.
+    existing = np.argwhere(np.triu(best != 0, k=1))
+    for _ in range(min(5, len(existing))):
+        trial = best.copy()
+        chosen = rng.choice(len(existing), size=min(2, len(existing)), replace=False)
+        for index in np.atleast_1d(chosen):
+            u, v = existing[int(index)]
+            trial[u, v] = trial[v, u] = 0
+        trial = saturate(trial)
+        if valid(trial) and trial.sum() > best.sum():
+            best = trial
+
+    return best.astype(np.uint8)
+>>>>>>> REPLACE
+</DIFF>

@@ -1,0 +1,14 @@
+{
+  "generation": 36,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "future_loss_saturation",
+  "patch_description": "Replace the degree-only saturation score with a C4-specific future-loss estimate.  When a legal edge uv is inserted, it creates new length-three paths x-u-v-y for pairs x in N(u), y in N(v).  Every currently legal missing pair xy of this form becomes unavailable afterwards.  Thus the number of legal cross-neighborhood pairs is a direct estimate of how many future insertions uv destroys.\n\nThe existing code already enumerates all legal insertions in every saturation iteration.  This edit records those legal pairs as bit masks and scores each candidate using the exact current cross-neighborhood legal-pair count, while retaining balanced-degree secondary criteria and the source preference.  This should avoid early edges which rapidly consume the pair budget and improve the chance of reaching near-regular 154+ edge maximal graphs.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:41:07.810680",
+  "llm_cost": 0.0577775,
+  "llm_model": "gpt-5.6-terra"
+}

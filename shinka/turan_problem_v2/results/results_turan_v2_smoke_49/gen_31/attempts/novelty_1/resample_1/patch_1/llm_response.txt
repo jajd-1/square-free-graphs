@@ -1,0 +1,30 @@
+<NAME>
+degree_seven_plateau
+</NAME>
+
+<DESCRIPTION>
+Adjust the augmentation heuristic toward the degree profile expected near the C4-free extremal range on 49 vertices. Dense C4-free graphs should have average degree close to 7, whereas the current excess penalty starts penalizing vertices immediately after degree 6. Since the ordinary load term already discourages attaching to high-degree vertices, the additional penalty should only become strong above degree 7. This creates a preferred degree-seven plateau: completing degree-6 vertices is less artificially discouraged, while degree-8-and-above hubs remain strongly penalized. All insertion legality and explicit C4 validation remain unchanged.
+</DESCRIPTION>
+
+<DIFF>
+<<<<<<< SEARCH
+            # A mild excess-degree term avoids repeatedly feeding rare hubs.
+            excess = (
+                np.maximum(degree[au] - 6, 0)
+                + np.maximum(degree[av] - 6, 0)
+            )
+
+            score = 4 * loss + load + excess
+=======
+            # Near-extremal C4-free graphs on 49 vertices should support
+            # degrees around seven.  Load already favors lower-degree
+            # endpoints, so reserve the stronger hub penalty for degrees
+            # above that target rather than suppressing useful seventh edges.
+            excess = (
+                np.maximum(degree[au] - 7, 0)
+                + np.maximum(degree[av] - 7, 0)
+            )
+
+            score = 4 * loss + load + 2 * excess
+>>>>>>> REPLACE
+</DIFF>

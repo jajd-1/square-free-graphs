@@ -1,0 +1,14 @@
+{
+  "generation": 31,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": false,
+  "num_applied": 0,
+  "patch_name": "degree_seven_plateau",
+  "patch_description": "Adjust the augmentation heuristic toward the degree profile expected near the C4-free extremal range on 49 vertices. Dense C4-free graphs should have average degree close to 7, whereas the current excess penalty starts penalizing vertices immediately after degree 6. Since the ordinary load term already discourages attaching to high-degree vertices, the additional penalty should only become strong above degree 7. This creates a preferred degree-seven plateau: completing degree-6 vertices is less artificially discouraged, while degree-8-and-above hubs remain strongly penalized. All insertion legality and explicit C4 validation remain unchanged.",
+  "error_msg": "SEARCH text not found in editable regions\n\nLooking for 7-line block starting with: '# A mild excess-degree term avoids repeatedly feeding rare hubs.'\n\nFull search pattern:\n```\n# A mild excess-degree term avoids repeatedly feeding rare hubs.\n            excess = (\n                np.maximum(degree[au] - 6, 0)\n                + np.maximum(degree[av] - 6, 0)\n            )\n\n            score = 4 * loss + load + excess\n```\n\nFound similar code block at line 109 (\u2713 editable):\n\nDifferences between search pattern and actual code:\n```diff\n-  # A mild excess-degree term avoids repeatedly feeding rare hubs.\n+              load = degree[au] + degree[av]\n```\n\nEditable regions where you can make changes:\n  Region 1 (lines 1-414):\n    \"\"\"Bounded input-derived archive search for dense C4-free graphs.\"\"\"\n    \n    import numpy as np\n    ... (404 more lines)\n    \n        np.fill_diagonal(best, 0)\n        return best.astype(np.uint8)\n\nQuick fixes:\n\u2022 Verify the text exists in the file\n\u2022 Check that you're searching within EVOLVE-BLOCK regions\n\u2022 Try a smaller, more specific search pattern",
+  "timestamp": "2026-07-28T22:37:56.371563",
+  "llm_cost": 0.0547425,
+  "llm_model": "gpt-5.6-terra"
+}

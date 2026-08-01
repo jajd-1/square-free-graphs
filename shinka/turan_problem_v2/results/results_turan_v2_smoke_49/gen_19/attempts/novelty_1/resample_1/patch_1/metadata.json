@@ -1,0 +1,14 @@
+{
+  "generation": 19,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "repair_beam_refill",
+  "patch_description": "This version restores a stronger input-aware repair-and-refill strategy. It begins from the supplied adjacency matrix, repeatedly deletes edges that participate in the largest number of common-neighbor violations, then greedily saturates the repaired graph using exact bitset C4 tests.\n\nSeveral independently tie-broken repairs are retained in a small beam. Each beam state is subjected to bounded ruin-and-refill moves that delete structurally expensive edges and greedily refill using balanced low-degree endpoint choices. Every addition is checked using the exact condition that no edge may connect the two endpoint neighborhoods. Every major phase also explicitly verifies the common-neighbor invariant before accepting a candidate.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:28:35.078215",
+  "llm_cost": 0.06563250000000001,
+  "llm_model": "gpt-5.6-terra"
+}

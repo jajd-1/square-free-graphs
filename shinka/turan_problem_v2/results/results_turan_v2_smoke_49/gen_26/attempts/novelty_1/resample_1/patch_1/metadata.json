@@ -1,0 +1,14 @@
+{
+  "generation": 26,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "portfolio_ruin_refill",
+  "patch_description": "This redesign uses a portfolio-and-refill architecture. It builds a diverse beam of valid input-derived scaffolds, completes each with a balanced low-blocking greedy insertion policy, then applies bounded ruin-and-refill moves from several elite states. Deletion candidates are selected using explicit unique length-three-path obstruction credits, while refill temporarily bans removed edges so the search must first explore genuinely new replacements. Every retained candidate is explicitly verified C4-free, and the final output has a conservative repair-and-saturation safety phase.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:35:54.616377",
+  "llm_cost": 0.0858825,
+  "llm_model": "gpt-5.6-terra"
+}

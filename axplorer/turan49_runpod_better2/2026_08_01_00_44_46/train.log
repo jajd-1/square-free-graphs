@@ -1,0 +1,1988 @@
+INFO - 08/01/26 00:44:47 - 0:00:00 - ============ Initialized logger ============
+INFO - 08/01/26 00:44:47 - 0:00:00 - N: 49
+                                     always_search: True
+                                     augment_data_representation: False
+                                     batch_size: 64
+                                     command: python train.py --env_name square2 --exp_name turan49_runpod_better2 --N 49 --encoding_tokens single_integer --max_len 500 --gensize 100000 --pop_size 5000 --ntest 500 --max_epochs 10 --max_steps 10000 --num_samples_from_model 50000 --gen_batch_size 1000 --batch_size 64 --n_layer 6 --n_embd 256 --num_workers 12 --exp_id "2026_08_01_00_44_46"
+                                     cpu: False
+                                     data_generation_only: False
+                                     device: cuda
+                                     dump_path: checkpoint/turan49_runpod_better2/2026_08_01_00_44_46
+                                     encoding_tokens: single_integer
+                                     env_name: square2
+                                     exp_id: 2026_08_01_00_44_46
+                                     exp_name: turan49_runpod_better2
+                                     gen_batch_size: 1000
+                                     gensize: 100000
+                                     inc_temp: 0.0
+                                     keep_only_unique: True
+                                     learning_rate: 0.0005
+                                     make_object_canonical: False
+                                     max_epochs: 10
+                                     max_len: 500
+                                     max_steps: 10000
+                                     n_embd: 256
+                                     n_head: 8
+                                     n_layer: 6
+                                     new_proportion: 0.0
+                                     no_positional: False
+                                     ntest: 500
+                                     num_eval_steps: 500
+                                     num_samples_from_model: 50000
+                                     num_workers: 12
+                                     pop_size: 5000
+                                     pow2base: 1
+                                     process_pool: True
+                                     redeem_only: False
+                                     save_best: False
+                                     seed: -1
+                                     temp_span: 0
+                                     temperature: 1.0
+                                     top_k: -1
+                                     weight_decay: 0.01
+INFO - 08/01/26 00:44:47 - 0:00:00 - The experiment will be stored in checkpoint/turan49_runpod_better2/2026_08_01_00_44_46
+                                     
+INFO - 08/01/26 00:44:47 - 0:00:00 - Running command: python train.py --env_name square2 --exp_name turan49_runpod_better2 --N 49 --encoding_tokens single_integer --max_len 500 --gensize 100000 --pop_size 5000 --ntest 500 --max_epochs 10 --max_steps 10000 --num_samples_from_model 50000 --gen_batch_size 1000 --batch_size 64 --n_layer 6 --n_embd 256 --num_workers 12
+
+INFO - 08/01/26 00:44:47 - 0:00:00 - seed: 396440709
+INFO - 08/01/26 00:44:47 - 0:00:00 - Number of parameters: 5.16M
+INFO - 08/01/26 00:50:48 - 0:06:01 - Unique processing: 100000 examples left, 0 duplicates
+INFO - 08/01/26 00:50:48 - 0:06:01 - ### Score distribution ###
+INFO - 08/01/26 00:50:48 - 0:06:01 - Valid examples: 100000
+INFO - 08/01/26 00:50:48 - 0:06:01 - Mean score: 140.25971
+INFO - 08/01/26 00:50:48 - 0:06:01 - Median score: 140.0
+INFO - 08/01/26 00:50:48 - 0:06:01 - Stdev score: 1.955126323563112
+INFO - 08/01/26 00:50:48 - 0:06:01 - Max score: 149
+INFO - 08/01/26 00:50:48 - 0:06:01 - Top 1 percentile score: 145.0
+INFO - 08/01/26 00:50:48 - 0:06:01 - Distribution of scores:
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 132: Count: 5
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 133: Count: 38
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 134: Count: 133
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 135: Count: 578
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 136: Count: 1813
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 137: Count: 4995
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 138: Count: 10490
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 139: Count: 16697
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 140: Count: 20144
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 141: Count: 19145
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 142: Count: 13728
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 143: Count: 7510
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 144: Count: 3309
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 145: Count: 1058
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 146: Count: 286
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 147: Count: 63
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 148: Count: 7
+INFO - 08/01/26 00:50:48 - 0:06:01 - Score 149: Count: 1
+INFO - 08/01/26 00:50:48 - 0:06:01 - --------------------------------
+INFO - 08/01/26 00:50:48 - 0:06:01 - New train and test generated. Size are train: 4500, test 500
+INFO - 08/01/26 00:50:48 - 0:06:01 - Unique data computed for original train set: 0, generated train set: 4500
+INFO - 08/01/26 00:50:48 - 0:06:01 - Final train and test generated. Size are train: 4500, test 500
+INFO - 08/01/26 00:50:48 - 0:06:02 - ### Score distribution ###
+INFO - 08/01/26 00:50:48 - 0:06:02 - Valid examples: 4500
+INFO - 08/01/26 00:50:48 - 0:06:02 - Mean score: 144.31511111111112
+INFO - 08/01/26 00:50:48 - 0:06:02 - Median score: 144.0
+INFO - 08/01/26 00:50:48 - 0:06:02 - Stdev score: 0.7393268783423479
+INFO - 08/01/26 00:50:48 - 0:06:02 - Max score: 149
+INFO - 08/01/26 00:50:48 - 0:06:02 - Top 1 percentile score: 147.0
+INFO - 08/01/26 00:50:48 - 0:06:02 - Distribution of scores:
+INFO - 08/01/26 00:50:48 - 0:06:02 - Score 143: Count: 255
+INFO - 08/01/26 00:50:48 - 0:06:02 - Score 144: Count: 2975
+INFO - 08/01/26 00:50:48 - 0:06:02 - Score 145: Count: 943
+INFO - 08/01/26 00:50:48 - 0:06:02 - Score 146: Count: 260
+INFO - 08/01/26 00:50:48 - 0:06:02 - Score 147: Count: 59
+INFO - 08/01/26 00:50:48 - 0:06:02 - Score 148: Count: 7
+INFO - 08/01/26 00:50:48 - 0:06:02 - Score 149: Count: 1
+INFO - 08/01/26 00:50:48 - 0:06:02 - --------------------------------
+INFO - 08/01/26 00:50:48 - 0:06:02 - ==== Starting Epoch 0 =====
+INFO - 08/01/26 00:50:48 - 0:06:02 - [Epoch 0 START] CPU: 0.0% | RAM: 1219.7MB
+INFO - 08/01/26 00:50:49 - 0:06:03 - Memory allocated: 25.44MB, reserved: 46.00MB
+INFO - 08/01/26 00:50:51 - 0:06:04 - step 100 | loss 3.3037 | steps time 1604.84ms
+INFO - 08/01/26 00:50:52 - 0:06:06 - step 200 | loss 3.1325 | steps time 1355.25ms
+INFO - 08/01/26 00:50:54 - 0:06:07 - step 300 | loss 3.0644 | steps time 1320.81ms
+INFO - 08/01/26 00:50:55 - 0:06:08 - step 400 | loss 3.0223 | steps time 1322.37ms
+INFO - 08/01/26 00:50:56 - 0:06:10 - step 500 | loss 3.0054 | steps time 1318.34ms
+INFO - 08/01/26 00:50:56 - 0:06:10 - step 500 train loss: 3.3533886222839357 test loss: 3.073660373687744
+INFO - 08/01/26 00:50:58 - 0:06:11 - step 600 | loss 2.9680 | steps time 1325.46ms
+INFO - 08/01/26 00:50:59 - 0:06:12 - step 700 | loss 2.9306 | steps time 1318.84ms
+INFO - 08/01/26 00:51:00 - 0:06:14 - step 800 | loss 2.9016 | steps time 1319.92ms
+INFO - 08/01/26 00:51:02 - 0:06:15 - step 900 | loss 2.8360 | steps time 1319.08ms
+INFO - 08/01/26 00:51:03 - 0:06:16 - step 1000 | loss 2.7804 | steps time 1320.07ms
+INFO - 08/01/26 00:51:03 - 0:06:16 - step 1000 train loss: 2.9120967478752138 test loss: 3.1281211376190186
+INFO - 08/01/26 00:51:04 - 0:06:18 - step 1100 | loss 2.7219 | steps time 1315.42ms
+INFO - 08/01/26 00:51:05 - 0:06:19 - step 1200 | loss 2.6022 | steps time 1321.45ms
+INFO - 08/01/26 00:51:07 - 0:06:20 - step 1300 | loss 2.4841 | steps time 1322.80ms
+INFO - 08/01/26 00:51:08 - 0:06:22 - step 1400 | loss 2.3182 | steps time 1320.97ms
+INFO - 08/01/26 00:51:09 - 0:06:23 - step 1500 | loss 2.1746 | steps time 1316.47ms
+INFO - 08/01/26 00:51:09 - 0:06:23 - step 1500 train loss: 2.5367604360580445 test loss: 3.5325405597686768
+INFO - 08/01/26 00:51:11 - 0:06:24 - step 1600 | loss 1.9588 | steps time 1316.98ms
+INFO - 08/01/26 00:51:12 - 0:06:26 - step 1700 | loss 1.8162 | steps time 1311.24ms
+INFO - 08/01/26 00:51:13 - 0:06:27 - step 1800 | loss 1.5267 | steps time 1318.00ms
+INFO - 08/01/26 00:51:15 - 0:06:28 - step 1900 | loss 1.4656 | steps time 1318.82ms
+INFO - 08/01/26 00:51:16 - 0:06:30 - step 2000 | loss 1.2387 | steps time 1315.26ms
+INFO - 08/01/26 00:51:16 - 0:06:30 - step 2000 train loss: 1.6947508678436278 test loss: 4.411787509918213
+INFO - 08/01/26 00:51:17 - 0:06:31 - step 2100 | loss 1.0342 | steps time 1317.52ms
+INFO - 08/01/26 00:51:19 - 0:06:32 - step 2200 | loss 0.9454 | steps time 1319.93ms
+INFO - 08/01/26 00:51:20 - 0:06:34 - step 2300 | loss 0.7115 | steps time 1313.16ms
+INFO - 08/01/26 00:51:21 - 0:06:35 - step 2400 | loss 0.6547 | steps time 1319.83ms
+INFO - 08/01/26 00:51:23 - 0:06:36 - step 2500 | loss 0.5199 | steps time 1312.13ms
+INFO - 08/01/26 00:51:23 - 0:06:36 - step 2500 train loss: 0.872465599656105 test loss: 5.436335563659668
+INFO - 08/01/26 00:51:24 - 0:06:38 - step 2600 | loss 0.4962 | steps time 1317.07ms
+INFO - 08/01/26 00:51:25 - 0:06:39 - step 2700 | loss 0.4884 | steps time 1316.43ms
+INFO - 08/01/26 00:51:27 - 0:06:40 - step 2800 | loss 0.4657 | steps time 1315.86ms
+INFO - 08/01/26 00:51:28 - 0:06:41 - step 2900 | loss 0.3899 | steps time 1319.32ms
+INFO - 08/01/26 00:51:29 - 0:06:43 - step 3000 | loss 0.3676 | steps time 1315.76ms
+INFO - 08/01/26 00:51:29 - 0:06:43 - step 3000 train loss: 0.46705024844408033 test loss: 6.3426008224487305
+INFO - 08/01/26 00:51:31 - 0:06:44 - step 3100 | loss 0.3139 | steps time 1315.26ms
+INFO - 08/01/26 00:51:32 - 0:06:45 - step 3200 | loss 0.3128 | steps time 1315.39ms
+INFO - 08/01/26 00:51:33 - 0:06:47 - step 3300 | loss 0.2927 | steps time 1317.06ms
+INFO - 08/01/26 00:51:35 - 0:06:48 - step 3400 | loss 0.3064 | steps time 1316.79ms
+INFO - 08/01/26 00:51:36 - 0:06:49 - step 3500 | loss 0.2798 | steps time 1319.02ms
+INFO - 08/01/26 00:51:36 - 0:06:49 - step 3500 train loss: 0.3131676577925682 test loss: 7.125796318054199
+INFO - 08/01/26 00:51:37 - 0:06:51 - step 3600 | loss 0.2575 | steps time 1319.20ms
+INFO - 08/01/26 00:51:39 - 0:06:52 - step 3700 | loss 0.2510 | steps time 1317.34ms
+INFO - 08/01/26 00:51:40 - 0:06:53 - step 3800 | loss 0.2487 | steps time 1320.33ms
+INFO - 08/01/26 00:51:41 - 0:06:55 - step 3900 | loss 0.2625 | steps time 1324.97ms
+INFO - 08/01/26 00:51:43 - 0:06:56 - step 4000 | loss 0.2394 | steps time 1316.62ms
+INFO - 08/01/26 00:51:43 - 0:06:56 - step 4000 train loss: 0.24974060344696045 test loss: 7.718288421630859
+INFO - 08/01/26 00:51:44 - 0:06:57 - step 4100 | loss 0.2216 | steps time 1316.45ms
+INFO - 08/01/26 00:51:45 - 0:06:59 - step 4200 | loss 0.2109 | steps time 1316.40ms
+INFO - 08/01/26 00:51:47 - 0:07:00 - step 4300 | loss 0.2098 | steps time 1319.30ms
+INFO - 08/01/26 00:51:48 - 0:07:01 - step 4400 | loss 0.2054 | steps time 1313.90ms
+INFO - 08/01/26 00:51:49 - 0:07:03 - step 4500 | loss 0.2084 | steps time 1317.24ms
+INFO - 08/01/26 00:51:49 - 0:07:03 - step 4500 train loss: 0.21578951716423034 test loss: 8.24101448059082
+INFO - 08/01/26 00:51:51 - 0:07:04 - step 4600 | loss 0.2179 | steps time 1321.12ms
+INFO - 08/01/26 00:51:52 - 0:07:05 - step 4700 | loss 0.2179 | steps time 1318.80ms
+INFO - 08/01/26 00:51:53 - 0:07:07 - step 4800 | loss 0.1852 | steps time 1318.05ms
+INFO - 08/01/26 00:51:54 - 0:07:08 - step 4900 | loss 0.1937 | steps time 1315.66ms
+INFO - 08/01/26 00:51:56 - 0:07:09 - step 5000 | loss 0.1834 | steps time 1318.44ms
+INFO - 08/01/26 00:51:56 - 0:07:09 - step 5000 train loss: 0.1961823691725731 test loss: 8.664289474487305
+INFO - 08/01/26 00:51:57 - 0:07:11 - step 5100 | loss 0.1735 | steps time 1316.04ms
+INFO - 08/01/26 00:51:58 - 0:07:12 - step 5200 | loss 0.1899 | steps time 1315.88ms
+INFO - 08/01/26 00:52:00 - 0:07:13 - step 5300 | loss 0.1919 | steps time 1316.21ms
+INFO - 08/01/26 00:52:01 - 0:07:15 - step 5400 | loss 0.1888 | steps time 1317.98ms
+INFO - 08/01/26 00:52:02 - 0:07:16 - step 5500 | loss 0.1899 | steps time 1318.79ms
+INFO - 08/01/26 00:52:02 - 0:07:16 - step 5500 train loss: 0.18206466117501258 test loss: 9.014996528625488
+INFO - 08/01/26 00:52:04 - 0:07:17 - step 5600 | loss 0.1686 | steps time 1318.38ms
+INFO - 08/01/26 00:52:05 - 0:07:19 - step 5700 | loss 0.1874 | steps time 1318.56ms
+INFO - 08/01/26 00:52:06 - 0:07:20 - step 5800 | loss 0.1780 | steps time 1324.38ms
+INFO - 08/01/26 00:52:08 - 0:07:21 - step 5900 | loss 0.1658 | steps time 1323.66ms
+INFO - 08/01/26 00:52:09 - 0:07:23 - step 6000 | loss 0.1747 | steps time 1318.59ms
+INFO - 08/01/26 00:52:09 - 0:07:23 - step 6000 train loss: 0.17201371601223944 test loss: 9.344901084899902
+INFO - 08/01/26 00:52:10 - 0:07:24 - step 6100 | loss 0.1575 | steps time 1317.70ms
+INFO - 08/01/26 00:52:12 - 0:07:25 - step 6200 | loss 0.1658 | steps time 1317.49ms
+INFO - 08/01/26 00:52:13 - 0:07:27 - step 6300 | loss 0.1561 | steps time 1320.78ms
+INFO - 08/01/26 00:52:14 - 0:07:28 - step 6400 | loss 0.1569 | steps time 1321.79ms
+INFO - 08/01/26 00:52:16 - 0:07:29 - step 6500 | loss 0.1519 | steps time 1324.73ms
+INFO - 08/01/26 00:52:16 - 0:07:29 - step 6500 train loss: 0.16385640209913255 test loss: 9.601770401000977
+INFO - 08/01/26 00:52:17 - 0:07:31 - step 6600 | loss 0.1560 | steps time 1318.68ms
+INFO - 08/01/26 00:52:18 - 0:07:32 - step 6700 | loss 0.1591 | steps time 1321.25ms
+INFO - 08/01/26 00:52:20 - 0:07:33 - step 6800 | loss 0.1364 | steps time 1320.24ms
+INFO - 08/01/26 00:52:21 - 0:07:35 - step 6900 | loss 0.1406 | steps time 1320.08ms
+INFO - 08/01/26 00:52:22 - 0:07:36 - step 7000 | loss 0.1554 | steps time 1318.60ms
+INFO - 08/01/26 00:52:22 - 0:07:36 - step 7000 train loss: 0.15626465794444083 test loss: 9.86070442199707
+INFO - 08/01/26 00:52:24 - 0:07:37 - step 7100 | loss 0.1471 | steps time 1321.31ms
+INFO - 08/01/26 00:52:25 - 0:07:39 - step 7200 | loss 0.1467 | steps time 1322.14ms
+INFO - 08/01/26 00:52:26 - 0:07:40 - step 7300 | loss 0.1447 | steps time 1321.70ms
+INFO - 08/01/26 00:52:28 - 0:07:41 - step 7400 | loss 0.1532 | steps time 1322.87ms
+INFO - 08/01/26 00:52:29 - 0:07:42 - step 7500 | loss 0.1375 | steps time 1321.24ms
+INFO - 08/01/26 00:52:29 - 0:07:42 - step 7500 train loss: 0.14954262953996658 test loss: 10.060449600219727
+INFO - 08/01/26 00:52:30 - 0:07:44 - step 7600 | loss 0.1670 | steps time 1321.32ms
+INFO - 08/01/26 00:52:32 - 0:07:45 - step 7700 | loss 0.1472 | steps time 1322.78ms
+INFO - 08/01/26 00:52:33 - 0:07:46 - step 7800 | loss 0.1411 | steps time 1319.33ms
+INFO - 08/01/26 00:52:34 - 0:07:48 - step 7900 | loss 0.1399 | steps time 1321.10ms
+INFO - 08/01/26 00:52:36 - 0:07:49 - step 8000 | loss 0.1454 | steps time 1322.26ms
+INFO - 08/01/26 00:52:36 - 0:07:49 - step 8000 train loss: 0.14543465211987494 test loss: 10.266301155090332
+INFO - 08/01/26 00:52:37 - 0:07:50 - step 8100 | loss 0.1429 | steps time 1317.79ms
+INFO - 08/01/26 00:52:38 - 0:07:52 - step 8200 | loss 0.1447 | steps time 1323.61ms
+INFO - 08/01/26 00:52:40 - 0:07:53 - step 8300 | loss 0.1417 | steps time 1321.40ms
+INFO - 08/01/26 00:52:41 - 0:07:54 - step 8400 | loss 0.1392 | steps time 1321.80ms
+INFO - 08/01/26 00:52:42 - 0:07:56 - step 8500 | loss 0.1374 | steps time 1320.77ms
+INFO - 08/01/26 00:52:42 - 0:07:56 - step 8500 train loss: 0.14084054060280324 test loss: 10.465559005737305
+INFO - 08/01/26 00:52:44 - 0:07:57 - step 8600 | loss 0.1384 | steps time 1316.02ms
+INFO - 08/01/26 00:52:45 - 0:07:58 - step 8700 | loss 0.1326 | steps time 1322.18ms
+INFO - 08/01/26 00:52:46 - 0:08:00 - step 8800 | loss 0.1434 | steps time 1321.43ms
+INFO - 08/01/26 00:52:48 - 0:08:01 - step 8900 | loss 0.1477 | steps time 1322.46ms
+INFO - 08/01/26 00:52:49 - 0:08:02 - step 9000 | loss 0.1401 | steps time 1322.38ms
+INFO - 08/01/26 00:52:49 - 0:08:02 - step 9000 train loss: 0.13610766631364823 test loss: 10.62680721282959
+INFO - 08/01/26 00:52:50 - 0:08:04 - step 9100 | loss 0.1360 | steps time 1322.55ms
+INFO - 08/01/26 00:52:52 - 0:08:05 - step 9200 | loss 0.1344 | steps time 1322.42ms
+INFO - 08/01/26 00:52:53 - 0:08:06 - step 9300 | loss 0.1338 | steps time 1318.74ms
+INFO - 08/01/26 00:52:54 - 0:08:08 - step 9400 | loss 0.1259 | steps time 1316.15ms
+INFO - 08/01/26 00:52:56 - 0:08:09 - step 9500 | loss 0.1370 | steps time 1318.19ms
+INFO - 08/01/26 00:52:56 - 0:08:09 - step 9500 train loss: 0.13207170854508876 test loss: 10.776195526123047
+INFO - 08/01/26 00:52:57 - 0:08:10 - step 9600 | loss 0.1489 | steps time 1314.19ms
+INFO - 08/01/26 00:52:58 - 0:08:12 - step 9700 | loss 0.1226 | steps time 1317.05ms
+INFO - 08/01/26 00:53:00 - 0:08:13 - step 9800 | loss 0.1433 | steps time 1323.32ms
+INFO - 08/01/26 00:53:01 - 0:08:14 - step 9900 | loss 0.1338 | steps time 1319.28ms
+INFO - 08/01/26 00:53:02 - 0:08:16 - step 10000 | loss 0.1314 | steps time 1321.73ms
+INFO - 08/01/26 00:53:02 - 0:08:16 - step 10000 train loss: 0.12969792257249355 test loss: 10.958833694458008
+INFO - 08/01/26 00:53:03 - 0:08:16 - [Epoch 0 AFTER_TRAIN] CPU: 0.0% | RAM: 1158.3MB
+INFO - 08/01/26 00:53:03 - 0:08:16 - Sample with temperature 1.0 to 1.0
+INFO - 08/01/26 00:53:03 - 0:08:16 - 0 / 50000 samples generated, 0 scored
+INFO - 08/01/26 01:01:13 - 0:16:27 - ### Score distribution ###
+INFO - 08/01/26 01:01:13 - 0:16:27 - Invalid examples: before local search: 0, after: 0
+INFO - 08/01/26 01:01:14 - 0:16:27 - Valid examples: 50000
+INFO - 08/01/26 01:01:14 - 0:16:27 - Mean score: 155.02126
+INFO - 08/01/26 01:01:14 - 0:16:27 - Median score: 155.0
+INFO - 08/01/26 01:01:14 - 0:16:27 - Stdev score: 1.107715014365636
+INFO - 08/01/26 01:01:14 - 0:16:27 - Max score: 161
+INFO - 08/01/26 01:01:14 - 0:16:27 - Top 1 percentile score: 158.0
+INFO - 08/01/26 01:01:14 - 0:16:27 - Distribution of scores:
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 151: Count: 2
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 152: Count: 214
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 153: Count: 3247
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 154: Count: 12788
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 155: Count: 18084
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 156: Count: 11223
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 157: Count: 3648
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 158: Count: 709
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 159: Count: 77
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 160: Count: 7
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 161: Count: 1
+INFO - 08/01/26 01:01:14 - 0:16:27 - --------------------------------
+INFO - 08/01/26 01:01:14 - 0:16:27 - [Epoch 0 AFTER_SAMPLE] CPU: 0.0% | RAM: 1882.9MB
+INFO - 08/01/26 01:01:14 - 0:16:27 - Unique processing: 50000 examples left, 0 duplicates
+INFO - 08/01/26 01:01:14 - 0:16:27 - ### Score distribution ###
+INFO - 08/01/26 01:01:14 - 0:16:27 - Valid examples: 50000
+INFO - 08/01/26 01:01:14 - 0:16:27 - Mean score: 155.02126
+INFO - 08/01/26 01:01:14 - 0:16:27 - Median score: 155.0
+INFO - 08/01/26 01:01:14 - 0:16:27 - Stdev score: 1.107715014365636
+INFO - 08/01/26 01:01:14 - 0:16:27 - Max score: 161
+INFO - 08/01/26 01:01:14 - 0:16:27 - Top 1 percentile score: 158.0
+INFO - 08/01/26 01:01:14 - 0:16:27 - Distribution of scores:
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 151: Count: 2
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 152: Count: 214
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 153: Count: 3247
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 154: Count: 12788
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 155: Count: 18084
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 156: Count: 11223
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 157: Count: 3648
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 158: Count: 709
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 159: Count: 77
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 160: Count: 7
+INFO - 08/01/26 01:01:14 - 0:16:27 - Score 161: Count: 1
+INFO - 08/01/26 01:01:14 - 0:16:27 - --------------------------------
+INFO - 08/01/26 01:01:14 - 0:16:27 - New train and test generated. Size are train: 4500, test 500
+INFO - 08/01/26 01:01:14 - 0:16:27 - Unique data computed for original train set: 4500, generated train set: 4500
+INFO - 08/01/26 01:01:14 - 0:16:27 - Final train and test generated. Size are train: 5000, test 500
+INFO - 08/01/26 01:01:14 - 0:16:28 - [Epoch 0 AFTER_UPDATE_DATASETS] CPU: 10.0% | RAM: 1874.5MB
+INFO - 08/01/26 01:01:15 - 0:16:28 - ### Score distribution ###
+INFO - 08/01/26 01:01:15 - 0:16:28 - Valid examples: 5000
+INFO - 08/01/26 01:01:15 - 0:16:28 - Mean score: 155.9412
+INFO - 08/01/26 01:01:15 - 0:16:28 - Median score: 157.0
+INFO - 08/01/26 01:01:15 - 0:16:28 - Stdev score: 3.429416093002975
+INFO - 08/01/26 01:01:15 - 0:16:28 - Max score: 161
+INFO - 08/01/26 01:01:15 - 0:16:28 - Top 1 percentile score: 159.0
+INFO - 08/01/26 01:01:15 - 0:16:28 - Distribution of scores:
+INFO - 08/01/26 01:01:15 - 0:16:28 - Score 145: Count: 173
+INFO - 08/01/26 01:01:15 - 0:16:28 - Score 146: Count: 260
+INFO - 08/01/26 01:01:15 - 0:16:28 - Score 147: Count: 59
+INFO - 08/01/26 01:01:15 - 0:16:28 - Score 148: Count: 7
+INFO - 08/01/26 01:01:15 - 0:16:28 - Score 149: Count: 1
+INFO - 08/01/26 01:01:15 - 0:16:28 - Score 156: Count: 499
+INFO - 08/01/26 01:01:15 - 0:16:28 - Score 157: Count: 3286
+INFO - 08/01/26 01:01:15 - 0:16:28 - Score 158: Count: 637
+INFO - 08/01/26 01:01:15 - 0:16:28 - Score 159: Count: 70
+INFO - 08/01/26 01:01:15 - 0:16:28 - Score 160: Count: 7
+INFO - 08/01/26 01:01:15 - 0:16:28 - Score 161: Count: 1
+INFO - 08/01/26 01:01:15 - 0:16:28 - --------------------------------
+INFO - 08/01/26 01:01:15 - 0:16:28 - ==== Starting Epoch 1 =====
+INFO - 08/01/26 01:01:15 - 0:16:28 - [Epoch 1 START] CPU: 0.0% | RAM: 1734.8MB
+INFO - 08/01/26 01:01:16 - 0:16:29 - Memory allocated: 100.72MB, reserved: 144.00MB
+INFO - 08/01/26 01:01:17 - 0:16:31 - step 100 | loss 2.9580 | steps time 1373.33ms
+INFO - 08/01/26 01:01:19 - 0:16:32 - step 200 | loss 2.8835 | steps time 1356.89ms
+INFO - 08/01/26 01:01:20 - 0:16:34 - step 300 | loss 2.8286 | steps time 1356.82ms
+INFO - 08/01/26 01:01:21 - 0:16:35 - step 400 | loss 2.8310 | steps time 1359.52ms
+INFO - 08/01/26 01:01:23 - 0:16:36 - step 500 | loss 2.6561 | steps time 1361.25ms
+INFO - 08/01/26 01:01:23 - 0:16:36 - step 500 train loss: 3.0192774438858034 test loss: 3.0777602195739746
+INFO - 08/01/26 01:01:24 - 0:16:38 - step 600 | loss 2.6291 | steps time 1360.62ms
+INFO - 08/01/26 01:01:26 - 0:16:39 - step 700 | loss 2.3584 | steps time 1370.41ms
+INFO - 08/01/26 01:01:27 - 0:16:40 - step 800 | loss 2.1773 | steps time 1357.24ms
+INFO - 08/01/26 01:01:28 - 0:16:42 - step 900 | loss 1.9376 | steps time 1360.11ms
+INFO - 08/01/26 01:01:30 - 0:16:43 - step 1000 | loss 1.6178 | steps time 1364.29ms
+INFO - 08/01/26 01:01:30 - 0:16:43 - step 1000 train loss: 2.203165366649628 test loss: 4.24078369140625
+INFO - 08/01/26 01:01:31 - 0:16:45 - step 1100 | loss 1.3822 | steps time 1361.31ms
+INFO - 08/01/26 01:01:32 - 0:16:46 - step 1200 | loss 1.1696 | steps time 1358.88ms
+INFO - 08/01/26 01:01:34 - 0:16:47 - step 1300 | loss 1.0811 | steps time 1358.83ms
+INFO - 08/01/26 01:01:35 - 0:16:49 - step 1400 | loss 0.8437 | steps time 1359.60ms
+INFO - 08/01/26 01:01:36 - 0:16:50 - step 1500 | loss 0.6793 | steps time 1362.48ms
+INFO - 08/01/26 01:01:36 - 0:16:50 - step 1500 train loss: 1.1476155877113343 test loss: 6.432094573974609
+INFO - 08/01/26 01:01:38 - 0:16:51 - step 1600 | loss 0.5589 | steps time 1364.98ms
+INFO - 08/01/26 01:01:39 - 0:16:53 - step 1700 | loss 0.5723 | steps time 1366.13ms
+INFO - 08/01/26 01:01:41 - 0:16:54 - step 1800 | loss 0.4607 | steps time 1362.21ms
+INFO - 08/01/26 01:01:42 - 0:16:55 - step 1900 | loss 0.3934 | steps time 1362.78ms
+INFO - 08/01/26 01:01:43 - 0:16:57 - step 2000 | loss 0.3821 | steps time 1361.83ms
+INFO - 08/01/26 01:01:43 - 0:16:57 - step 2000 train loss: 0.5337621132731438 test loss: 7.438841342926025
+INFO - 08/01/26 01:01:45 - 0:16:58 - step 2100 | loss 0.3755 | steps time 1363.16ms
+INFO - 08/01/26 01:01:46 - 0:17:00 - step 2200 | loss 0.3540 | steps time 1366.97ms
+INFO - 08/01/26 01:01:47 - 0:17:01 - step 2300 | loss 0.3401 | steps time 1364.73ms
+INFO - 08/01/26 01:01:49 - 0:17:02 - step 2400 | loss 0.2794 | steps time 1371.61ms
+INFO - 08/01/26 01:01:50 - 0:17:04 - step 2500 | loss 0.2468 | steps time 1369.56ms
+INFO - 08/01/26 01:01:50 - 0:17:04 - step 2500 train loss: 0.326399827003479 test loss: 8.05763053894043
+INFO - 08/01/26 01:01:52 - 0:17:05 - step 2600 | loss 0.2909 | steps time 1366.60ms
+INFO - 08/01/26 01:01:53 - 0:17:06 - step 2700 | loss 0.2688 | steps time 1364.62ms
+INFO - 08/01/26 01:01:54 - 0:17:08 - step 2800 | loss 0.2440 | steps time 1365.70ms
+INFO - 08/01/26 01:01:56 - 0:17:09 - step 2900 | loss 0.2174 | steps time 1362.54ms
+INFO - 08/01/26 01:01:57 - 0:17:11 - step 3000 | loss 0.2266 | steps time 1367.46ms
+INFO - 08/01/26 01:01:57 - 0:17:11 - step 3000 train loss: 0.259181687772274 test loss: 8.434123992919922
+INFO - 08/01/26 01:01:58 - 0:17:12 - step 3100 | loss 0.2234 | steps time 1369.20ms
+INFO - 08/01/26 01:02:00 - 0:17:13 - step 3200 | loss 0.2141 | steps time 1365.79ms
+INFO - 08/01/26 01:02:01 - 0:17:15 - step 3300 | loss 0.2273 | steps time 1365.20ms
+INFO - 08/01/26 01:02:03 - 0:17:16 - step 3400 | loss 0.2125 | steps time 1367.85ms
+INFO - 08/01/26 01:02:04 - 0:17:17 - step 3500 | loss 0.2163 | steps time 1366.78ms
+INFO - 08/01/26 01:02:04 - 0:17:17 - step 3500 train loss: 0.22398435562849045 test loss: 8.762402534484863
+INFO - 08/01/26 01:02:05 - 0:17:19 - step 3600 | loss 0.2357 | steps time 1365.55ms
+INFO - 08/01/26 01:02:07 - 0:17:20 - step 3700 | loss 0.2192 | steps time 1365.67ms
+INFO - 08/01/26 01:02:08 - 0:17:22 - step 3800 | loss 0.1924 | steps time 1364.62ms
+INFO - 08/01/26 01:02:09 - 0:17:23 - step 3900 | loss 0.2138 | steps time 1367.41ms
+INFO - 08/01/26 01:02:11 - 0:17:24 - step 4000 | loss 0.2161 | steps time 1363.43ms
+INFO - 08/01/26 01:02:11 - 0:17:24 - step 4000 train loss: 0.20524881613254548 test loss: 9.06452751159668
+INFO - 08/01/26 01:02:12 - 0:17:26 - step 4100 | loss 0.2009 | steps time 1367.15ms
+INFO - 08/01/26 01:02:14 - 0:17:27 - step 4200 | loss 0.1892 | steps time 1367.55ms
+INFO - 08/01/26 01:02:15 - 0:17:28 - step 4300 | loss 0.1883 | steps time 1364.25ms
+INFO - 08/01/26 01:02:16 - 0:17:30 - step 4400 | loss 0.1754 | steps time 1366.35ms
+INFO - 08/01/26 01:02:18 - 0:17:31 - step 4500 | loss 0.1881 | steps time 1365.13ms
+INFO - 08/01/26 01:02:18 - 0:17:31 - step 4500 train loss: 0.18991198724508285 test loss: 9.307079315185547
+INFO - 08/01/26 01:02:19 - 0:17:33 - step 4600 | loss 0.1725 | steps time 1364.44ms
+INFO - 08/01/26 01:02:20 - 0:17:34 - step 4700 | loss 0.1649 | steps time 1366.49ms
+INFO - 08/01/26 01:02:22 - 0:17:35 - step 4800 | loss 0.1809 | steps time 1370.46ms
+INFO - 08/01/26 01:02:23 - 0:17:37 - step 4900 | loss 0.1796 | steps time 1360.14ms
+INFO - 08/01/26 01:02:25 - 0:17:38 - step 5000 | loss 0.1577 | steps time 1368.64ms
+INFO - 08/01/26 01:02:25 - 0:17:38 - step 5000 train loss: 0.18143931621313095 test loss: 9.488913536071777
+INFO - 08/01/26 01:02:26 - 0:17:39 - step 5100 | loss 0.1756 | steps time 1365.36ms
+INFO - 08/01/26 01:02:27 - 0:17:41 - step 5200 | loss 0.1745 | steps time 1365.60ms
+INFO - 08/01/26 01:02:29 - 0:17:42 - step 5300 | loss 0.1813 | steps time 1363.30ms
+INFO - 08/01/26 01:02:30 - 0:17:44 - step 5400 | loss 0.1745 | steps time 1371.54ms
+INFO - 08/01/26 01:02:31 - 0:17:45 - step 5500 | loss 0.1858 | steps time 1363.88ms
+INFO - 08/01/26 01:02:31 - 0:17:45 - step 5500 train loss: 0.17304556366801263 test loss: 9.68582534790039
+INFO - 08/01/26 01:02:33 - 0:17:46 - step 5600 | loss 0.1667 | steps time 1360.82ms
+INFO - 08/01/26 01:02:34 - 0:17:48 - step 5700 | loss 0.1813 | steps time 1362.13ms
+INFO - 08/01/26 01:02:36 - 0:17:49 - step 5800 | loss 0.1528 | steps time 1361.02ms
+INFO - 08/01/26 01:02:37 - 0:17:50 - step 5900 | loss 0.1823 | steps time 1349.70ms
+INFO - 08/01/26 01:02:38 - 0:17:52 - step 6000 | loss 0.1584 | steps time 1365.56ms
+INFO - 08/01/26 01:02:38 - 0:17:52 - step 6000 train loss: 0.16657352256774902 test loss: 9.841161727905273
+INFO - 08/01/26 01:02:40 - 0:17:53 - step 6100 | loss 0.1654 | steps time 1367.34ms
+INFO - 08/01/26 01:02:41 - 0:17:54 - step 6200 | loss 0.1696 | steps time 1367.76ms
+INFO - 08/01/26 01:02:42 - 0:17:56 - step 6300 | loss 0.1608 | steps time 1367.56ms
+INFO - 08/01/26 01:02:44 - 0:17:57 - step 6400 | loss 0.1621 | steps time 1366.21ms
+INFO - 08/01/26 01:02:45 - 0:17:59 - step 6500 | loss 0.1678 | steps time 1368.83ms
+INFO - 08/01/26 01:02:45 - 0:17:59 - step 6500 train loss: 0.16005350077152253 test loss: 9.986653327941895
+INFO - 08/01/26 01:02:47 - 0:18:00 - step 6600 | loss 0.1680 | steps time 1368.56ms
+INFO - 08/01/26 01:02:48 - 0:18:01 - step 6700 | loss 0.1461 | steps time 1366.90ms
+INFO - 08/01/26 01:02:49 - 0:18:03 - step 6800 | loss 0.1572 | steps time 1368.43ms
+INFO - 08/01/26 01:02:51 - 0:18:04 - step 6900 | loss 0.1476 | steps time 1366.22ms
+INFO - 08/01/26 01:02:52 - 0:18:05 - step 7000 | loss 0.1490 | steps time 1362.99ms
+INFO - 08/01/26 01:02:52 - 0:18:05 - step 7000 train loss: 0.15494828578829764 test loss: 10.153388023376465
+INFO - 08/01/26 01:02:53 - 0:18:07 - step 7100 | loss 0.1482 | steps time 1372.97ms
+INFO - 08/01/26 01:02:55 - 0:18:08 - step 7200 | loss 0.1656 | steps time 1366.58ms
+INFO - 08/01/26 01:02:56 - 0:18:10 - step 7300 | loss 0.1636 | steps time 1368.15ms
+INFO - 08/01/26 01:02:57 - 0:18:11 - step 7400 | loss 0.1594 | steps time 1366.19ms
+INFO - 08/01/26 01:02:59 - 0:18:12 - step 7500 | loss 0.1600 | steps time 1364.11ms
+INFO - 08/01/26 01:02:59 - 0:18:12 - step 7500 train loss: 0.15226543623209 test loss: 10.261297225952148
+INFO - 08/01/26 01:03:00 - 0:18:14 - step 7600 | loss 0.1390 | steps time 1370.42ms
+INFO - 08/01/26 01:03:02 - 0:18:15 - step 7700 | loss 0.1333 | steps time 1353.86ms
+INFO - 08/01/26 01:03:03 - 0:18:16 - step 7800 | loss 0.1310 | steps time 1361.21ms
+INFO - 08/01/26 01:03:04 - 0:18:18 - step 7900 | loss 0.1424 | steps time 1364.23ms
+INFO - 08/01/26 01:03:06 - 0:18:19 - step 8000 | loss 0.1251 | steps time 1365.83ms
+INFO - 08/01/26 01:03:06 - 0:18:19 - step 8000 train loss: 0.14740407553315163 test loss: 10.38377571105957
+INFO - 08/01/26 01:03:07 - 0:18:21 - step 8100 | loss 0.1390 | steps time 1372.05ms
+INFO - 08/01/26 01:03:08 - 0:18:22 - step 8200 | loss 0.1419 | steps time 1364.63ms
+INFO - 08/01/26 01:03:10 - 0:18:23 - step 8300 | loss 0.1475 | steps time 1364.94ms
+INFO - 08/01/26 01:03:11 - 0:18:25 - step 8400 | loss 0.1381 | steps time 1367.29ms
+INFO - 08/01/26 01:03:13 - 0:18:26 - step 8500 | loss 0.1355 | steps time 1362.50ms
+INFO - 08/01/26 01:03:13 - 0:18:26 - step 8500 train loss: 0.1440103765130043 test loss: 10.51467227935791
+INFO - 08/01/26 01:03:14 - 0:18:27 - step 8600 | loss 0.1489 | steps time 1367.71ms
+INFO - 08/01/26 01:03:15 - 0:18:29 - step 8700 | loss 0.1376 | steps time 1364.39ms
+INFO - 08/01/26 01:03:17 - 0:18:30 - step 8800 | loss 0.1446 | steps time 1362.72ms
+INFO - 08/01/26 01:03:18 - 0:18:32 - step 8900 | loss 0.1368 | steps time 1360.73ms
+INFO - 08/01/26 01:03:19 - 0:18:33 - step 9000 | loss 0.1465 | steps time 1364.72ms
+INFO - 08/01/26 01:03:19 - 0:18:33 - step 9000 train loss: 0.14156799478828908 test loss: 10.634794235229492
+INFO - 08/01/26 01:03:21 - 0:18:34 - step 9100 | loss 0.1400 | steps time 1362.44ms
+INFO - 08/01/26 01:03:22 - 0:18:36 - step 9200 | loss 0.1394 | steps time 1361.71ms
+INFO - 08/01/26 01:03:24 - 0:18:37 - step 9300 | loss 0.1284 | steps time 1360.38ms
+INFO - 08/01/26 01:03:25 - 0:18:38 - step 9400 | loss 0.1267 | steps time 1357.50ms
+INFO - 08/01/26 01:03:26 - 0:18:40 - step 9500 | loss 0.1327 | steps time 1364.18ms
+INFO - 08/01/26 01:03:26 - 0:18:40 - step 9500 train loss: 0.13883934620022773 test loss: 10.728333473205566
+INFO - 08/01/26 01:03:28 - 0:18:41 - step 9600 | loss 0.1285 | steps time 1364.67ms
+INFO - 08/01/26 01:03:29 - 0:18:43 - step 9700 | loss 0.1324 | steps time 1366.48ms
+INFO - 08/01/26 01:03:30 - 0:18:44 - step 9800 | loss 0.1346 | steps time 1367.83ms
+INFO - 08/01/26 01:03:32 - 0:18:45 - step 9900 | loss 0.1382 | steps time 1363.34ms
+INFO - 08/01/26 01:03:33 - 0:18:47 - step 10000 | loss 0.1450 | steps time 1366.89ms
+INFO - 08/01/26 01:03:33 - 0:18:47 - step 10000 train loss: 0.1351758662313223 test loss: 10.814173698425293
+INFO - 08/01/26 01:03:34 - 0:18:47 - [Epoch 1 AFTER_TRAIN] CPU: 0.0% | RAM: 1737.8MB
+INFO - 08/01/26 01:03:34 - 0:18:48 - Sample with temperature 1.0 to 1.0
+INFO - 08/01/26 01:03:34 - 0:18:48 - 0 / 50000 samples generated, 0 scored
+INFO - 08/01/26 01:11:41 - 0:26:54 - ### Score distribution ###
+INFO - 08/01/26 01:11:41 - 0:26:54 - Invalid examples: before local search: 0, after: 0
+INFO - 08/01/26 01:11:41 - 0:26:54 - Valid examples: 50000
+INFO - 08/01/26 01:11:41 - 0:26:54 - Mean score: 155.1218
+INFO - 08/01/26 01:11:41 - 0:26:54 - Median score: 155.0
+INFO - 08/01/26 01:11:41 - 0:26:54 - Stdev score: 1.1873133344905569
+INFO - 08/01/26 01:11:41 - 0:26:54 - Max score: 162
+INFO - 08/01/26 01:11:41 - 0:26:54 - Top 1 percentile score: 158.0
+INFO - 08/01/26 01:11:41 - 0:26:54 - Distribution of scores:
+INFO - 08/01/26 01:11:41 - 0:26:54 - Score 152: Count: 193
+INFO - 08/01/26 01:11:41 - 0:26:54 - Score 153: Count: 3069
+INFO - 08/01/26 01:11:41 - 0:26:54 - Score 154: Count: 12347
+INFO - 08/01/26 01:11:41 - 0:26:54 - Score 155: Count: 17217
+INFO - 08/01/26 01:11:41 - 0:26:54 - Score 156: Count: 10835
+INFO - 08/01/26 01:11:41 - 0:26:54 - Score 157: Count: 4902
+INFO - 08/01/26 01:11:41 - 0:26:54 - Score 158: Count: 1261
+INFO - 08/01/26 01:11:41 - 0:26:54 - Score 159: Count: 150
+INFO - 08/01/26 01:11:41 - 0:26:54 - Score 160: Count: 25
+INFO - 08/01/26 01:11:41 - 0:26:54 - Score 162: Count: 1
+INFO - 08/01/26 01:11:41 - 0:26:54 - --------------------------------
+INFO - 08/01/26 01:11:41 - 0:26:55 - [Epoch 1 AFTER_SAMPLE] CPU: 0.0% | RAM: 2079.3MB
+INFO - 08/01/26 01:11:41 - 0:26:55 - Unique processing: 48584 examples left, 1416 duplicates
+INFO - 08/01/26 01:11:41 - 0:26:55 - ### Score distribution ###
+INFO - 08/01/26 01:11:41 - 0:26:55 - Valid examples: 48584
+INFO - 08/01/26 01:11:41 - 0:26:55 - Mean score: 155.0608224930018
+INFO - 08/01/26 01:11:41 - 0:26:55 - Median score: 155.0
+INFO - 08/01/26 01:11:41 - 0:26:55 - Stdev score: 1.1433066177957014
+INFO - 08/01/26 01:11:41 - 0:26:55 - Max score: 162
+INFO - 08/01/26 01:11:41 - 0:26:55 - Top 1 percentile score: 158.0
+INFO - 08/01/26 01:11:41 - 0:26:55 - Distribution of scores:
+INFO - 08/01/26 01:11:41 - 0:26:55 - Score 152: Count: 193
+INFO - 08/01/26 01:11:41 - 0:26:55 - Score 153: Count: 3069
+INFO - 08/01/26 01:11:41 - 0:26:55 - Score 154: Count: 12347
+INFO - 08/01/26 01:11:41 - 0:26:55 - Score 155: Count: 17217
+INFO - 08/01/26 01:11:41 - 0:26:55 - Score 156: Count: 10726
+INFO - 08/01/26 01:11:41 - 0:26:55 - Score 157: Count: 3951
+INFO - 08/01/26 01:11:41 - 0:26:55 - Score 158: Count: 945
+INFO - 08/01/26 01:11:41 - 0:26:55 - Score 159: Count: 126
+INFO - 08/01/26 01:11:41 - 0:26:55 - Score 160: Count: 9
+INFO - 08/01/26 01:11:41 - 0:26:55 - Score 162: Count: 1
+INFO - 08/01/26 01:11:41 - 0:26:55 - --------------------------------
+INFO - 08/01/26 01:11:41 - 0:26:55 - New train and test generated. Size are train: 4500, test 500
+INFO - 08/01/26 01:11:41 - 0:26:55 - Unique data computed for original train set: 5000, generated train set: 4045
+INFO - 08/01/26 01:11:41 - 0:26:55 - Final train and test generated. Size are train: 5000, test 500
+INFO - 08/01/26 01:11:42 - 0:26:55 - [Epoch 1 AFTER_UPDATE_DATASETS] CPU: 0.0% | RAM: 2079.3MB
+INFO - 08/01/26 01:11:42 - 0:26:56 - ### Score distribution ###
+INFO - 08/01/26 01:11:42 - 0:26:56 - Valid examples: 5000
+INFO - 08/01/26 01:11:42 - 0:26:56 - Mean score: 157.3612
+INFO - 08/01/26 01:11:42 - 0:26:56 - Median score: 157.0
+INFO - 08/01/26 01:11:42 - 0:26:56 - Stdev score: 0.5670968874680544
+INFO - 08/01/26 01:11:42 - 0:26:56 - Max score: 162
+INFO - 08/01/26 01:11:42 - 0:26:56 - Top 1 percentile score: 159.0
+INFO - 08/01/26 01:11:42 - 0:26:56 - Distribution of scores:
+INFO - 08/01/26 01:11:42 - 0:26:56 - Score 157: Count: 3400
+INFO - 08/01/26 01:11:42 - 0:26:56 - Score 158: Count: 1411
+INFO - 08/01/26 01:11:42 - 0:26:56 - Score 159: Count: 175
+INFO - 08/01/26 01:11:42 - 0:26:56 - Score 160: Count: 12
+INFO - 08/01/26 01:11:42 - 0:26:56 - Score 161: Count: 1
+INFO - 08/01/26 01:11:42 - 0:26:56 - Score 162: Count: 1
+INFO - 08/01/26 01:11:42 - 0:26:56 - --------------------------------
+INFO - 08/01/26 01:11:42 - 0:26:56 - ==== Starting Epoch 2 =====
+INFO - 08/01/26 01:11:42 - 0:26:56 - [Epoch 2 START] CPU: 0.0% | RAM: 1755.8MB
+INFO - 08/01/26 01:11:43 - 0:26:57 - Memory allocated: 100.72MB, reserved: 144.00MB
+INFO - 08/01/26 01:11:45 - 0:26:58 - step 100 | loss 0.8748 | steps time 1390.92ms
+INFO - 08/01/26 01:11:46 - 0:27:00 - step 200 | loss 0.7183 | steps time 1437.21ms
+INFO - 08/01/26 01:11:48 - 0:27:01 - step 300 | loss 0.7150 | steps time 1439.88ms
+INFO - 08/01/26 01:11:49 - 0:27:03 - step 400 | loss 0.3075 | steps time 1429.36ms
+INFO - 08/01/26 01:11:51 - 0:27:04 - step 500 | loss 0.2722 | steps time 1419.69ms
+INFO - 08/01/26 01:11:51 - 0:27:04 - step 500 train loss: 0.6791636169850827 test loss: 7.6520256996154785
+INFO - 08/01/26 01:11:52 - 0:27:05 - step 600 | loss 0.3068 | steps time 1330.73ms
+INFO - 08/01/26 01:11:53 - 0:27:07 - step 700 | loss 0.3099 | steps time 1412.14ms
+INFO - 08/01/26 01:11:55 - 0:27:08 - step 800 | loss 0.2259 | steps time 1338.38ms
+INFO - 08/01/26 01:11:56 - 0:27:10 - step 900 | loss 0.2046 | steps time 1384.30ms
+INFO - 08/01/26 01:11:57 - 0:27:11 - step 1000 | loss 0.2091 | steps time 1417.64ms
+INFO - 08/01/26 01:11:57 - 0:27:11 - step 1000 train loss: 0.26074656248092654 test loss: 8.799405097961426
+INFO - 08/01/26 01:11:59 - 0:27:12 - step 1100 | loss 0.2218 | steps time 1396.03ms
+INFO - 08/01/26 01:12:00 - 0:27:14 - step 1200 | loss 0.2294 | steps time 1383.54ms
+INFO - 08/01/26 01:12:02 - 0:27:15 - step 1300 | loss 0.1570 | steps time 1397.73ms
+INFO - 08/01/26 01:12:03 - 0:27:17 - step 1400 | loss 0.1650 | steps time 1408.01ms
+INFO - 08/01/26 01:12:04 - 0:27:18 - step 1500 | loss 0.2141 | steps time 1395.43ms
+INFO - 08/01/26 01:12:05 - 0:27:18 - step 1500 train loss: 0.19462850907444953 test loss: 9.018243789672852
+INFO - 08/01/26 01:12:06 - 0:27:19 - step 1600 | loss 0.1994 | steps time 1400.68ms
+INFO - 08/01/26 01:12:07 - 0:27:21 - step 1700 | loss 0.2011 | steps time 1404.04ms
+INFO - 08/01/26 01:12:09 - 0:27:22 - step 1800 | loss 0.1656 | steps time 1402.07ms
+INFO - 08/01/26 01:12:10 - 0:27:24 - step 1900 | loss 0.1593 | steps time 1398.34ms
+INFO - 08/01/26 01:12:12 - 0:27:25 - step 2000 | loss 0.1523 | steps time 1393.10ms
+INFO - 08/01/26 01:12:12 - 0:27:25 - step 2000 train loss: 0.17364230015873908 test loss: 9.134516716003418
+INFO - 08/01/26 01:12:13 - 0:27:26 - step 2100 | loss 0.1878 | steps time 1394.86ms
+INFO - 08/01/26 01:12:14 - 0:27:28 - step 2200 | loss 0.1457 | steps time 1416.80ms
+INFO - 08/01/26 01:12:16 - 0:27:29 - step 2300 | loss 0.1621 | steps time 1422.01ms
+INFO - 08/01/26 01:12:17 - 0:27:31 - step 2400 | loss 0.1598 | steps time 1418.15ms
+INFO - 08/01/26 01:12:19 - 0:27:32 - step 2500 | loss 0.1823 | steps time 1429.18ms
+INFO - 08/01/26 01:12:19 - 0:27:32 - step 2500 train loss: 0.16353677049279214 test loss: 9.223416328430176
+INFO - 08/01/26 01:12:20 - 0:27:34 - step 2600 | loss 0.1762 | steps time 1428.58ms
+INFO - 08/01/26 01:12:21 - 0:27:35 - step 2700 | loss 0.1557 | steps time 1389.26ms
+INFO - 08/01/26 01:12:23 - 0:27:36 - step 2800 | loss 0.1730 | steps time 1382.84ms
+INFO - 08/01/26 01:12:24 - 0:27:38 - step 2900 | loss 0.1452 | steps time 1419.50ms
+INFO - 08/01/26 01:12:26 - 0:27:39 - step 3000 | loss 0.1625 | steps time 1425.70ms
+INFO - 08/01/26 01:12:26 - 0:27:39 - step 3000 train loss: 0.15458189713954926 test loss: 9.328582763671875
+INFO - 08/01/26 01:12:27 - 0:27:41 - step 3100 | loss 0.1834 | steps time 1427.55ms
+INFO - 08/01/26 01:12:29 - 0:27:42 - step 3200 | loss 0.1519 | steps time 1424.78ms
+INFO - 08/01/26 01:12:30 - 0:27:44 - step 3300 | loss 0.1363 | steps time 1425.97ms
+INFO - 08/01/26 01:12:31 - 0:27:45 - step 3400 | loss 0.1655 | steps time 1424.43ms
+INFO - 08/01/26 01:12:33 - 0:27:46 - step 3500 | loss 0.1359 | steps time 1422.42ms
+INFO - 08/01/26 01:12:33 - 0:27:46 - step 3500 train loss: 0.1477052807211876 test loss: 9.390666961669922
+INFO - 08/01/26 01:12:34 - 0:27:48 - step 3600 | loss 0.1348 | steps time 1426.90ms
+INFO - 08/01/26 01:12:36 - 0:27:49 - step 3700 | loss 0.1699 | steps time 1426.94ms
+INFO - 08/01/26 01:12:37 - 0:27:51 - step 3800 | loss 0.1283 | steps time 1426.17ms
+INFO - 08/01/26 01:12:39 - 0:27:52 - step 3900 | loss 0.1283 | steps time 1427.75ms
+INFO - 08/01/26 01:12:40 - 0:27:54 - step 4000 | loss 0.1495 | steps time 1444.46ms
+INFO - 08/01/26 01:12:40 - 0:27:54 - step 4000 train loss: 0.14357494208216667 test loss: 9.485297203063965
+INFO - 08/01/26 01:12:42 - 0:27:55 - step 4100 | loss 0.1324 | steps time 1443.20ms
+INFO - 08/01/26 01:12:43 - 0:27:56 - step 4200 | loss 0.1518 | steps time 1454.20ms
+INFO - 08/01/26 01:12:44 - 0:27:58 - step 4300 | loss 0.1403 | steps time 1434.62ms
+INFO - 08/01/26 01:12:46 - 0:27:59 - step 4400 | loss 0.1373 | steps time 1430.82ms
+INFO - 08/01/26 01:12:47 - 0:28:01 - step 4500 | loss 0.1384 | steps time 1431.17ms
+INFO - 08/01/26 01:12:47 - 0:28:01 - step 4500 train loss: 0.13968074695765972 test loss: 9.562173843383789
+INFO - 08/01/26 01:12:49 - 0:28:02 - step 4600 | loss 0.1426 | steps time 1435.10ms
+INFO - 08/01/26 01:12:50 - 0:28:04 - step 4700 | loss 0.1385 | steps time 1431.74ms
+INFO - 08/01/26 01:12:52 - 0:28:05 - step 4800 | loss 0.1345 | steps time 1432.39ms
+INFO - 08/01/26 01:12:53 - 0:28:07 - step 4900 | loss 0.1356 | steps time 1430.59ms
+INFO - 08/01/26 01:12:54 - 0:28:08 - step 5000 | loss 0.1365 | steps time 1431.58ms
+INFO - 08/01/26 01:12:55 - 0:28:08 - step 5000 train loss: 0.13611994202435015 test loss: 9.625259399414062
+INFO - 08/01/26 01:12:56 - 0:28:09 - step 5100 | loss 0.1305 | steps time 1431.13ms
+INFO - 08/01/26 01:12:57 - 0:28:11 - step 5200 | loss 0.1310 | steps time 1430.72ms
+INFO - 08/01/26 01:12:59 - 0:28:12 - step 5300 | loss 0.1508 | steps time 1413.08ms
+INFO - 08/01/26 01:13:00 - 0:28:14 - step 5400 | loss 0.1377 | steps time 1406.94ms
+INFO - 08/01/26 01:13:02 - 0:28:15 - step 5500 | loss 0.1368 | steps time 1427.34ms
+INFO - 08/01/26 01:13:02 - 0:28:15 - step 5500 train loss: 0.1324103490561247 test loss: 9.678326606750488
+INFO - 08/01/26 01:13:03 - 0:28:17 - step 5600 | loss 0.1333 | steps time 1424.93ms
+INFO - 08/01/26 01:13:05 - 0:28:18 - step 5700 | loss 0.1343 | steps time 1426.17ms
+INFO - 08/01/26 01:13:06 - 0:28:19 - step 5800 | loss 0.1224 | steps time 1430.44ms
+INFO - 08/01/26 01:13:07 - 0:28:21 - step 5900 | loss 0.1304 | steps time 1428.58ms
+INFO - 08/01/26 01:13:09 - 0:28:22 - step 6000 | loss 0.1276 | steps time 1427.17ms
+INFO - 08/01/26 01:13:09 - 0:28:22 - step 6000 train loss: 0.1291044842451811 test loss: 9.753656387329102
+INFO - 08/01/26 01:13:10 - 0:28:24 - step 6100 | loss 0.1273 | steps time 1425.15ms
+INFO - 08/01/26 01:13:12 - 0:28:25 - step 6200 | loss 0.1204 | steps time 1423.54ms
+INFO - 08/01/26 01:13:13 - 0:28:27 - step 6300 | loss 0.1227 | steps time 1425.65ms
+INFO - 08/01/26 01:13:15 - 0:28:28 - step 6400 | loss 0.1226 | steps time 1424.13ms
+INFO - 08/01/26 01:13:16 - 0:28:29 - step 6500 | loss 0.1191 | steps time 1426.92ms
+INFO - 08/01/26 01:13:16 - 0:28:29 - step 6500 train loss: 0.12754752466082572 test loss: 9.807676315307617
+INFO - 08/01/26 01:13:17 - 0:28:31 - step 6600 | loss 0.1178 | steps time 1426.16ms
+INFO - 08/01/26 01:13:19 - 0:28:32 - step 6700 | loss 0.1331 | steps time 1425.92ms
+INFO - 08/01/26 01:13:20 - 0:28:34 - step 6800 | loss 0.1211 | steps time 1427.47ms
+INFO - 08/01/26 01:13:22 - 0:28:35 - step 6900 | loss 0.1226 | steps time 1407.19ms
+INFO - 08/01/26 01:13:23 - 0:28:37 - step 7000 | loss 0.1103 | steps time 1376.91ms
+INFO - 08/01/26 01:13:23 - 0:28:37 - step 7000 train loss: 0.12482696308195591 test loss: 9.87439250946045
+INFO - 08/01/26 01:13:24 - 0:28:38 - step 7100 | loss 0.1282 | steps time 1368.42ms
+INFO - 08/01/26 01:13:26 - 0:28:39 - step 7200 | loss 0.1177 | steps time 1368.46ms
+INFO - 08/01/26 01:13:27 - 0:28:41 - step 7300 | loss 0.1242 | steps time 1376.76ms
+INFO - 08/01/26 01:13:29 - 0:28:42 - step 7400 | loss 0.1269 | steps time 1378.43ms
+INFO - 08/01/26 01:13:30 - 0:28:43 - step 7500 | loss 0.1217 | steps time 1378.89ms
+INFO - 08/01/26 01:13:30 - 0:28:43 - step 7500 train loss: 0.12284193076193332 test loss: 9.939451217651367
+INFO - 08/01/26 01:13:31 - 0:28:45 - step 7600 | loss 0.1140 | steps time 1380.47ms
+INFO - 08/01/26 01:13:33 - 0:28:46 - step 7700 | loss 0.1129 | steps time 1378.95ms
+INFO - 08/01/26 01:13:34 - 0:28:48 - step 7800 | loss 0.1200 | steps time 1379.14ms
+INFO - 08/01/26 01:13:36 - 0:28:49 - step 7900 | loss 0.1181 | steps time 1380.07ms
+INFO - 08/01/26 01:13:37 - 0:28:50 - step 8000 | loss 0.1228 | steps time 1377.70ms
+INFO - 08/01/26 01:13:37 - 0:28:50 - step 8000 train loss: 0.12110879245400429 test loss: 10.052699089050293
+INFO - 08/01/26 01:13:38 - 0:28:52 - step 8100 | loss 0.1100 | steps time 1370.47ms
+INFO - 08/01/26 01:13:40 - 0:28:53 - step 8200 | loss 0.1167 | steps time 1381.18ms
+INFO - 08/01/26 01:13:41 - 0:28:55 - step 8300 | loss 0.1159 | steps time 1380.83ms
+INFO - 08/01/26 01:13:42 - 0:28:56 - step 8400 | loss 0.1100 | steps time 1374.51ms
+INFO - 08/01/26 01:13:44 - 0:28:57 - step 8500 | loss 0.1209 | steps time 1392.12ms
+INFO - 08/01/26 01:13:44 - 0:28:57 - step 8500 train loss: 0.11944864448904992 test loss: 10.063636779785156
+INFO - 08/01/26 01:13:45 - 0:28:59 - step 8600 | loss 0.1156 | steps time 1381.52ms
+INFO - 08/01/26 01:13:47 - 0:29:00 - step 8700 | loss 0.1298 | steps time 1378.34ms
+INFO - 08/01/26 01:13:48 - 0:29:01 - step 8800 | loss 0.1041 | steps time 1386.42ms
+INFO - 08/01/26 01:13:49 - 0:29:03 - step 8900 | loss 0.1183 | steps time 1376.76ms
+INFO - 08/01/26 01:13:51 - 0:29:04 - step 9000 | loss 0.1221 | steps time 1382.71ms
+INFO - 08/01/26 01:13:51 - 0:29:04 - step 9000 train loss: 0.11791980272531509 test loss: 10.10688591003418
+INFO - 08/01/26 01:13:52 - 0:29:06 - step 9100 | loss 0.1077 | steps time 1379.95ms
+INFO - 08/01/26 01:13:54 - 0:29:07 - step 9200 | loss 0.1185 | steps time 1382.72ms
+INFO - 08/01/26 01:13:55 - 0:29:08 - step 9300 | loss 0.1209 | steps time 1378.54ms
+INFO - 08/01/26 01:13:56 - 0:29:10 - step 9400 | loss 0.1203 | steps time 1380.59ms
+INFO - 08/01/26 01:13:58 - 0:29:11 - step 9500 | loss 0.1219 | steps time 1380.46ms
+INFO - 08/01/26 01:13:58 - 0:29:11 - step 9500 train loss: 0.11547417578101159 test loss: 10.167810440063477
+INFO - 08/01/26 01:13:59 - 0:29:13 - step 9600 | loss 0.1127 | steps time 1383.29ms
+INFO - 08/01/26 01:14:01 - 0:29:14 - step 9700 | loss 0.1111 | steps time 1382.41ms
+INFO - 08/01/26 01:14:02 - 0:29:15 - step 9800 | loss 0.1112 | steps time 1380.24ms
+INFO - 08/01/26 01:14:03 - 0:29:17 - step 9900 | loss 0.1182 | steps time 1379.68ms
+INFO - 08/01/26 01:14:05 - 0:29:18 - step 10000 | loss 0.1223 | steps time 1379.28ms
+INFO - 08/01/26 01:14:05 - 0:29:18 - step 10000 train loss: 0.11420206040143967 test loss: 10.199508666992188
+INFO - 08/01/26 01:14:05 - 0:29:19 - [Epoch 2 AFTER_TRAIN] CPU: 0.0% | RAM: 1755.8MB
+INFO - 08/01/26 01:14:06 - 0:29:19 - Sample with temperature 1.0 to 1.0
+INFO - 08/01/26 01:14:06 - 0:29:19 - 0 / 50000 samples generated, 0 scored
+INFO - 08/01/26 01:22:05 - 0:37:18 - ### Score distribution ###
+INFO - 08/01/26 01:22:05 - 0:37:18 - Invalid examples: before local search: 0, after: 0
+INFO - 08/01/26 01:22:05 - 0:37:18 - Valid examples: 50000
+INFO - 08/01/26 01:22:05 - 0:37:18 - Mean score: 155.28174
+INFO - 08/01/26 01:22:05 - 0:37:18 - Median score: 155.0
+INFO - 08/01/26 01:22:05 - 0:37:18 - Stdev score: 1.3287881268124422
+INFO - 08/01/26 01:22:05 - 0:37:18 - Max score: 161
+INFO - 08/01/26 01:22:05 - 0:37:18 - Top 1 percentile score: 159.0
+INFO - 08/01/26 01:22:05 - 0:37:18 - Distribution of scores:
+INFO - 08/01/26 01:22:05 - 0:37:18 - Score 151: Count: 3
+INFO - 08/01/26 01:22:05 - 0:37:18 - Score 152: Count: 195
+INFO - 08/01/26 01:22:05 - 0:37:18 - Score 153: Count: 2980
+INFO - 08/01/26 01:22:05 - 0:37:18 - Score 154: Count: 11482
+INFO - 08/01/26 01:22:05 - 0:37:18 - Score 155: Count: 16191
+INFO - 08/01/26 01:22:05 - 0:37:18 - Score 156: Count: 9978
+INFO - 08/01/26 01:22:05 - 0:37:18 - Score 157: Count: 5982
+INFO - 08/01/26 01:22:05 - 0:37:18 - Score 158: Count: 2623
+INFO - 08/01/26 01:22:05 - 0:37:18 - Score 159: Count: 524
+INFO - 08/01/26 01:22:05 - 0:37:18 - Score 160: Count: 33
+INFO - 08/01/26 01:22:05 - 0:37:18 - Score 161: Count: 9
+INFO - 08/01/26 01:22:05 - 0:37:18 - --------------------------------
+INFO - 08/01/26 01:22:05 - 0:37:18 - [Epoch 2 AFTER_SAMPLE] CPU: 0.0% | RAM: 2061.8MB
+INFO - 08/01/26 01:22:05 - 0:37:19 - Unique processing: 46544 examples left, 3456 duplicates
+INFO - 08/01/26 01:22:05 - 0:37:19 - ### Score distribution ###
+INFO - 08/01/26 01:22:05 - 0:37:19 - Valid examples: 46544
+INFO - 08/01/26 01:22:05 - 0:37:19 - Mean score: 155.11657786180817
+INFO - 08/01/26 01:22:05 - 0:37:19 - Median score: 155.0
+INFO - 08/01/26 01:22:05 - 0:37:19 - Stdev score: 1.2135801396273223
+INFO - 08/01/26 01:22:05 - 0:37:19 - Max score: 161
+INFO - 08/01/26 01:22:05 - 0:37:19 - Top 1 percentile score: 158.0
+INFO - 08/01/26 01:22:05 - 0:37:19 - Distribution of scores:
+INFO - 08/01/26 01:22:05 - 0:37:19 - Score 151: Count: 3
+INFO - 08/01/26 01:22:05 - 0:37:19 - Score 152: Count: 195
+INFO - 08/01/26 01:22:05 - 0:37:19 - Score 153: Count: 2980
+INFO - 08/01/26 01:22:05 - 0:37:19 - Score 154: Count: 11482
+INFO - 08/01/26 01:22:05 - 0:37:19 - Score 155: Count: 16191
+INFO - 08/01/26 01:22:05 - 0:37:19 - Score 156: Count: 9978
+INFO - 08/01/26 01:22:05 - 0:37:19 - Score 157: Count: 4035
+INFO - 08/01/26 01:22:05 - 0:37:19 - Score 158: Count: 1344
+INFO - 08/01/26 01:22:05 - 0:37:19 - Score 159: Count: 303
+INFO - 08/01/26 01:22:05 - 0:37:19 - Score 160: Count: 25
+INFO - 08/01/26 01:22:05 - 0:37:19 - Score 161: Count: 8
+INFO - 08/01/26 01:22:05 - 0:37:19 - --------------------------------
+INFO - 08/01/26 01:22:05 - 0:37:19 - New train and test generated. Size are train: 4500, test 500
+INFO - 08/01/26 01:22:05 - 0:37:19 - Unique data computed for original train set: 5000, generated train set: 3593
+INFO - 08/01/26 01:22:05 - 0:37:19 - Final train and test generated. Size are train: 5000, test 500
+INFO - 08/01/26 01:22:06 - 0:37:19 - [Epoch 2 AFTER_UPDATE_DATASETS] CPU: 0.0% | RAM: 2061.8MB
+INFO - 08/01/26 01:22:06 - 0:37:19 - ### Score distribution ###
+INFO - 08/01/26 01:22:06 - 0:37:20 - Valid examples: 5000
+INFO - 08/01/26 01:22:06 - 0:37:20 - Mean score: 157.6634
+INFO - 08/01/26 01:22:06 - 0:37:20 - Median score: 158.0
+INFO - 08/01/26 01:22:06 - 0:37:20 - Stdev score: 0.6730460892150266
+INFO - 08/01/26 01:22:06 - 0:37:20 - Max score: 162
+INFO - 08/01/26 01:22:06 - 0:37:20 - Top 1 percentile score: 159.0
+INFO - 08/01/26 01:22:06 - 0:37:20 - Distribution of scores:
+INFO - 08/01/26 01:22:06 - 0:37:20 - Score 157: Count: 2193
+INFO - 08/01/26 01:22:06 - 0:37:20 - Score 158: Count: 2350
+INFO - 08/01/26 01:22:06 - 0:37:20 - Score 159: Count: 414
+INFO - 08/01/26 01:22:06 - 0:37:20 - Score 160: Count: 34
+INFO - 08/01/26 01:22:06 - 0:37:20 - Score 161: Count: 8
+INFO - 08/01/26 01:22:06 - 0:37:20 - Score 162: Count: 1
+INFO - 08/01/26 01:22:06 - 0:37:20 - --------------------------------
+INFO - 08/01/26 01:22:06 - 0:37:20 - ==== Starting Epoch 3 =====
+INFO - 08/01/26 01:22:06 - 0:37:20 - [Epoch 3 START] CPU: 0.0% | RAM: 1710.3MB
+INFO - 08/01/26 01:22:07 - 0:37:21 - Memory allocated: 100.72MB, reserved: 144.00MB
+INFO - 08/01/26 01:22:09 - 0:37:22 - step 100 | loss 0.9431 | steps time 1398.70ms
+INFO - 08/01/26 01:22:10 - 0:37:24 - step 200 | loss 0.2889 | steps time 1421.07ms
+INFO - 08/01/26 01:22:12 - 0:37:25 - step 300 | loss 0.3904 | steps time 1420.12ms
+INFO - 08/01/26 01:22:13 - 0:37:26 - step 400 | loss 0.2298 | steps time 1422.91ms
+INFO - 08/01/26 01:22:14 - 0:37:28 - step 500 | loss 0.2289 | steps time 1423.79ms
+INFO - 08/01/26 01:22:14 - 0:37:28 - step 500 train loss: 0.5527275073528289 test loss: 6.725091457366943
+INFO - 08/01/26 01:22:16 - 0:37:29 - step 600 | loss 0.2706 | steps time 1421.26ms
+INFO - 08/01/26 01:22:17 - 0:37:31 - step 700 | loss 0.1876 | steps time 1422.72ms
+INFO - 08/01/26 01:22:19 - 0:37:32 - step 800 | loss 0.2429 | steps time 1422.48ms
+INFO - 08/01/26 01:22:20 - 0:37:34 - step 900 | loss 0.1639 | steps time 1422.88ms
+INFO - 08/01/26 01:22:22 - 0:37:35 - step 1000 | loss 0.1455 | steps time 1418.97ms
+INFO - 08/01/26 01:22:22 - 0:37:35 - step 1000 train loss: 0.20591744315624236 test loss: 7.608521461486816
+INFO - 08/01/26 01:22:23 - 0:37:36 - step 1100 | loss 0.1538 | steps time 1412.60ms
+INFO - 08/01/26 01:22:24 - 0:37:38 - step 1200 | loss 0.1731 | steps time 1409.72ms
+INFO - 08/01/26 01:22:26 - 0:37:39 - step 1300 | loss 0.1455 | steps time 1408.87ms
+INFO - 08/01/26 01:22:27 - 0:37:41 - step 1400 | loss 0.1520 | steps time 1410.59ms
+INFO - 08/01/26 01:22:29 - 0:37:42 - step 1500 | loss 0.1659 | steps time 1410.83ms
+INFO - 08/01/26 01:22:29 - 0:37:42 - step 1500 train loss: 0.1599245259910822 test loss: 7.79445743560791
+INFO - 08/01/26 01:22:30 - 0:37:44 - step 1600 | loss 0.1715 | steps time 1440.82ms
+INFO - 08/01/26 01:22:32 - 0:37:45 - step 1700 | loss 0.1702 | steps time 1417.73ms
+INFO - 08/01/26 01:22:33 - 0:37:46 - step 1800 | loss 0.1449 | steps time 1419.31ms
+INFO - 08/01/26 01:22:34 - 0:37:48 - step 1900 | loss 0.1372 | steps time 1417.27ms
+INFO - 08/01/26 01:22:36 - 0:37:49 - step 2000 | loss 0.1167 | steps time 1423.32ms
+INFO - 08/01/26 01:22:36 - 0:37:49 - step 2000 train loss: 0.14650968660414218 test loss: 7.844836235046387
+INFO - 08/01/26 01:22:37 - 0:37:51 - step 2100 | loss 0.1346 | steps time 1423.07ms
+INFO - 08/01/26 01:22:39 - 0:37:52 - step 2200 | loss 0.1432 | steps time 1422.52ms
+INFO - 08/01/26 01:22:40 - 0:37:54 - step 2300 | loss 0.1341 | steps time 1424.88ms
+INFO - 08/01/26 01:22:42 - 0:37:55 - step 2400 | loss 0.1518 | steps time 1420.82ms
+INFO - 08/01/26 01:22:43 - 0:37:56 - step 2500 | loss 0.1436 | steps time 1423.77ms
+INFO - 08/01/26 01:22:43 - 0:37:56 - step 2500 train loss: 0.13698629392683506 test loss: 7.904346466064453
+INFO - 08/01/26 01:22:44 - 0:37:58 - step 2600 | loss 0.1302 | steps time 1425.58ms
+INFO - 08/01/26 01:22:46 - 0:37:59 - step 2700 | loss 0.1255 | steps time 1426.49ms
+INFO - 08/01/26 01:22:47 - 0:38:01 - step 2800 | loss 0.1383 | steps time 1417.74ms
+INFO - 08/01/26 01:22:49 - 0:38:02 - step 2900 | loss 0.1211 | steps time 1418.27ms
+INFO - 08/01/26 01:22:50 - 0:38:04 - step 3000 | loss 0.1282 | steps time 1425.42ms
+INFO - 08/01/26 01:22:50 - 0:38:04 - step 3000 train loss: 0.13196262022852898 test loss: 7.9638848304748535
+INFO - 08/01/26 01:22:52 - 0:38:05 - step 3100 | loss 0.1309 | steps time 1418.86ms
+INFO - 08/01/26 01:22:53 - 0:38:06 - step 3200 | loss 0.1271 | steps time 1418.99ms
+INFO - 08/01/26 01:22:54 - 0:38:08 - step 3300 | loss 0.1385 | steps time 1414.49ms
+INFO - 08/01/26 01:22:56 - 0:38:09 - step 3400 | loss 0.1147 | steps time 1416.29ms
+INFO - 08/01/26 01:22:57 - 0:38:11 - step 3500 | loss 0.1300 | steps time 1430.35ms
+INFO - 08/01/26 01:22:57 - 0:38:11 - step 3500 train loss: 0.1267832936346531 test loss: 7.970351219177246
+INFO - 08/01/26 01:22:59 - 0:38:12 - step 3600 | loss 0.1219 | steps time 1426.95ms
+INFO - 08/01/26 01:23:00 - 0:38:14 - step 3700 | loss 0.1208 | steps time 1423.94ms
+INFO - 08/01/26 01:23:02 - 0:38:15 - step 3800 | loss 0.1197 | steps time 1425.08ms
+INFO - 08/01/26 01:23:03 - 0:38:16 - step 3900 | loss 0.1210 | steps time 1426.39ms
+INFO - 08/01/26 01:23:04 - 0:38:18 - step 4000 | loss 0.1269 | steps time 1425.34ms
+INFO - 08/01/26 01:23:04 - 0:38:18 - step 4000 train loss: 0.12322648718953133 test loss: 8.027444839477539
+INFO - 08/01/26 01:23:06 - 0:38:19 - step 4100 | loss 0.1182 | steps time 1427.77ms
+INFO - 08/01/26 01:23:07 - 0:38:21 - step 4200 | loss 0.1241 | steps time 1418.81ms
+INFO - 08/01/26 01:23:09 - 0:38:22 - step 4300 | loss 0.1126 | steps time 1424.74ms
+INFO - 08/01/26 01:23:10 - 0:38:24 - step 4400 | loss 0.1204 | steps time 1426.80ms
+INFO - 08/01/26 01:23:12 - 0:38:25 - step 4500 | loss 0.1084 | steps time 1429.80ms
+INFO - 08/01/26 01:23:12 - 0:38:25 - step 4500 train loss: 0.11947271482646465 test loss: 8.083773612976074
+INFO - 08/01/26 01:23:13 - 0:38:27 - step 4600 | loss 0.1219 | steps time 1428.44ms
+INFO - 08/01/26 01:23:14 - 0:38:28 - step 4700 | loss 0.1178 | steps time 1427.63ms
+INFO - 08/01/26 01:23:16 - 0:38:29 - step 4800 | loss 0.1222 | steps time 1427.99ms
+INFO - 08/01/26 01:23:17 - 0:38:31 - step 4900 | loss 0.1325 | steps time 1427.27ms
+INFO - 08/01/26 01:23:19 - 0:38:32 - step 5000 | loss 0.1144 | steps time 1424.53ms
+INFO - 08/01/26 01:23:19 - 0:38:32 - step 5000 train loss: 0.11760396398603916 test loss: 8.107559204101562
+INFO - 08/01/26 01:23:20 - 0:38:34 - step 5100 | loss 0.1215 | steps time 1425.50ms
+INFO - 08/01/26 01:23:22 - 0:38:35 - step 5200 | loss 0.1118 | steps time 1425.75ms
+INFO - 08/01/26 01:23:23 - 0:38:37 - step 5300 | loss 0.1209 | steps time 1425.70ms
+INFO - 08/01/26 01:23:24 - 0:38:38 - step 5400 | loss 0.1135 | steps time 1426.54ms
+INFO - 08/01/26 01:23:26 - 0:38:39 - step 5500 | loss 0.1198 | steps time 1425.84ms
+INFO - 08/01/26 01:23:26 - 0:38:39 - step 5500 train loss: 0.11458744665980339 test loss: 8.17619800567627
+INFO - 08/01/26 01:23:27 - 0:38:41 - step 5600 | loss 0.1114 | steps time 1426.78ms
+INFO - 08/01/26 01:23:29 - 0:38:42 - step 5700 | loss 0.1290 | steps time 1425.82ms
+INFO - 08/01/26 01:23:30 - 0:38:44 - step 5800 | loss 0.1140 | steps time 1423.19ms
+INFO - 08/01/26 01:23:32 - 0:38:45 - step 5900 | loss 0.1091 | steps time 1413.96ms
+INFO - 08/01/26 01:23:33 - 0:38:47 - step 6000 | loss 0.1064 | steps time 1417.08ms
+INFO - 08/01/26 01:23:33 - 0:38:47 - step 6000 train loss: 0.11314024233818054 test loss: 8.18779182434082
+INFO - 08/01/26 01:23:34 - 0:38:48 - step 6100 | loss 0.1076 | steps time 1420.34ms
+INFO - 08/01/26 01:23:36 - 0:38:49 - step 6200 | loss 0.1181 | steps time 1422.87ms
+INFO - 08/01/26 01:23:37 - 0:38:51 - step 6300 | loss 0.1192 | steps time 1423.61ms
+INFO - 08/01/26 01:23:39 - 0:38:52 - step 6400 | loss 0.1088 | steps time 1423.47ms
+INFO - 08/01/26 01:23:40 - 0:38:54 - step 6500 | loss 0.1110 | steps time 1423.52ms
+INFO - 08/01/26 01:23:40 - 0:38:54 - step 6500 train loss: 0.11149736592173576 test loss: 8.22353744506836
+INFO - 08/01/26 01:23:42 - 0:38:55 - step 6600 | loss 0.1022 | steps time 1431.50ms
+INFO - 08/01/26 01:23:43 - 0:38:57 - step 6700 | loss 0.1113 | steps time 1428.07ms
+INFO - 08/01/26 01:23:44 - 0:38:58 - step 6800 | loss 0.1101 | steps time 1424.14ms
+INFO - 08/01/26 01:23:46 - 0:38:59 - step 6900 | loss 0.1053 | steps time 1413.32ms
+INFO - 08/01/26 01:23:47 - 0:39:01 - step 7000 | loss 0.1111 | steps time 1386.31ms
+INFO - 08/01/26 01:23:47 - 0:39:01 - step 7000 train loss: 0.10945567971467972 test loss: 8.247908592224121
+INFO - 08/01/26 01:23:49 - 0:39:02 - step 7100 | loss 0.1215 | steps time 1388.17ms
+INFO - 08/01/26 01:23:50 - 0:39:04 - step 7200 | loss 0.1083 | steps time 1387.66ms
+INFO - 08/01/26 01:23:52 - 0:39:05 - step 7300 | loss 0.1142 | steps time 1387.26ms
+INFO - 08/01/26 01:23:53 - 0:39:06 - step 7400 | loss 0.1001 | steps time 1388.11ms
+INFO - 08/01/26 01:23:54 - 0:39:08 - step 7500 | loss 0.1108 | steps time 1387.33ms
+INFO - 08/01/26 01:23:54 - 0:39:08 - step 7500 train loss: 0.10760387329757214 test loss: 8.280768394470215
+INFO - 08/01/26 01:23:56 - 0:39:09 - step 7600 | loss 0.1077 | steps time 1390.61ms
+INFO - 08/01/26 01:23:57 - 0:39:11 - step 7700 | loss 0.1183 | steps time 1381.63ms
+INFO - 08/01/26 01:23:58 - 0:39:12 - step 7800 | loss 0.1031 | steps time 1382.96ms
+INFO - 08/01/26 01:24:00 - 0:39:13 - step 7900 | loss 0.1132 | steps time 1386.13ms
+INFO - 08/01/26 01:24:01 - 0:39:15 - step 8000 | loss 0.1034 | steps time 1388.04ms
+INFO - 08/01/26 01:24:01 - 0:39:15 - step 8000 train loss: 0.10655308073759079 test loss: 8.320549964904785
+INFO - 08/01/26 01:24:03 - 0:39:16 - step 8100 | loss 0.1004 | steps time 1387.17ms
+INFO - 08/01/26 01:24:04 - 0:39:18 - step 8200 | loss 0.1207 | steps time 1388.00ms
+INFO - 08/01/26 01:24:05 - 0:39:19 - step 8300 | loss 0.0999 | steps time 1391.38ms
+INFO - 08/01/26 01:24:07 - 0:39:20 - step 8400 | loss 0.1157 | steps time 1391.04ms
+INFO - 08/01/26 01:24:08 - 0:39:22 - step 8500 | loss 0.1033 | steps time 1387.49ms
+INFO - 08/01/26 01:24:08 - 0:39:22 - step 8500 train loss: 0.10497039678692818 test loss: 8.350839614868164
+INFO - 08/01/26 01:24:10 - 0:39:23 - step 8600 | loss 0.1097 | steps time 1385.59ms
+INFO - 08/01/26 01:24:11 - 0:39:25 - step 8700 | loss 0.1108 | steps time 1386.32ms
+INFO - 08/01/26 01:24:12 - 0:39:26 - step 8800 | loss 0.1060 | steps time 1388.54ms
+INFO - 08/01/26 01:24:14 - 0:39:27 - step 8900 | loss 0.1011 | steps time 1387.49ms
+INFO - 08/01/26 01:24:15 - 0:39:29 - step 9000 | loss 0.1095 | steps time 1385.71ms
+INFO - 08/01/26 01:24:15 - 0:39:29 - step 9000 train loss: 0.1041146300137043 test loss: 8.385988235473633
+INFO - 08/01/26 01:24:17 - 0:39:30 - step 9100 | loss 0.0947 | steps time 1385.20ms
+INFO - 08/01/26 01:24:18 - 0:39:31 - step 9200 | loss 0.1016 | steps time 1387.28ms
+INFO - 08/01/26 01:24:19 - 0:39:33 - step 9300 | loss 0.1038 | steps time 1387.74ms
+INFO - 08/01/26 01:24:21 - 0:39:34 - step 9400 | loss 0.1050 | steps time 1387.16ms
+INFO - 08/01/26 01:24:22 - 0:39:36 - step 9500 | loss 0.0983 | steps time 1386.93ms
+INFO - 08/01/26 01:24:22 - 0:39:36 - step 9500 train loss: 0.10300218057632446 test loss: 8.413274765014648
+INFO - 08/01/26 01:24:24 - 0:39:37 - step 9600 | loss 0.1008 | steps time 1389.26ms
+INFO - 08/01/26 01:24:25 - 0:39:38 - step 9700 | loss 0.0937 | steps time 1389.20ms
+INFO - 08/01/26 01:24:26 - 0:39:40 - step 9800 | loss 0.1027 | steps time 1388.75ms
+INFO - 08/01/26 01:24:28 - 0:39:41 - step 9900 | loss 0.0920 | steps time 1387.85ms
+INFO - 08/01/26 01:24:29 - 0:39:43 - step 10000 | loss 0.1084 | steps time 1390.66ms
+INFO - 08/01/26 01:24:29 - 0:39:43 - step 10000 train loss: 0.10171403975784779 test loss: 8.4308500289917
+INFO - 08/01/26 01:24:30 - 0:39:43 - [Epoch 3 AFTER_TRAIN] CPU: 0.0% | RAM: 1710.3MB
+INFO - 08/01/26 01:24:30 - 0:39:43 - Sample with temperature 1.0 to 1.0
+INFO - 08/01/26 01:24:30 - 0:39:43 - 0 / 50000 samples generated, 0 scored
+INFO - 08/01/26 01:32:30 - 0:47:44 - ### Score distribution ###
+INFO - 08/01/26 01:32:30 - 0:47:44 - Invalid examples: before local search: 0, after: 0
+INFO - 08/01/26 01:32:30 - 0:47:44 - Valid examples: 50000
+INFO - 08/01/26 01:32:30 - 0:47:44 - Mean score: 155.49822
+INFO - 08/01/26 01:32:30 - 0:47:44 - Median score: 155.0
+INFO - 08/01/26 01:32:30 - 0:47:44 - Stdev score: 1.5133151139312264
+INFO - 08/01/26 01:32:30 - 0:47:44 - Max score: 162
+INFO - 08/01/26 01:32:30 - 0:47:44 - Top 1 percentile score: 159.0
+INFO - 08/01/26 01:32:30 - 0:47:44 - Distribution of scores:
+INFO - 08/01/26 01:32:30 - 0:47:44 - Score 151: Count: 1
+INFO - 08/01/26 01:32:30 - 0:47:44 - Score 152: Count: 192
+INFO - 08/01/26 01:32:30 - 0:47:44 - Score 153: Count: 2701
+INFO - 08/01/26 01:32:30 - 0:47:44 - Score 154: Count: 10752
+INFO - 08/01/26 01:32:30 - 0:47:44 - Score 155: Count: 15071
+INFO - 08/01/26 01:32:30 - 0:47:44 - Score 156: Count: 9262
+INFO - 08/01/26 01:32:30 - 0:47:44 - Score 157: Count: 5727
+INFO - 08/01/26 01:32:30 - 0:47:44 - Score 158: Count: 4453
+INFO - 08/01/26 01:32:30 - 0:47:44 - Score 159: Count: 1658
+INFO - 08/01/26 01:32:30 - 0:47:44 - Score 160: Count: 166
+INFO - 08/01/26 01:32:30 - 0:47:44 - Score 161: Count: 11
+INFO - 08/01/26 01:32:30 - 0:47:44 - Score 162: Count: 6
+INFO - 08/01/26 01:32:30 - 0:47:44 - --------------------------------
+INFO - 08/01/26 01:32:30 - 0:47:44 - [Epoch 3 AFTER_SAMPLE] CPU: 0.0% | RAM: 1981.2MB
+INFO - 08/01/26 01:32:30 - 0:47:44 - Unique processing: 44191 examples left, 5809 duplicates
+INFO - 08/01/26 01:32:30 - 0:47:44 - ### Score distribution ###
+INFO - 08/01/26 01:32:31 - 0:47:44 - Valid examples: 44191
+INFO - 08/01/26 01:32:31 - 0:47:44 - Mean score: 155.1851734516078
+INFO - 08/01/26 01:32:31 - 0:47:44 - Median score: 155
+INFO - 08/01/26 01:32:31 - 0:47:44 - Stdev score: 1.2930762901103565
+INFO - 08/01/26 01:32:31 - 0:47:44 - Max score: 162
+INFO - 08/01/26 01:32:31 - 0:47:44 - Top 1 percentile score: 159.0
+INFO - 08/01/26 01:32:31 - 0:47:44 - Distribution of scores:
+INFO - 08/01/26 01:32:31 - 0:47:44 - Score 151: Count: 1
+INFO - 08/01/26 01:32:31 - 0:47:44 - Score 152: Count: 192
+INFO - 08/01/26 01:32:31 - 0:47:44 - Score 153: Count: 2701
+INFO - 08/01/26 01:32:31 - 0:47:44 - Score 154: Count: 10752
+INFO - 08/01/26 01:32:31 - 0:47:44 - Score 155: Count: 15071
+INFO - 08/01/26 01:32:31 - 0:47:44 - Score 156: Count: 9262
+INFO - 08/01/26 01:32:31 - 0:47:44 - Score 157: Count: 3780
+INFO - 08/01/26 01:32:31 - 0:47:44 - Score 158: Count: 1744
+INFO - 08/01/26 01:32:31 - 0:47:44 - Score 159: Count: 585
+INFO - 08/01/26 01:32:31 - 0:47:44 - Score 160: Count: 96
+INFO - 08/01/26 01:32:31 - 0:47:44 - Score 161: Count: 6
+INFO - 08/01/26 01:32:31 - 0:47:44 - Score 162: Count: 1
+INFO - 08/01/26 01:32:31 - 0:47:44 - --------------------------------
+INFO - 08/01/26 01:32:31 - 0:47:44 - New train and test generated. Size are train: 4500, test 500
+INFO - 08/01/26 01:32:31 - 0:47:44 - Unique data computed for original train set: 5000, generated train set: 3246
+INFO - 08/01/26 01:32:31 - 0:47:44 - Final train and test generated. Size are train: 5000, test 500
+INFO - 08/01/26 01:32:31 - 0:47:44 - [Epoch 3 AFTER_UPDATE_DATASETS] CPU: 0.0% | RAM: 1981.2MB
+INFO - 08/01/26 01:32:31 - 0:47:45 - ### Score distribution ###
+INFO - 08/01/26 01:32:31 - 0:47:45 - Valid examples: 5000
+INFO - 08/01/26 01:32:31 - 0:47:45 - Mean score: 158.0624
+INFO - 08/01/26 01:32:31 - 0:47:45 - Median score: 158.0
+INFO - 08/01/26 01:32:31 - 0:47:45 - Stdev score: 0.6441965832318343
+INFO - 08/01/26 01:32:31 - 0:47:45 - Max score: 162
+INFO - 08/01/26 01:32:31 - 0:47:45 - Top 1 percentile score: 160.0
+INFO - 08/01/26 01:32:31 - 0:47:45 - Distribution of scores:
+INFO - 08/01/26 01:32:31 - 0:47:45 - Score 157: Count: 745
+INFO - 08/01/26 01:32:31 - 0:47:45 - Score 158: Count: 3330
+INFO - 08/01/26 01:32:31 - 0:47:45 - Score 159: Count: 806
+INFO - 08/01/26 01:32:31 - 0:47:45 - Score 160: Count: 107
+INFO - 08/01/26 01:32:31 - 0:47:45 - Score 161: Count: 11
+INFO - 08/01/26 01:32:31 - 0:47:45 - Score 162: Count: 1
+INFO - 08/01/26 01:32:31 - 0:47:45 - --------------------------------
+INFO - 08/01/26 01:32:31 - 0:47:45 - ==== Starting Epoch 4 =====
+INFO - 08/01/26 01:32:31 - 0:47:45 - [Epoch 4 START] CPU: 0.0% | RAM: 1639.0MB
+INFO - 08/01/26 01:32:32 - 0:47:46 - Memory allocated: 100.72MB, reserved: 144.00MB
+INFO - 08/01/26 01:32:34 - 0:47:47 - step 100 | loss 0.5641 | steps time 1403.69ms
+INFO - 08/01/26 01:32:35 - 0:47:49 - step 200 | loss 0.5287 | steps time 1417.12ms
+INFO - 08/01/26 01:32:37 - 0:47:50 - step 300 | loss 0.2560 | steps time 1421.39ms
+INFO - 08/01/26 01:32:38 - 0:47:52 - step 400 | loss 0.2404 | steps time 1421.48ms
+INFO - 08/01/26 01:32:40 - 0:47:53 - step 500 | loss 0.1854 | steps time 1422.45ms
+INFO - 08/01/26 01:32:40 - 0:47:53 - step 500 train loss: 0.5105623417794705 test loss: 5.460457801818848
+INFO - 08/01/26 01:32:41 - 0:47:55 - step 600 | loss 0.2749 | steps time 1421.59ms
+INFO - 08/01/26 01:32:42 - 0:47:56 - step 700 | loss 0.1301 | steps time 1424.44ms
+INFO - 08/01/26 01:32:44 - 0:47:57 - step 800 | loss 0.1555 | steps time 1422.56ms
+INFO - 08/01/26 01:32:45 - 0:47:59 - step 900 | loss 0.2152 | steps time 1421.80ms
+INFO - 08/01/26 01:32:47 - 0:48:00 - step 1000 | loss 0.1420 | steps time 1423.02ms
+INFO - 08/01/26 01:32:47 - 0:48:00 - step 1000 train loss: 0.18413199087977408 test loss: 6.316137313842773
+INFO - 08/01/26 01:32:48 - 0:48:02 - step 1100 | loss 0.1875 | steps time 1420.78ms
+INFO - 08/01/26 01:32:50 - 0:48:03 - step 1200 | loss 0.1378 | steps time 1421.30ms
+INFO - 08/01/26 01:32:51 - 0:48:05 - step 1300 | loss 0.1300 | steps time 1421.20ms
+INFO - 08/01/26 01:32:52 - 0:48:06 - step 1400 | loss 0.1270 | steps time 1421.06ms
+INFO - 08/01/26 01:32:54 - 0:48:07 - step 1500 | loss 0.1406 | steps time 1423.44ms
+INFO - 08/01/26 01:32:54 - 0:48:07 - step 1500 train loss: 0.1426306689530611 test loss: 6.438249111175537
+INFO - 08/01/26 01:32:55 - 0:48:09 - step 1600 | loss 0.1180 | steps time 1422.54ms
+INFO - 08/01/26 01:32:57 - 0:48:10 - step 1700 | loss 0.1346 | steps time 1421.76ms
+INFO - 08/01/26 01:32:58 - 0:48:12 - step 1800 | loss 0.1160 | steps time 1425.18ms
+INFO - 08/01/26 01:33:00 - 0:48:13 - step 1900 | loss 0.1279 | steps time 1426.46ms
+INFO - 08/01/26 01:33:01 - 0:48:15 - step 2000 | loss 0.1209 | steps time 1420.66ms
+INFO - 08/01/26 01:33:01 - 0:48:15 - step 2000 train loss: 0.12835296957194806 test loss: 6.5276780128479
+INFO - 08/01/26 01:33:03 - 0:48:16 - step 2100 | loss 0.1322 | steps time 1424.09ms
+INFO - 08/01/26 01:33:04 - 0:48:17 - step 2200 | loss 0.1495 | steps time 1423.82ms
+INFO - 08/01/26 01:33:05 - 0:48:19 - step 2300 | loss 0.1180 | steps time 1421.53ms
+INFO - 08/01/26 01:33:07 - 0:48:20 - step 2400 | loss 0.1176 | steps time 1423.68ms
+INFO - 08/01/26 01:33:08 - 0:48:22 - step 2500 | loss 0.1295 | steps time 1371.68ms
+INFO - 08/01/26 01:33:08 - 0:48:22 - step 2500 train loss: 0.12194744619727135 test loss: 6.555960178375244
+INFO - 08/01/26 01:33:10 - 0:48:23 - step 2600 | loss 0.1187 | steps time 1324.49ms
+INFO - 08/01/26 01:33:11 - 0:48:24 - step 2700 | loss 0.1142 | steps time 1409.39ms
+INFO - 08/01/26 01:33:12 - 0:48:26 - step 2800 | loss 0.1179 | steps time 1421.41ms
+INFO - 08/01/26 01:33:14 - 0:48:27 - step 2900 | loss 0.1214 | steps time 1413.09ms
+INFO - 08/01/26 01:33:15 - 0:48:29 - step 3000 | loss 0.1177 | steps time 1416.42ms
+INFO - 08/01/26 01:33:15 - 0:48:29 - step 3000 train loss: 0.11630571076273918 test loss: 6.620889186859131
+INFO - 08/01/26 01:33:17 - 0:48:30 - step 3100 | loss 0.1270 | steps time 1374.84ms
+INFO - 08/01/26 01:33:18 - 0:48:31 - step 3200 | loss 0.1037 | steps time 1387.87ms
+INFO - 08/01/26 01:33:19 - 0:48:33 - step 3300 | loss 0.1092 | steps time 1387.03ms
+INFO - 08/01/26 01:33:21 - 0:48:34 - step 3400 | loss 0.1243 | steps time 1415.02ms
+INFO - 08/01/26 01:33:22 - 0:48:36 - step 3500 | loss 0.1143 | steps time 1413.97ms
+INFO - 08/01/26 01:33:22 - 0:48:36 - step 3500 train loss: 0.1123773285895586 test loss: 6.62241268157959
+INFO - 08/01/26 01:33:24 - 0:48:37 - step 3600 | loss 0.1212 | steps time 1415.92ms
+INFO - 08/01/26 01:33:25 - 0:48:39 - step 3700 | loss 0.1305 | steps time 1415.16ms
+INFO - 08/01/26 01:33:26 - 0:48:40 - step 3800 | loss 0.1125 | steps time 1415.44ms
+INFO - 08/01/26 01:33:28 - 0:48:41 - step 3900 | loss 0.1205 | steps time 1412.31ms
+INFO - 08/01/26 01:33:29 - 0:48:43 - step 4000 | loss 0.1310 | steps time 1420.47ms
+INFO - 08/01/26 01:33:29 - 0:48:43 - step 4000 train loss: 0.10994110848009586 test loss: 6.6396026611328125
+INFO - 08/01/26 01:33:31 - 0:48:44 - step 4100 | loss 0.1042 | steps time 1423.64ms
+INFO - 08/01/26 01:33:32 - 0:48:46 - step 4200 | loss 0.1005 | steps time 1422.58ms
+INFO - 08/01/26 01:33:34 - 0:48:47 - step 4300 | loss 0.1030 | steps time 1420.92ms
+INFO - 08/01/26 01:33:35 - 0:48:49 - step 4400 | loss 0.1158 | steps time 1420.51ms
+INFO - 08/01/26 01:33:36 - 0:48:50 - step 4500 | loss 0.1043 | steps time 1420.85ms
+INFO - 08/01/26 01:33:36 - 0:48:50 - step 4500 train loss: 0.10719818517565727 test loss: 6.68203592300415
+INFO - 08/01/26 01:33:38 - 0:48:51 - step 4600 | loss 0.0989 | steps time 1422.49ms
+INFO - 08/01/26 01:33:39 - 0:48:53 - step 4700 | loss 0.1080 | steps time 1423.18ms
+INFO - 08/01/26 01:33:41 - 0:48:54 - step 4800 | loss 0.1094 | steps time 1430.40ms
+INFO - 08/01/26 01:33:42 - 0:48:56 - step 4900 | loss 0.1063 | steps time 1416.30ms
+INFO - 08/01/26 01:33:44 - 0:48:57 - step 5000 | loss 0.0973 | steps time 1420.95ms
+INFO - 08/01/26 01:33:44 - 0:48:57 - step 5000 train loss: 0.1048519982099533 test loss: 6.711113929748535
+INFO - 08/01/26 01:33:45 - 0:48:59 - step 5100 | loss 0.0919 | steps time 1422.86ms
+INFO - 08/01/26 01:33:46 - 0:49:00 - step 5200 | loss 0.1071 | steps time 1423.93ms
+INFO - 08/01/26 01:33:48 - 0:49:01 - step 5300 | loss 0.0989 | steps time 1423.32ms
+INFO - 08/01/26 01:33:49 - 0:49:03 - step 5400 | loss 0.0968 | steps time 1391.78ms
+INFO - 08/01/26 01:33:51 - 0:49:04 - step 5500 | loss 0.1077 | steps time 1235.02ms
+INFO - 08/01/26 01:33:51 - 0:49:04 - step 5500 train loss: 0.1030824639648199 test loss: 6.740994930267334
+INFO - 08/01/26 01:33:52 - 0:49:05 - step 5600 | loss 0.0923 | steps time 1227.06ms
+INFO - 08/01/26 01:33:53 - 0:49:07 - step 5700 | loss 0.0987 | steps time 1378.35ms
+INFO - 08/01/26 01:33:55 - 0:49:08 - step 5800 | loss 0.0935 | steps time 1387.62ms
+INFO - 08/01/26 01:33:56 - 0:49:09 - step 5900 | loss 0.0941 | steps time 1388.50ms
+INFO - 08/01/26 01:33:57 - 0:49:11 - step 6000 | loss 0.1087 | steps time 1387.25ms
+INFO - 08/01/26 01:33:57 - 0:49:11 - step 6000 train loss: 0.10149138876795769 test loss: 6.747200965881348
+INFO - 08/01/26 01:33:59 - 0:49:12 - step 6100 | loss 0.0865 | steps time 1386.94ms
+INFO - 08/01/26 01:34:00 - 0:49:14 - step 6200 | loss 0.1017 | steps time 1384.78ms
+INFO - 08/01/26 01:34:02 - 0:49:15 - step 6300 | loss 0.0996 | steps time 1385.82ms
+INFO - 08/01/26 01:34:03 - 0:49:16 - step 6400 | loss 0.1075 | steps time 1387.41ms
+INFO - 08/01/26 01:34:04 - 0:49:18 - step 6500 | loss 0.1025 | steps time 1387.95ms
+INFO - 08/01/26 01:34:04 - 0:49:18 - step 6500 train loss: 0.09975021104514599 test loss: 6.776907920837402
+INFO - 08/01/26 01:34:06 - 0:49:19 - step 6600 | loss 0.1032 | steps time 1388.40ms
+INFO - 08/01/26 01:34:07 - 0:49:21 - step 6700 | loss 0.0976 | steps time 1386.97ms
+INFO - 08/01/26 01:34:08 - 0:49:22 - step 6800 | loss 0.1002 | steps time 1318.16ms
+INFO - 08/01/26 01:34:10 - 0:49:23 - step 6900 | loss 0.0914 | steps time 1388.18ms
+INFO - 08/01/26 01:34:11 - 0:49:25 - step 7000 | loss 0.1007 | steps time 1386.79ms
+INFO - 08/01/26 01:34:11 - 0:49:25 - step 7000 train loss: 0.09846268975734711 test loss: 6.819117546081543
+INFO - 08/01/26 01:34:13 - 0:49:26 - step 7100 | loss 0.1032 | steps time 1387.88ms
+INFO - 08/01/26 01:34:14 - 0:49:28 - step 7200 | loss 0.0960 | steps time 1386.41ms
+INFO - 08/01/26 01:34:15 - 0:49:29 - step 7300 | loss 0.0949 | steps time 1385.76ms
+INFO - 08/01/26 01:34:17 - 0:49:30 - step 7400 | loss 0.0956 | steps time 1386.10ms
+INFO - 08/01/26 01:34:18 - 0:49:32 - step 7500 | loss 0.1013 | steps time 1386.72ms
+INFO - 08/01/26 01:34:18 - 0:49:32 - step 7500 train loss: 0.09695038579404354 test loss: 6.860953330993652
+INFO - 08/01/26 01:34:20 - 0:49:33 - step 7600 | loss 0.1006 | steps time 1387.58ms
+INFO - 08/01/26 01:34:21 - 0:49:34 - step 7700 | loss 0.0889 | steps time 1386.99ms
+INFO - 08/01/26 01:34:22 - 0:49:36 - step 7800 | loss 0.1035 | steps time 1387.14ms
+INFO - 08/01/26 01:34:24 - 0:49:37 - step 7900 | loss 0.0900 | steps time 1386.99ms
+INFO - 08/01/26 01:34:25 - 0:49:39 - step 8000 | loss 0.0895 | steps time 1385.13ms
+INFO - 08/01/26 01:34:25 - 0:49:39 - step 8000 train loss: 0.0963753551542759 test loss: 6.85650634765625
+INFO - 08/01/26 01:34:27 - 0:49:40 - step 8100 | loss 0.0958 | steps time 1385.72ms
+INFO - 08/01/26 01:34:28 - 0:49:41 - step 8200 | loss 0.0872 | steps time 1386.59ms
+INFO - 08/01/26 01:34:29 - 0:49:43 - step 8300 | loss 0.0951 | steps time 1385.57ms
+INFO - 08/01/26 01:34:31 - 0:49:44 - step 8400 | loss 0.1008 | steps time 1385.91ms
+INFO - 08/01/26 01:34:32 - 0:49:46 - step 8500 | loss 0.0938 | steps time 1386.16ms
+INFO - 08/01/26 01:34:32 - 0:49:46 - step 8500 train loss: 0.09473241753876209 test loss: 6.912477016448975
+INFO - 08/01/26 01:34:34 - 0:49:47 - step 8600 | loss 0.0997 | steps time 1385.72ms
+INFO - 08/01/26 01:34:35 - 0:49:48 - step 8700 | loss 0.0848 | steps time 1386.17ms
+INFO - 08/01/26 01:34:36 - 0:49:50 - step 8800 | loss 0.0967 | steps time 1387.80ms
+INFO - 08/01/26 01:34:38 - 0:49:51 - step 8900 | loss 0.0853 | steps time 1387.68ms
+INFO - 08/01/26 01:34:39 - 0:49:53 - step 9000 | loss 0.0978 | steps time 1385.60ms
+INFO - 08/01/26 01:34:39 - 0:49:53 - step 9000 train loss: 0.09435676024854184 test loss: 6.915163516998291
+INFO - 08/01/26 01:34:41 - 0:49:54 - step 9100 | loss 0.0922 | steps time 1385.74ms
+INFO - 08/01/26 01:34:42 - 0:49:55 - step 9200 | loss 0.0931 | steps time 1385.99ms
+INFO - 08/01/26 01:34:43 - 0:49:57 - step 9300 | loss 0.1039 | steps time 1384.93ms
+INFO - 08/01/26 01:34:45 - 0:49:58 - step 9400 | loss 0.0905 | steps time 1385.72ms
+INFO - 08/01/26 01:34:46 - 0:50:00 - step 9500 | loss 0.0916 | steps time 1386.12ms
+INFO - 08/01/26 01:34:46 - 0:50:00 - step 9500 train loss: 0.09293082030117512 test loss: 6.92544412612915
+INFO - 08/01/26 01:34:47 - 0:50:01 - step 9600 | loss 0.0948 | steps time 1387.54ms
+INFO - 08/01/26 01:34:49 - 0:50:02 - step 9700 | loss 0.0862 | steps time 1383.98ms
+INFO - 08/01/26 01:34:50 - 0:50:04 - step 9800 | loss 0.0936 | steps time 1385.85ms
+INFO - 08/01/26 01:34:52 - 0:50:05 - step 9900 | loss 0.0888 | steps time 1385.95ms
+INFO - 08/01/26 01:34:53 - 0:50:07 - step 10000 | loss 0.0973 | steps time 1385.63ms
+INFO - 08/01/26 01:34:53 - 0:50:07 - step 10000 train loss: 0.09207921367883683 test loss: 6.961001396179199
+INFO - 08/01/26 01:34:53 - 0:50:07 - [Epoch 4 AFTER_TRAIN] CPU: 0.0% | RAM: 1639.0MB
+INFO - 08/01/26 01:34:54 - 0:50:07 - Sample with temperature 1.0 to 1.0
+INFO - 08/01/26 01:34:54 - 0:50:07 - 0 / 50000 samples generated, 0 scored
+INFO - 08/01/26 01:42:46 - 0:58:00 - ### Score distribution ###
+INFO - 08/01/26 01:42:46 - 0:58:00 - Invalid examples: before local search: 0, after: 0
+INFO - 08/01/26 01:42:46 - 0:58:00 - Valid examples: 50000
+INFO - 08/01/26 01:42:46 - 0:58:00 - Mean score: 155.81866
+INFO - 08/01/26 01:42:46 - 0:58:00 - Median score: 155.0
+INFO - 08/01/26 01:42:46 - 0:58:00 - Stdev score: 1.7592491874530087
+INFO - 08/01/26 01:42:46 - 0:58:00 - Max score: 162
+INFO - 08/01/26 01:42:46 - 0:58:00 - Top 1 percentile score: 160.0
+INFO - 08/01/26 01:42:46 - 0:58:00 - Distribution of scores:
+INFO - 08/01/26 01:42:46 - 0:58:00 - Score 151: Count: 1
+INFO - 08/01/26 01:42:46 - 0:58:00 - Score 152: Count: 182
+INFO - 08/01/26 01:42:46 - 0:58:00 - Score 153: Count: 2485
+INFO - 08/01/26 01:42:46 - 0:58:00 - Score 154: Count: 9720
+INFO - 08/01/26 01:42:46 - 0:58:00 - Score 155: Count: 13543
+INFO - 08/01/26 01:42:46 - 0:58:00 - Score 156: Count: 8765
+INFO - 08/01/26 01:42:46 - 0:58:00 - Score 157: Count: 3919
+INFO - 08/01/26 01:42:46 - 0:58:00 - Score 158: Count: 6902
+INFO - 08/01/26 01:42:46 - 0:58:00 - Score 159: Count: 3667
+INFO - 08/01/26 01:42:46 - 0:58:00 - Score 160: Count: 717
+INFO - 08/01/26 01:42:46 - 0:58:00 - Score 161: Count: 82
+INFO - 08/01/26 01:42:46 - 0:58:00 - Score 162: Count: 17
+INFO - 08/01/26 01:42:46 - 0:58:00 - --------------------------------
+INFO - 08/01/26 01:42:46 - 0:58:00 - [Epoch 4 AFTER_SAMPLE] CPU: 0.0% | RAM: 1942.0MB
+INFO - 08/01/26 01:42:47 - 0:58:00 - Unique processing: 41365 examples left, 8635 duplicates
+INFO - 08/01/26 01:42:47 - 0:58:00 - ### Score distribution ###
+INFO - 08/01/26 01:42:47 - 0:58:00 - Valid examples: 41365
+INFO - 08/01/26 01:42:47 - 0:58:00 - Mean score: 155.29317055481687
+INFO - 08/01/26 01:42:47 - 0:58:00 - Median score: 155
+INFO - 08/01/26 01:42:47 - 0:58:00 - Stdev score: 1.4223080110759923
+INFO - 08/01/26 01:42:47 - 0:58:00 - Max score: 162
+INFO - 08/01/26 01:42:47 - 0:58:00 - Top 1 percentile score: 159.0
+INFO - 08/01/26 01:42:47 - 0:58:00 - Distribution of scores:
+INFO - 08/01/26 01:42:47 - 0:58:00 - Score 151: Count: 1
+INFO - 08/01/26 01:42:47 - 0:58:00 - Score 152: Count: 182
+INFO - 08/01/26 01:42:47 - 0:58:00 - Score 153: Count: 2485
+INFO - 08/01/26 01:42:47 - 0:58:00 - Score 154: Count: 9720
+INFO - 08/01/26 01:42:47 - 0:58:00 - Score 155: Count: 13543
+INFO - 08/01/26 01:42:47 - 0:58:00 - Score 156: Count: 8765
+INFO - 08/01/26 01:42:47 - 0:58:00 - Score 157: Count: 3128
+INFO - 08/01/26 01:42:47 - 0:58:00 - Score 158: Count: 2140
+INFO - 08/01/26 01:42:47 - 0:58:00 - Score 159: Count: 1112
+INFO - 08/01/26 01:42:47 - 0:58:00 - Score 160: Count: 257
+INFO - 08/01/26 01:42:47 - 0:58:00 - Score 161: Count: 31
+INFO - 08/01/26 01:42:47 - 0:58:00 - Score 162: Count: 1
+INFO - 08/01/26 01:42:47 - 0:58:00 - --------------------------------
+INFO - 08/01/26 01:42:47 - 0:58:00 - New train and test generated. Size are train: 4500, test 500
+INFO - 08/01/26 01:42:47 - 0:58:00 - Unique data computed for original train set: 5000, generated train set: 2932
+INFO - 08/01/26 01:42:47 - 0:58:00 - Final train and test generated. Size are train: 5000, test 500
+INFO - 08/01/26 01:42:47 - 0:58:01 - [Epoch 4 AFTER_UPDATE_DATASETS] CPU: 0.0% | RAM: 1942.0MB
+INFO - 08/01/26 01:42:48 - 0:58:01 - ### Score distribution ###
+INFO - 08/01/26 01:42:48 - 0:58:01 - Valid examples: 5000
+INFO - 08/01/26 01:42:48 - 0:58:01 - Mean score: 158.4288
+INFO - 08/01/26 01:42:48 - 0:58:01 - Median score: 158.0
+INFO - 08/01/26 01:42:48 - 0:58:01 - Stdev score: 0.6351466305101915
+INFO - 08/01/26 01:42:48 - 0:58:01 - Max score: 162
+INFO - 08/01/26 01:42:48 - 0:58:01 - Top 1 percentile score: 160.0
+INFO - 08/01/26 01:42:48 - 0:58:01 - Distribution of scores:
+INFO - 08/01/26 01:42:48 - 0:58:01 - Score 158: Count: 3216
+INFO - 08/01/26 01:42:48 - 0:58:01 - Score 159: Count: 1459
+INFO - 08/01/26 01:42:48 - 0:58:01 - Score 160: Count: 291
+INFO - 08/01/26 01:42:48 - 0:58:01 - Score 161: Count: 33
+INFO - 08/01/26 01:42:48 - 0:58:01 - Score 162: Count: 1
+INFO - 08/01/26 01:42:48 - 0:58:01 - --------------------------------
+INFO - 08/01/26 01:42:48 - 0:58:01 - ==== Starting Epoch 5 =====
+INFO - 08/01/26 01:42:48 - 0:58:01 - [Epoch 5 START] CPU: 0.0% | RAM: 1614.4MB
+INFO - 08/01/26 01:42:49 - 0:58:02 - Memory allocated: 101.19MB, reserved: 176.00MB
+INFO - 08/01/26 01:42:50 - 0:58:04 - step 100 | loss 0.2129 | steps time 1364.74ms
+INFO - 08/01/26 01:42:52 - 0:58:05 - step 200 | loss 0.1801 | steps time 1379.31ms
+INFO - 08/01/26 01:42:53 - 0:58:07 - step 300 | loss 0.1635 | steps time 1385.14ms
+INFO - 08/01/26 01:42:54 - 0:58:08 - step 400 | loss 0.1077 | steps time 1382.88ms
+INFO - 08/01/26 01:42:56 - 0:58:09 - step 500 | loss 0.1011 | steps time 1383.83ms
+INFO - 08/01/26 01:42:56 - 0:58:09 - step 500 train loss: 0.18794740548729896 test loss: 4.628561973571777
+INFO - 08/01/26 01:42:57 - 0:58:11 - step 600 | loss 0.1094 | steps time 1381.51ms
+INFO - 08/01/26 01:42:59 - 0:58:12 - step 700 | loss 0.0922 | steps time 1382.11ms
+INFO - 08/01/26 01:43:00 - 0:58:13 - step 800 | loss 0.1017 | steps time 1381.93ms
+INFO - 08/01/26 01:43:01 - 0:58:15 - step 900 | loss 0.1105 | steps time 1382.12ms
+INFO - 08/01/26 01:43:03 - 0:58:16 - step 1000 | loss 0.1137 | steps time 1382.44ms
+INFO - 08/01/26 01:43:03 - 0:58:16 - step 1000 train loss: 0.10562662921845913 test loss: 4.697598934173584
+INFO - 08/01/26 01:43:04 - 0:58:18 - step 1100 | loss 0.1037 | steps time 1381.87ms
+INFO - 08/01/26 01:43:06 - 0:58:19 - step 1200 | loss 0.0989 | steps time 1382.40ms
+INFO - 08/01/26 01:43:07 - 0:58:20 - step 1300 | loss 0.0990 | steps time 1384.42ms
+INFO - 08/01/26 01:43:08 - 0:58:22 - step 1400 | loss 0.0919 | steps time 1382.93ms
+INFO - 08/01/26 01:43:10 - 0:58:23 - step 1500 | loss 0.0949 | steps time 1381.44ms
+INFO - 08/01/26 01:43:10 - 0:58:23 - step 1500 train loss: 0.09863278812170029 test loss: 4.750344276428223
+INFO - 08/01/26 01:43:11 - 0:58:25 - step 1600 | loss 0.1063 | steps time 1385.11ms
+INFO - 08/01/26 01:43:12 - 0:58:26 - step 1700 | loss 0.0932 | steps time 1387.45ms
+INFO - 08/01/26 01:43:14 - 0:58:27 - step 1800 | loss 0.0933 | steps time 1382.95ms
+INFO - 08/01/26 01:43:15 - 0:58:29 - step 1900 | loss 0.1009 | steps time 1384.28ms
+INFO - 08/01/26 01:43:17 - 0:58:30 - step 2000 | loss 0.0857 | steps time 1384.62ms
+INFO - 08/01/26 01:43:17 - 0:58:30 - step 2000 train loss: 0.09503030152618885 test loss: 4.770391941070557
+INFO - 08/01/26 01:43:18 - 0:58:32 - step 2100 | loss 0.0856 | steps time 1381.94ms
+INFO - 08/01/26 01:43:19 - 0:58:33 - step 2200 | loss 0.0899 | steps time 1384.25ms
+INFO - 08/01/26 01:43:21 - 0:58:34 - step 2300 | loss 0.0863 | steps time 1385.10ms
+INFO - 08/01/26 01:43:22 - 0:58:36 - step 2400 | loss 0.0964 | steps time 1383.01ms
+INFO - 08/01/26 01:43:24 - 0:58:37 - step 2500 | loss 0.0981 | steps time 1385.01ms
+INFO - 08/01/26 01:43:24 - 0:58:37 - step 2500 train loss: 0.09317330418527127 test loss: 4.815077304840088
+INFO - 08/01/26 01:43:25 - 0:58:39 - step 2600 | loss 0.0931 | steps time 1384.70ms
+INFO - 08/01/26 01:43:26 - 0:58:40 - step 2700 | loss 0.0894 | steps time 1389.66ms
+INFO - 08/01/26 01:43:28 - 0:58:41 - step 2800 | loss 0.0891 | steps time 1386.75ms
+INFO - 08/01/26 01:43:29 - 0:58:43 - step 2900 | loss 0.0915 | steps time 1386.91ms
+INFO - 08/01/26 01:43:31 - 0:58:44 - step 3000 | loss 0.0878 | steps time 1388.33ms
+INFO - 08/01/26 01:43:31 - 0:58:44 - step 3000 train loss: 0.09146251535415649 test loss: 4.81710958480835
+INFO - 08/01/26 01:43:32 - 0:58:45 - step 3100 | loss 0.0955 | steps time 1386.25ms
+INFO - 08/01/26 01:43:33 - 0:58:47 - step 3200 | loss 0.0903 | steps time 1385.57ms
+INFO - 08/01/26 01:43:35 - 0:58:48 - step 3300 | loss 0.0951 | steps time 1386.02ms
+INFO - 08/01/26 01:43:36 - 0:58:50 - step 3400 | loss 0.0866 | steps time 1385.40ms
+INFO - 08/01/26 01:43:38 - 0:58:51 - step 3500 | loss 0.0946 | steps time 1386.54ms
+INFO - 08/01/26 01:43:38 - 0:58:51 - step 3500 train loss: 0.08991470499336719 test loss: 4.8450727462768555
+INFO - 08/01/26 01:43:39 - 0:58:52 - step 3600 | loss 0.0884 | steps time 1388.45ms
+INFO - 08/01/26 01:43:40 - 0:58:54 - step 3700 | loss 0.0895 | steps time 1384.29ms
+INFO - 08/01/26 01:43:42 - 0:58:55 - step 3800 | loss 0.0862 | steps time 1385.81ms
+INFO - 08/01/26 01:43:43 - 0:58:57 - step 3900 | loss 0.0925 | steps time 1385.17ms
+INFO - 08/01/26 01:43:45 - 0:58:58 - step 4000 | loss 0.0923 | steps time 1385.41ms
+INFO - 08/01/26 01:43:45 - 0:58:58 - step 4000 train loss: 0.0894167297333479 test loss: 4.867453575134277
+INFO - 08/01/26 01:43:46 - 0:58:59 - step 4100 | loss 0.0877 | steps time 1383.23ms
+INFO - 08/01/26 01:43:47 - 0:59:01 - step 4200 | loss 0.0755 | steps time 1383.40ms
+INFO - 08/01/26 01:43:49 - 0:59:02 - step 4300 | loss 0.0808 | steps time 1383.89ms
+INFO - 08/01/26 01:43:50 - 0:59:04 - step 4400 | loss 0.0959 | steps time 1384.43ms
+INFO - 08/01/26 01:43:51 - 0:59:05 - step 4500 | loss 0.0906 | steps time 1385.15ms
+INFO - 08/01/26 01:43:52 - 0:59:05 - step 4500 train loss: 0.0877598497569561 test loss: 4.883769989013672
+INFO - 08/01/26 01:43:53 - 0:59:06 - step 4600 | loss 0.0862 | steps time 1388.75ms
+INFO - 08/01/26 01:43:54 - 0:59:08 - step 4700 | loss 0.0865 | steps time 1384.48ms
+INFO - 08/01/26 01:43:56 - 0:59:09 - step 4800 | loss 0.0969 | steps time 1383.02ms
+INFO - 08/01/26 01:43:57 - 0:59:11 - step 4900 | loss 0.0878 | steps time 1384.41ms
+INFO - 08/01/26 01:43:58 - 0:59:12 - step 5000 | loss 0.0900 | steps time 1383.81ms
+INFO - 08/01/26 01:43:58 - 0:59:12 - step 5000 train loss: 0.08696917974948883 test loss: 4.892565727233887
+INFO - 08/01/26 01:44:00 - 0:59:13 - step 5100 | loss 0.0831 | steps time 1384.18ms
+INFO - 08/01/26 01:44:01 - 0:59:15 - step 5200 | loss 0.0906 | steps time 1384.18ms
+INFO - 08/01/26 01:44:03 - 0:59:16 - step 5300 | loss 0.0822 | steps time 1384.64ms
+INFO - 08/01/26 01:44:04 - 0:59:18 - step 5400 | loss 0.0882 | steps time 1382.50ms
+INFO - 08/01/26 01:44:05 - 0:59:19 - step 5500 | loss 0.0810 | steps time 1384.94ms
+INFO - 08/01/26 01:44:05 - 0:59:19 - step 5500 train loss: 0.08579791407287121 test loss: 4.9259467124938965
+INFO - 08/01/26 01:44:07 - 0:59:20 - step 5600 | loss 0.0869 | steps time 1383.66ms
+INFO - 08/01/26 01:44:08 - 0:59:22 - step 5700 | loss 0.0856 | steps time 1384.79ms
+INFO - 08/01/26 01:44:10 - 0:59:23 - step 5800 | loss 0.0828 | steps time 1384.94ms
+INFO - 08/01/26 01:44:11 - 0:59:24 - step 5900 | loss 0.0883 | steps time 1392.89ms
+INFO - 08/01/26 01:44:12 - 0:59:26 - step 6000 | loss 0.0828 | steps time 1387.03ms
+INFO - 08/01/26 01:44:12 - 0:59:26 - step 6000 train loss: 0.08524440707266331 test loss: 4.930802822113037
+INFO - 08/01/26 01:44:14 - 0:59:27 - step 6100 | loss 0.0900 | steps time 1386.28ms
+INFO - 08/01/26 01:44:15 - 0:59:29 - step 6200 | loss 0.0882 | steps time 1384.34ms
+INFO - 08/01/26 01:44:17 - 0:59:30 - step 6300 | loss 0.0824 | steps time 1384.13ms
+INFO - 08/01/26 01:44:18 - 0:59:31 - step 6400 | loss 0.0883 | steps time 1385.96ms
+INFO - 08/01/26 01:44:19 - 0:59:33 - step 6500 | loss 0.0833 | steps time 1385.41ms
+INFO - 08/01/26 01:44:19 - 0:59:33 - step 6500 train loss: 0.08461524266004562 test loss: 4.931248664855957
+INFO - 08/01/26 01:44:21 - 0:59:34 - step 6600 | loss 0.0863 | steps time 1384.54ms
+INFO - 08/01/26 01:44:22 - 0:59:36 - step 6700 | loss 0.0896 | steps time 1382.65ms
+INFO - 08/01/26 01:44:24 - 0:59:37 - step 6800 | loss 0.0837 | steps time 1384.63ms
+INFO - 08/01/26 01:44:25 - 0:59:38 - step 6900 | loss 0.0804 | steps time 1385.67ms
+INFO - 08/01/26 01:44:26 - 0:59:40 - step 7000 | loss 0.0847 | steps time 1385.11ms
+INFO - 08/01/26 01:44:26 - 0:59:40 - step 7000 train loss: 0.08411020137369633 test loss: 4.955249309539795
+INFO - 08/01/26 01:44:28 - 0:59:41 - step 7100 | loss 0.0829 | steps time 1385.69ms
+INFO - 08/01/26 01:44:29 - 0:59:43 - step 7200 | loss 0.0816 | steps time 1383.96ms
+INFO - 08/01/26 01:44:30 - 0:59:44 - step 7300 | loss 0.0856 | steps time 1381.32ms
+INFO - 08/01/26 01:44:32 - 0:59:45 - step 7400 | loss 0.0758 | steps time 1385.25ms
+INFO - 08/01/26 01:44:33 - 0:59:47 - step 7500 | loss 0.0846 | steps time 1385.31ms
+INFO - 08/01/26 01:44:33 - 0:59:47 - step 7500 train loss: 0.08306814421713352 test loss: 4.962512016296387
+INFO - 08/01/26 01:44:35 - 0:59:48 - step 7600 | loss 0.0777 | steps time 1385.30ms
+INFO - 08/01/26 01:44:36 - 0:59:50 - step 7700 | loss 0.0870 | steps time 1385.58ms
+INFO - 08/01/26 01:44:37 - 0:59:51 - step 7800 | loss 0.0825 | steps time 1384.95ms
+INFO - 08/01/26 01:44:39 - 0:59:52 - step 7900 | loss 0.0841 | steps time 1384.10ms
+INFO - 08/01/26 01:44:40 - 0:59:54 - step 8000 | loss 0.0805 | steps time 1387.10ms
+INFO - 08/01/26 01:44:40 - 0:59:54 - step 8000 train loss: 0.08280072017014027 test loss: 4.9783124923706055
+INFO - 08/01/26 01:44:42 - 0:59:55 - step 8100 | loss 0.0777 | steps time 1386.78ms
+INFO - 08/01/26 01:44:43 - 0:59:57 - step 8200 | loss 0.0829 | steps time 1385.85ms
+INFO - 08/01/26 01:44:44 - 0:59:58 - step 8300 | loss 0.0815 | steps time 1385.73ms
+INFO - 08/01/26 01:44:46 - 0:59:59 - step 8400 | loss 0.0811 | steps time 1384.82ms
+INFO - 08/01/26 01:44:47 - 1:00:01 - step 8500 | loss 0.0829 | steps time 1386.69ms
+INFO - 08/01/26 01:44:47 - 1:00:01 - step 8500 train loss: 0.08224571377038956 test loss: 4.964411735534668
+INFO - 08/01/26 01:44:49 - 1:00:02 - step 8600 | loss 0.0833 | steps time 1385.98ms
+INFO - 08/01/26 01:44:50 - 1:00:03 - step 8700 | loss 0.0814 | steps time 1387.97ms
+INFO - 08/01/26 01:44:51 - 1:00:05 - step 8800 | loss 0.0759 | steps time 1382.18ms
+INFO - 08/01/26 01:44:53 - 1:00:06 - step 8900 | loss 0.0850 | steps time 1456.21ms
+INFO - 08/01/26 01:44:54 - 1:00:08 - step 9000 | loss 0.0759 | steps time 1413.90ms
+INFO - 08/01/26 01:44:54 - 1:00:08 - step 9000 train loss: 0.08209539434313774 test loss: 5.0113606452941895
+INFO - 08/01/26 01:44:56 - 1:00:09 - step 9100 | loss 0.0785 | steps time 1383.67ms
+INFO - 08/01/26 01:44:57 - 1:00:11 - step 9200 | loss 0.0820 | steps time 1384.39ms
+INFO - 08/01/26 01:44:58 - 1:00:12 - step 9300 | loss 0.0817 | steps time 1384.01ms
+INFO - 08/01/26 01:45:00 - 1:00:13 - step 9400 | loss 0.0799 | steps time 1384.83ms
+INFO - 08/01/26 01:45:01 - 1:00:15 - step 9500 | loss 0.0838 | steps time 1383.60ms
+INFO - 08/01/26 01:45:01 - 1:00:15 - step 9500 train loss: 0.08127283671498299 test loss: 5.021020889282227
+INFO - 08/01/26 01:45:03 - 1:00:16 - step 9600 | loss 0.0845 | steps time 1387.57ms
+INFO - 08/01/26 01:45:04 - 1:00:18 - step 9700 | loss 0.0805 | steps time 1398.64ms
+INFO - 08/01/26 01:45:05 - 1:00:19 - step 9800 | loss 0.0847 | steps time 1385.92ms
+INFO - 08/01/26 01:45:07 - 1:00:20 - step 9900 | loss 0.0825 | steps time 1386.43ms
+INFO - 08/01/26 01:45:08 - 1:00:22 - step 10000 | loss 0.0780 | steps time 1386.04ms
+INFO - 08/01/26 01:45:08 - 1:00:22 - step 10000 train loss: 0.08051862539350986 test loss: 5.026196479797363
+INFO - 08/01/26 01:45:09 - 1:00:22 - [Epoch 5 AFTER_TRAIN] CPU: 0.0% | RAM: 1617.4MB
+INFO - 08/01/26 01:45:09 - 1:00:23 - Sample with temperature 1.0 to 1.0
+INFO - 08/01/26 01:45:09 - 1:00:23 - 0 / 50000 samples generated, 0 scored
+INFO - 08/01/26 01:52:48 - 1:08:01 - ### Score distribution ###
+INFO - 08/01/26 01:52:48 - 1:08:01 - Invalid examples: before local search: 0, after: 0
+INFO - 08/01/26 01:52:48 - 1:08:01 - Valid examples: 50000
+INFO - 08/01/26 01:52:48 - 1:08:01 - Mean score: 156.63622
+INFO - 08/01/26 01:52:48 - 1:08:01 - Median score: 156.0
+INFO - 08/01/26 01:52:48 - 1:08:01 - Stdev score: 2.070557861011644
+INFO - 08/01/26 01:52:48 - 1:08:01 - Max score: 162
+INFO - 08/01/26 01:52:48 - 1:08:01 - Top 1 percentile score: 160.0
+INFO - 08/01/26 01:52:48 - 1:08:01 - Distribution of scores:
+INFO - 08/01/26 01:52:48 - 1:08:01 - Score 151: Count: 1
+INFO - 08/01/26 01:52:48 - 1:08:01 - Score 152: Count: 122
+INFO - 08/01/26 01:52:48 - 1:08:01 - Score 153: Count: 1818
+INFO - 08/01/26 01:52:48 - 1:08:01 - Score 154: Count: 7285
+INFO - 08/01/26 01:52:48 - 1:08:01 - Score 155: Count: 9991
+INFO - 08/01/26 01:52:48 - 1:08:01 - Score 156: Count: 6271
+INFO - 08/01/26 01:52:48 - 1:08:01 - Score 157: Count: 2281
+INFO - 08/01/26 01:52:48 - 1:08:01 - Score 158: Count: 10247
+INFO - 08/01/26 01:52:48 - 1:08:01 - Score 159: Count: 8809
+INFO - 08/01/26 01:52:48 - 1:08:01 - Score 160: Count: 2769
+INFO - 08/01/26 01:52:48 - 1:08:01 - Score 161: Count: 395
+INFO - 08/01/26 01:52:48 - 1:08:01 - Score 162: Count: 11
+INFO - 08/01/26 01:52:48 - 1:08:01 - --------------------------------
+INFO - 08/01/26 01:52:48 - 1:08:02 - [Epoch 5 AFTER_SAMPLE] CPU: 0.0% | RAM: 1908.4MB
+INFO - 08/01/26 01:52:48 - 1:08:02 - Unique processing: 33126 examples left, 16874 duplicates
+INFO - 08/01/26 01:52:48 - 1:08:02 - ### Score distribution ###
+INFO - 08/01/26 01:52:48 - 1:08:02 - Valid examples: 33126
+INFO - 08/01/26 01:52:48 - 1:08:02 - Mean score: 155.58509931775646
+INFO - 08/01/26 01:52:48 - 1:08:02 - Median score: 155.0
+INFO - 08/01/26 01:52:48 - 1:08:02 - Stdev score: 1.7045254307571798
+INFO - 08/01/26 01:52:48 - 1:08:02 - Max score: 162
+INFO - 08/01/26 01:52:48 - 1:08:02 - Top 1 percentile score: 160.0
+INFO - 08/01/26 01:52:48 - 1:08:02 - Distribution of scores:
+INFO - 08/01/26 01:52:48 - 1:08:02 - Score 151: Count: 1
+INFO - 08/01/26 01:52:48 - 1:08:02 - Score 152: Count: 122
+INFO - 08/01/26 01:52:48 - 1:08:02 - Score 153: Count: 1818
+INFO - 08/01/26 01:52:48 - 1:08:02 - Score 154: Count: 7285
+INFO - 08/01/26 01:52:48 - 1:08:02 - Score 155: Count: 9991
+INFO - 08/01/26 01:52:48 - 1:08:02 - Score 156: Count: 6271
+INFO - 08/01/26 01:52:48 - 1:08:02 - Score 157: Count: 2281
+INFO - 08/01/26 01:52:48 - 1:08:02 - Score 158: Count: 2448
+INFO - 08/01/26 01:52:48 - 1:08:02 - Score 159: Count: 2145
+INFO - 08/01/26 01:52:48 - 1:08:02 - Score 160: Count: 672
+INFO - 08/01/26 01:52:48 - 1:08:02 - Score 161: Count: 88
+INFO - 08/01/26 01:52:48 - 1:08:02 - Score 162: Count: 4
+INFO - 08/01/26 01:52:48 - 1:08:02 - --------------------------------
+INFO - 08/01/26 01:52:48 - 1:08:02 - New train and test generated. Size are train: 4500, test 500
+INFO - 08/01/26 01:52:48 - 1:08:02 - Unique data computed for original train set: 5000, generated train set: 2219
+INFO - 08/01/26 01:52:48 - 1:08:02 - Final train and test generated. Size are train: 5000, test 500
+INFO - 08/01/26 01:52:49 - 1:08:02 - [Epoch 5 AFTER_UPDATE_DATASETS] CPU: 0.0% | RAM: 1908.4MB
+INFO - 08/01/26 01:52:49 - 1:08:03 - ### Score distribution ###
+INFO - 08/01/26 01:52:49 - 1:08:03 - Valid examples: 5000
+INFO - 08/01/26 01:52:49 - 1:08:03 - Mean score: 158.869
+INFO - 08/01/26 01:52:49 - 1:08:03 - Median score: 159.0
+INFO - 08/01/26 01:52:49 - 1:08:03 - Stdev score: 0.7210707237141996
+INFO - 08/01/26 01:52:49 - 1:08:03 - Max score: 162
+INFO - 08/01/26 01:52:49 - 1:08:03 - Top 1 percentile score: 161.0
+INFO - 08/01/26 01:52:49 - 1:08:03 - Distribution of scores:
+INFO - 08/01/26 01:52:49 - 1:08:03 - Score 158: Count: 1568
+INFO - 08/01/26 01:52:49 - 1:08:03 - Score 159: Count: 2618
+INFO - 08/01/26 01:52:49 - 1:08:03 - Score 160: Count: 718
+INFO - 08/01/26 01:52:49 - 1:08:03 - Score 161: Count: 93
+INFO - 08/01/26 01:52:49 - 1:08:03 - Score 162: Count: 3
+INFO - 08/01/26 01:52:49 - 1:08:03 - --------------------------------
+INFO - 08/01/26 01:52:49 - 1:08:03 - ==== Starting Epoch 6 =====
+INFO - 08/01/26 01:52:49 - 1:08:03 - [Epoch 6 START] CPU: 0.0% | RAM: 1558.4MB
+INFO - 08/01/26 01:52:50 - 1:08:04 - Memory allocated: 101.19MB, reserved: 176.00MB
+INFO - 08/01/26 01:52:52 - 1:08:05 - step 100 | loss 0.1694 | steps time 1404.74ms
+INFO - 08/01/26 01:52:53 - 1:08:07 - step 200 | loss 0.1112 | steps time 1420.66ms
+INFO - 08/01/26 01:52:55 - 1:08:08 - step 300 | loss 0.1209 | steps time 1423.24ms
+INFO - 08/01/26 01:52:56 - 1:08:10 - step 400 | loss 0.0935 | steps time 1419.89ms
+INFO - 08/01/26 01:52:58 - 1:08:11 - step 500 | loss 0.0985 | steps time 1422.17ms
+INFO - 08/01/26 01:52:58 - 1:08:11 - step 500 train loss: 0.1767658851891756 test loss: 1.2153184413909912
+INFO - 08/01/26 01:52:59 - 1:08:12 - step 600 | loss 0.1096 | steps time 1434.48ms
+INFO - 08/01/26 01:53:00 - 1:08:14 - step 700 | loss 0.0895 | steps time 1435.99ms
+INFO - 08/01/26 01:53:02 - 1:08:15 - step 800 | loss 0.0919 | steps time 1418.69ms
+INFO - 08/01/26 01:53:03 - 1:08:17 - step 900 | loss 0.0998 | steps time 1423.30ms
+INFO - 08/01/26 01:53:05 - 1:08:18 - step 1000 | loss 0.0983 | steps time 1397.38ms
+INFO - 08/01/26 01:53:05 - 1:08:18 - step 1000 train loss: 0.09509741260111332 test loss: 1.2700607776641846
+INFO - 08/01/26 01:53:06 - 1:08:20 - step 1100 | loss 0.0831 | steps time 1401.12ms
+INFO - 08/01/26 01:53:08 - 1:08:21 - step 1200 | loss 0.0869 | steps time 1411.62ms
+INFO - 08/01/26 01:53:09 - 1:08:22 - step 1300 | loss 0.1008 | steps time 1427.93ms
+INFO - 08/01/26 01:53:10 - 1:08:24 - step 1400 | loss 0.0811 | steps time 1424.71ms
+INFO - 08/01/26 01:53:12 - 1:08:25 - step 1500 | loss 0.0752 | steps time 1375.99ms
+INFO - 08/01/26 01:53:12 - 1:08:25 - step 1500 train loss: 0.0876884251832962 test loss: 1.303741455078125
+INFO - 08/01/26 01:53:13 - 1:08:27 - step 1600 | loss 0.0809 | steps time 1425.40ms
+INFO - 08/01/26 01:53:15 - 1:08:28 - step 1700 | loss 0.0816 | steps time 1420.15ms
+INFO - 08/01/26 01:53:16 - 1:08:30 - step 1800 | loss 0.0933 | steps time 1418.78ms
+INFO - 08/01/26 01:53:17 - 1:08:31 - step 1900 | loss 0.0860 | steps time 1426.12ms
+INFO - 08/01/26 01:53:19 - 1:08:32 - step 2000 | loss 0.0858 | steps time 1422.85ms
+INFO - 08/01/26 01:53:19 - 1:08:32 - step 2000 train loss: 0.08534372434020042 test loss: 1.3447233438491821
+INFO - 08/01/26 01:53:20 - 1:08:34 - step 2100 | loss 0.0807 | steps time 1423.74ms
+INFO - 08/01/26 01:53:22 - 1:08:35 - step 2200 | loss 0.0840 | steps time 1410.30ms
+INFO - 08/01/26 01:53:23 - 1:08:37 - step 2300 | loss 0.0855 | steps time 1426.52ms
+INFO - 08/01/26 01:53:25 - 1:08:38 - step 2400 | loss 0.0853 | steps time 1412.43ms
+INFO - 08/01/26 01:53:26 - 1:08:40 - step 2500 | loss 0.0827 | steps time 1421.96ms
+INFO - 08/01/26 01:53:26 - 1:08:40 - step 2500 train loss: 0.08261639720201493 test loss: 1.3739323616027832
+INFO - 08/01/26 01:53:27 - 1:08:41 - step 2600 | loss 0.0791 | steps time 1405.79ms
+INFO - 08/01/26 01:53:29 - 1:08:42 - step 2700 | loss 0.0943 | steps time 1342.04ms
+INFO - 08/01/26 01:53:30 - 1:08:44 - step 2800 | loss 0.0790 | steps time 1424.20ms
+INFO - 08/01/26 01:53:32 - 1:08:45 - step 2900 | loss 0.0874 | steps time 1423.43ms
+INFO - 08/01/26 01:53:33 - 1:08:47 - step 3000 | loss 0.0846 | steps time 1425.48ms
+INFO - 08/01/26 01:53:33 - 1:08:47 - step 3000 train loss: 0.08146242828667163 test loss: 1.4134740829467773
+INFO - 08/01/26 01:53:35 - 1:08:48 - step 3100 | loss 0.0765 | steps time 1420.21ms
+INFO - 08/01/26 01:53:36 - 1:08:49 - step 3200 | loss 0.0793 | steps time 1428.70ms
+INFO - 08/01/26 01:53:37 - 1:08:51 - step 3300 | loss 0.0861 | steps time 1429.60ms
+INFO - 08/01/26 01:53:39 - 1:08:52 - step 3400 | loss 0.0757 | steps time 1431.30ms
+INFO - 08/01/26 01:53:40 - 1:08:54 - step 3500 | loss 0.0768 | steps time 1428.43ms
+INFO - 08/01/26 01:53:40 - 1:08:54 - step 3500 train loss: 0.07999815839529037 test loss: 1.431457757949829
+INFO - 08/01/26 01:53:42 - 1:08:55 - step 3600 | loss 0.0813 | steps time 1426.91ms
+INFO - 08/01/26 01:53:43 - 1:08:57 - step 3700 | loss 0.0802 | steps time 1344.08ms
+INFO - 08/01/26 01:53:44 - 1:08:58 - step 3800 | loss 0.0744 | steps time 1231.82ms
+INFO - 08/01/26 01:53:46 - 1:08:59 - step 3900 | loss 0.0806 | steps time 1232.32ms
+INFO - 08/01/26 01:53:47 - 1:09:00 - step 4000 | loss 0.0817 | steps time 1245.65ms
+INFO - 08/01/26 01:53:47 - 1:09:00 - step 4000 train loss: 0.07908718675374984 test loss: 1.4665546417236328
+INFO - 08/01/26 01:53:48 - 1:09:02 - step 4100 | loss 0.0770 | steps time 1395.60ms
+INFO - 08/01/26 01:53:50 - 1:09:03 - step 4200 | loss 0.0813 | steps time 1400.46ms
+INFO - 08/01/26 01:53:51 - 1:09:04 - step 4300 | loss 0.0813 | steps time 1399.66ms
+INFO - 08/01/26 01:53:52 - 1:09:06 - step 4400 | loss 0.0792 | steps time 1398.06ms
+INFO - 08/01/26 01:53:54 - 1:09:07 - step 4500 | loss 0.0774 | steps time 1400.73ms
+INFO - 08/01/26 01:53:54 - 1:09:07 - step 4500 train loss: 0.07824753096699714 test loss: 1.4909226894378662
+INFO - 08/01/26 01:53:55 - 1:09:09 - step 4600 | loss 0.0741 | steps time 1398.33ms
+INFO - 08/01/26 01:53:57 - 1:09:10 - step 4700 | loss 0.0771 | steps time 1400.14ms
+INFO - 08/01/26 01:53:58 - 1:09:12 - step 4800 | loss 0.0725 | steps time 1398.26ms
+INFO - 08/01/26 01:53:59 - 1:09:13 - step 4900 | loss 0.0767 | steps time 1396.78ms
+INFO - 08/01/26 01:54:01 - 1:09:14 - step 5000 | loss 0.0831 | steps time 1426.14ms
+INFO - 08/01/26 01:54:01 - 1:09:14 - step 5000 train loss: 0.07706290586292744 test loss: 1.5218431949615479
+INFO - 08/01/26 01:54:02 - 1:09:16 - step 5100 | loss 0.0740 | steps time 1428.24ms
+INFO - 08/01/26 01:54:04 - 1:09:17 - step 5200 | loss 0.0762 | steps time 1427.68ms
+INFO - 08/01/26 01:54:05 - 1:09:19 - step 5300 | loss 0.0797 | steps time 1423.92ms
+INFO - 08/01/26 01:54:07 - 1:09:20 - step 5400 | loss 0.0820 | steps time 1419.23ms
+INFO - 08/01/26 01:54:08 - 1:09:21 - step 5500 | loss 0.0712 | steps time 1424.43ms
+INFO - 08/01/26 01:54:08 - 1:09:22 - step 5500 train loss: 0.07661203362047672 test loss: 1.5449292659759521
+INFO - 08/01/26 01:54:09 - 1:09:23 - step 5600 | loss 0.0726 | steps time 1421.53ms
+INFO - 08/01/26 01:54:11 - 1:09:24 - step 5700 | loss 0.0799 | steps time 1421.15ms
+INFO - 08/01/26 01:54:12 - 1:09:26 - step 5800 | loss 0.0718 | steps time 1423.08ms
+INFO - 08/01/26 01:54:14 - 1:09:27 - step 5900 | loss 0.0780 | steps time 1430.55ms
+INFO - 08/01/26 01:54:15 - 1:09:29 - step 6000 | loss 0.0736 | steps time 1427.00ms
+INFO - 08/01/26 01:54:15 - 1:09:29 - step 6000 train loss: 0.07602875082194806 test loss: 1.568385362625122
+INFO - 08/01/26 01:54:17 - 1:09:30 - step 6100 | loss 0.0724 | steps time 1426.54ms
+INFO - 08/01/26 01:54:18 - 1:09:32 - step 6200 | loss 0.0802 | steps time 1427.82ms
+INFO - 08/01/26 01:54:19 - 1:09:33 - step 6300 | loss 0.0825 | steps time 1427.07ms
+INFO - 08/01/26 01:54:21 - 1:09:34 - step 6400 | loss 0.0779 | steps time 1426.86ms
+INFO - 08/01/26 01:54:22 - 1:09:36 - step 6500 | loss 0.0835 | steps time 1434.86ms
+INFO - 08/01/26 01:54:22 - 1:09:36 - step 6500 train loss: 0.0753830955028534 test loss: 1.5910241603851318
+INFO - 08/01/26 01:54:24 - 1:09:37 - step 6600 | loss 0.0666 | steps time 1425.95ms
+INFO - 08/01/26 01:54:25 - 1:09:39 - step 6700 | loss 0.0697 | steps time 1430.12ms
+INFO - 08/01/26 01:54:27 - 1:09:40 - step 6800 | loss 0.0745 | steps time 1428.55ms
+INFO - 08/01/26 01:54:28 - 1:09:42 - step 6900 | loss 0.0792 | steps time 1426.23ms
+INFO - 08/01/26 01:54:30 - 1:09:43 - step 7000 | loss 0.0720 | steps time 1424.94ms
+INFO - 08/01/26 01:54:30 - 1:09:43 - step 7000 train loss: 0.07484846027195453 test loss: 1.6147282123565674
+INFO - 08/01/26 01:54:31 - 1:09:44 - step 7100 | loss 0.0753 | steps time 1425.23ms
+INFO - 08/01/26 01:54:32 - 1:09:46 - step 7200 | loss 0.0736 | steps time 1426.16ms
+INFO - 08/01/26 01:54:34 - 1:09:47 - step 7300 | loss 0.0790 | steps time 1425.69ms
+INFO - 08/01/26 01:54:35 - 1:09:49 - step 7400 | loss 0.0738 | steps time 1419.17ms
+INFO - 08/01/26 01:54:37 - 1:09:50 - step 7500 | loss 0.0691 | steps time 1427.59ms
+INFO - 08/01/26 01:54:37 - 1:09:50 - step 7500 train loss: 0.07440950056910514 test loss: 1.6272627115249634
+INFO - 08/01/26 01:54:38 - 1:09:52 - step 7600 | loss 0.0810 | steps time 1424.82ms
+INFO - 08/01/26 01:54:40 - 1:09:53 - step 7700 | loss 0.0783 | steps time 1424.39ms
+INFO - 08/01/26 01:54:41 - 1:09:54 - step 7800 | loss 0.0770 | steps time 1425.43ms
+INFO - 08/01/26 01:54:42 - 1:09:56 - step 7900 | loss 0.0715 | steps time 1428.09ms
+INFO - 08/01/26 01:54:44 - 1:09:57 - step 8000 | loss 0.0781 | steps time 1428.75ms
+INFO - 08/01/26 01:54:44 - 1:09:57 - step 8000 train loss: 0.0742432806789875 test loss: 1.647775650024414
+INFO - 08/01/26 01:54:45 - 1:09:59 - step 8100 | loss 0.0707 | steps time 1426.37ms
+INFO - 08/01/26 01:54:47 - 1:10:00 - step 8200 | loss 0.0751 | steps time 1430.65ms
+INFO - 08/01/26 01:54:48 - 1:10:02 - step 8300 | loss 0.0756 | steps time 1425.99ms
+INFO - 08/01/26 01:54:50 - 1:10:03 - step 8400 | loss 0.0712 | steps time 1425.98ms
+INFO - 08/01/26 01:54:51 - 1:10:05 - step 8500 | loss 0.0754 | steps time 1431.12ms
+INFO - 08/01/26 01:54:51 - 1:10:05 - step 8500 train loss: 0.07376426301896571 test loss: 1.6664316654205322
+INFO - 08/01/26 01:54:52 - 1:10:06 - step 8600 | loss 0.0734 | steps time 1422.70ms
+INFO - 08/01/26 01:54:54 - 1:10:07 - step 8700 | loss 0.0702 | steps time 1390.53ms
+INFO - 08/01/26 01:54:55 - 1:10:09 - step 8800 | loss 0.0731 | steps time 1386.87ms
+INFO - 08/01/26 01:54:57 - 1:10:10 - step 8900 | loss 0.0746 | steps time 1385.39ms
+INFO - 08/01/26 01:54:58 - 1:10:12 - step 9000 | loss 0.0735 | steps time 1388.08ms
+INFO - 08/01/26 01:54:58 - 1:10:12 - step 9000 train loss: 0.0728772312104702 test loss: 1.6931540966033936
+INFO - 08/01/26 01:54:59 - 1:10:13 - step 9100 | loss 0.0757 | steps time 1385.86ms
+INFO - 08/01/26 01:55:01 - 1:10:14 - step 9200 | loss 0.0766 | steps time 1385.37ms
+INFO - 08/01/26 01:55:02 - 1:10:16 - step 9300 | loss 0.0740 | steps time 1385.34ms
+INFO - 08/01/26 01:55:04 - 1:10:17 - step 9400 | loss 0.0746 | steps time 1387.21ms
+INFO - 08/01/26 01:55:05 - 1:10:19 - step 9500 | loss 0.0715 | steps time 1389.16ms
+INFO - 08/01/26 01:55:05 - 1:10:19 - step 9500 train loss: 0.07266799888014794 test loss: 1.7109943628311157
+INFO - 08/01/26 01:55:06 - 1:10:20 - step 9600 | loss 0.0729 | steps time 1389.85ms
+INFO - 08/01/26 01:55:08 - 1:10:21 - step 9700 | loss 0.0733 | steps time 1389.37ms
+INFO - 08/01/26 01:55:09 - 1:10:23 - step 9800 | loss 0.0710 | steps time 1387.97ms
+INFO - 08/01/26 01:55:11 - 1:10:24 - step 9900 | loss 0.0725 | steps time 1387.93ms
+INFO - 08/01/26 01:55:12 - 1:10:26 - step 10000 | loss 0.0736 | steps time 1388.81ms
+INFO - 08/01/26 01:55:12 - 1:10:26 - step 10000 train loss: 0.07242722624540329 test loss: 1.7171783447265625
+INFO - 08/01/26 01:55:13 - 1:10:26 - [Epoch 6 AFTER_TRAIN] CPU: 0.0% | RAM: 1558.4MB
+INFO - 08/01/26 01:55:13 - 1:10:27 - Sample with temperature 1.0 to 1.0
+INFO - 08/01/26 01:55:13 - 1:10:27 - 0 / 50000 samples generated, 0 scored
+INFO - 08/01/26 02:02:45 - 1:17:59 - ### Score distribution ###
+INFO - 08/01/26 02:02:45 - 1:17:59 - Invalid examples: before local search: 0, after: 0
+INFO - 08/01/26 02:02:45 - 1:17:59 - Valid examples: 50000
+INFO - 08/01/26 02:02:45 - 1:17:59 - Mean score: 157.51078
+INFO - 08/01/26 02:02:45 - 1:17:59 - Median score: 158.0
+INFO - 08/01/26 02:02:45 - 1:17:59 - Stdev score: 2.189397099841236
+INFO - 08/01/26 02:02:45 - 1:17:59 - Max score: 162
+INFO - 08/01/26 02:02:45 - 1:17:59 - Top 1 percentile score: 161.0
+INFO - 08/01/26 02:02:45 - 1:17:59 - Distribution of scores:
+INFO - 08/01/26 02:02:45 - 1:17:59 - Score 151: Count: 1
+INFO - 08/01/26 02:02:45 - 1:17:59 - Score 152: Count: 89
+INFO - 08/01/26 02:02:45 - 1:17:59 - Score 153: Count: 1341
+INFO - 08/01/26 02:02:45 - 1:17:59 - Score 154: Count: 4924
+INFO - 08/01/26 02:02:45 - 1:17:59 - Score 155: Count: 6824
+INFO - 08/01/26 02:02:45 - 1:17:59 - Score 156: Count: 4448
+INFO - 08/01/26 02:02:45 - 1:17:59 - Score 157: Count: 1651
+INFO - 08/01/26 02:02:45 - 1:17:59 - Score 158: Count: 6624
+INFO - 08/01/26 02:02:45 - 1:17:59 - Score 159: Count: 16026
+INFO - 08/01/26 02:02:45 - 1:17:59 - Score 160: Count: 6867
+INFO - 08/01/26 02:02:45 - 1:17:59 - Score 161: Count: 1080
+INFO - 08/01/26 02:02:45 - 1:17:59 - Score 162: Count: 125
+INFO - 08/01/26 02:02:45 - 1:17:59 - --------------------------------
+INFO - 08/01/26 02:02:45 - 1:17:59 - [Epoch 6 AFTER_SAMPLE] CPU: 0.0% | RAM: 1912.4MB
+INFO - 08/01/26 02:02:46 - 1:17:59 - Unique processing: 26105 examples left, 23895 duplicates
+INFO - 08/01/26 02:02:46 - 1:17:59 - ### Score distribution ###
+INFO - 08/01/26 02:02:46 - 1:17:59 - Valid examples: 26105
+INFO - 08/01/26 02:02:46 - 1:17:59 - Mean score: 156.06362765753687
+INFO - 08/01/26 02:02:46 - 1:17:59 - Median score: 155
+INFO - 08/01/26 02:02:46 - 1:17:59 - Stdev score: 2.063459534140621
+INFO - 08/01/26 02:02:46 - 1:17:59 - Max score: 162
+INFO - 08/01/26 02:02:46 - 1:17:59 - Top 1 percentile score: 161.0
+INFO - 08/01/26 02:02:46 - 1:17:59 - Distribution of scores:
+INFO - 08/01/26 02:02:46 - 1:17:59 - Score 151: Count: 1
+INFO - 08/01/26 02:02:46 - 1:17:59 - Score 152: Count: 89
+INFO - 08/01/26 02:02:46 - 1:17:59 - Score 153: Count: 1341
+INFO - 08/01/26 02:02:46 - 1:17:59 - Score 154: Count: 4924
+INFO - 08/01/26 02:02:46 - 1:17:59 - Score 155: Count: 6822
+INFO - 08/01/26 02:02:46 - 1:17:59 - Score 156: Count: 4448
+INFO - 08/01/26 02:02:46 - 1:17:59 - Score 157: Count: 1647
+INFO - 08/01/26 02:02:46 - 1:17:59 - Score 158: Count: 1682
+INFO - 08/01/26 02:02:46 - 1:17:59 - Score 159: Count: 3240
+INFO - 08/01/26 02:02:46 - 1:17:59 - Score 160: Count: 1594
+INFO - 08/01/26 02:02:46 - 1:17:59 - Score 161: Count: 294
+INFO - 08/01/26 02:02:46 - 1:17:59 - Score 162: Count: 23
+INFO - 08/01/26 02:02:46 - 1:17:59 - --------------------------------
+INFO - 08/01/26 02:02:46 - 1:17:59 - New train and test generated. Size are train: 4500, test 500
+INFO - 08/01/26 02:02:46 - 1:17:59 - Unique data computed for original train set: 5000, generated train set: 2421
+INFO - 08/01/26 02:02:46 - 1:17:59 - Final train and test generated. Size are train: 5000, test 500
+INFO - 08/01/26 02:02:46 - 1:17:59 - [Epoch 6 AFTER_UPDATE_DATASETS] CPU: 0.0% | RAM: 1912.4MB
+INFO - 08/01/26 02:02:46 - 1:18:00 - ### Score distribution ###
+INFO - 08/01/26 02:02:46 - 1:18:00 - Valid examples: 5000
+INFO - 08/01/26 02:02:46 - 1:18:00 - Mean score: 159.4622
+INFO - 08/01/26 02:02:46 - 1:18:00 - Median score: 159.0
+INFO - 08/01/26 02:02:46 - 1:18:00 - Stdev score: 0.6237379015211107
+INFO - 08/01/26 02:02:46 - 1:18:00 - Max score: 162
+INFO - 08/01/26 02:02:46 - 1:18:00 - Top 1 percentile score: 161.0
+INFO - 08/01/26 02:02:46 - 1:18:00 - Distribution of scores:
+INFO - 08/01/26 02:02:46 - 1:18:00 - Score 159: Count: 3020
+INFO - 08/01/26 02:02:46 - 1:18:00 - Score 160: Count: 1669
+INFO - 08/01/26 02:02:46 - 1:18:00 - Score 161: Count: 291
+INFO - 08/01/26 02:02:46 - 1:18:00 - Score 162: Count: 20
+INFO - 08/01/26 02:02:46 - 1:18:00 - --------------------------------
+INFO - 08/01/26 02:02:46 - 1:18:00 - ==== Starting Epoch 7 =====
+INFO - 08/01/26 02:02:46 - 1:18:00 - [Epoch 7 START] CPU: 0.0% | RAM: 1574.1MB
+INFO - 08/01/26 02:02:48 - 1:18:01 - Memory allocated: 101.04MB, reserved: 144.00MB
+INFO - 08/01/26 02:02:49 - 1:18:02 - step 100 | loss 0.1438 | steps time 1384.89ms
+INFO - 08/01/26 02:02:50 - 1:18:04 - step 200 | loss 0.0955 | steps time 1404.19ms
+INFO - 08/01/26 02:02:52 - 1:18:05 - step 300 | loss 0.0887 | steps time 1410.94ms
+INFO - 08/01/26 02:02:53 - 1:18:07 - step 400 | loss 0.0833 | steps time 1410.44ms
+INFO - 08/01/26 02:02:55 - 1:18:08 - step 500 | loss 0.0754 | steps time 1408.51ms
+INFO - 08/01/26 02:02:55 - 1:18:08 - step 500 train loss: 0.11264040522277355 test loss: 0.44590631127357483
+INFO - 08/01/26 02:02:56 - 1:18:10 - step 600 | loss 0.0769 | steps time 1414.17ms
+INFO - 08/01/26 02:02:58 - 1:18:11 - step 700 | loss 0.0820 | steps time 1412.52ms
+INFO - 08/01/26 02:02:59 - 1:18:12 - step 800 | loss 0.0760 | steps time 1370.12ms
+INFO - 08/01/26 02:03:00 - 1:18:14 - step 900 | loss 0.0778 | steps time 1378.34ms
+INFO - 08/01/26 02:03:02 - 1:18:15 - step 1000 | loss 0.0827 | steps time 1407.62ms
+INFO - 08/01/26 02:03:02 - 1:18:15 - step 1000 train loss: 0.07930065943300724 test loss: 0.4792408049106598
+INFO - 08/01/26 02:03:03 - 1:18:17 - step 1100 | loss 0.0733 | steps time 1413.57ms
+INFO - 08/01/26 02:03:05 - 1:18:18 - step 1200 | loss 0.0728 | steps time 1412.73ms
+INFO - 08/01/26 02:03:06 - 1:18:19 - step 1300 | loss 0.0755 | steps time 1410.63ms
+INFO - 08/01/26 02:03:07 - 1:18:21 - step 1400 | loss 0.0766 | steps time 1412.39ms
+INFO - 08/01/26 02:03:09 - 1:18:22 - step 1500 | loss 0.0716 | steps time 1406.62ms
+INFO - 08/01/26 02:03:09 - 1:18:22 - step 1500 train loss: 0.07546522341668606 test loss: 0.4822212755680084
+INFO - 08/01/26 02:03:10 - 1:18:24 - step 1600 | loss 0.0791 | steps time 1404.81ms
+INFO - 08/01/26 02:03:12 - 1:18:25 - step 1700 | loss 0.0703 | steps time 1413.83ms
+INFO - 08/01/26 02:03:13 - 1:18:27 - step 1800 | loss 0.0716 | steps time 1411.23ms
+INFO - 08/01/26 02:03:14 - 1:18:28 - step 1900 | loss 0.0728 | steps time 1410.95ms
+INFO - 08/01/26 02:03:16 - 1:18:29 - step 2000 | loss 0.0751 | steps time 1422.05ms
+INFO - 08/01/26 02:03:16 - 1:18:29 - step 2000 train loss: 0.07366554009914399 test loss: 0.48945993185043335
+INFO - 08/01/26 02:03:17 - 1:18:31 - step 2100 | loss 0.0753 | steps time 1402.52ms
+INFO - 08/01/26 02:03:19 - 1:18:32 - step 2200 | loss 0.0711 | steps time 1411.16ms
+INFO - 08/01/26 02:03:20 - 1:18:34 - step 2300 | loss 0.0770 | steps time 1410.49ms
+INFO - 08/01/26 02:03:22 - 1:18:35 - step 2400 | loss 0.0762 | steps time 1412.68ms
+INFO - 08/01/26 02:03:23 - 1:18:36 - step 2500 | loss 0.0692 | steps time 1411.71ms
+INFO - 08/01/26 02:03:23 - 1:18:36 - step 2500 train loss: 0.0725065883398056 test loss: 0.49900022149086
+INFO - 08/01/26 02:03:24 - 1:18:38 - step 2600 | loss 0.0739 | steps time 1412.34ms
+INFO - 08/01/26 02:03:26 - 1:18:39 - step 2700 | loss 0.0712 | steps time 1409.79ms
+INFO - 08/01/26 02:03:27 - 1:18:41 - step 2800 | loss 0.0701 | steps time 1415.61ms
+INFO - 08/01/26 02:03:29 - 1:18:42 - step 2900 | loss 0.0735 | steps time 1411.80ms
+INFO - 08/01/26 02:03:30 - 1:18:44 - step 3000 | loss 0.0694 | steps time 1412.93ms
+INFO - 08/01/26 02:03:30 - 1:18:44 - step 3000 train loss: 0.07147952744364738 test loss: 0.5036880970001221
+INFO - 08/01/26 02:03:32 - 1:18:45 - step 3100 | loss 0.0763 | steps time 1419.66ms
+INFO - 08/01/26 02:03:33 - 1:18:46 - step 3200 | loss 0.0736 | steps time 1417.28ms
+INFO - 08/01/26 02:03:34 - 1:18:48 - step 3300 | loss 0.0671 | steps time 1418.81ms
+INFO - 08/01/26 02:03:36 - 1:18:49 - step 3400 | loss 0.0760 | steps time 1416.30ms
+INFO - 08/01/26 02:03:37 - 1:18:51 - step 3500 | loss 0.0683 | steps time 1412.62ms
+INFO - 08/01/26 02:03:37 - 1:18:51 - step 3500 train loss: 0.07098808415234088 test loss: 0.5181993246078491
+INFO - 08/01/26 02:03:39 - 1:18:52 - step 3600 | loss 0.0733 | steps time 1416.82ms
+INFO - 08/01/26 02:03:40 - 1:18:54 - step 3700 | loss 0.0679 | steps time 1419.40ms
+INFO - 08/01/26 02:03:41 - 1:18:55 - step 3800 | loss 0.0777 | steps time 1413.05ms
+INFO - 08/01/26 02:03:43 - 1:18:56 - step 3900 | loss 0.0727 | steps time 1413.76ms
+INFO - 08/01/26 02:03:44 - 1:18:58 - step 4000 | loss 0.0680 | steps time 1415.12ms
+INFO - 08/01/26 02:03:44 - 1:18:58 - step 4000 train loss: 0.07023504576086997 test loss: 0.5223205089569092
+INFO - 08/01/26 02:03:46 - 1:18:59 - step 4100 | loss 0.0713 | steps time 1414.74ms
+INFO - 08/01/26 02:03:47 - 1:19:01 - step 4200 | loss 0.0695 | steps time 1413.96ms
+INFO - 08/01/26 02:03:49 - 1:19:02 - step 4300 | loss 0.0686 | steps time 1413.92ms
+INFO - 08/01/26 02:03:50 - 1:19:03 - step 4400 | loss 0.0702 | steps time 1414.12ms
+INFO - 08/01/26 02:03:51 - 1:19:05 - step 4500 | loss 0.0724 | steps time 1411.98ms
+INFO - 08/01/26 02:03:51 - 1:19:05 - step 4500 train loss: 0.06943536423146725 test loss: 0.5216416716575623
+INFO - 08/01/26 02:03:53 - 1:19:06 - step 4600 | loss 0.0685 | steps time 1411.42ms
+INFO - 08/01/26 02:03:54 - 1:19:08 - step 4700 | loss 0.0691 | steps time 1415.66ms
+INFO - 08/01/26 02:03:56 - 1:19:09 - step 4800 | loss 0.0666 | steps time 1415.65ms
+INFO - 08/01/26 02:03:57 - 1:19:11 - step 4900 | loss 0.0681 | steps time 1412.07ms
+INFO - 08/01/26 02:03:59 - 1:19:12 - step 5000 | loss 0.0687 | steps time 1413.95ms
+INFO - 08/01/26 02:03:59 - 1:19:12 - step 5000 train loss: 0.06889719944447278 test loss: 0.531599760055542
+INFO - 08/01/26 02:04:00 - 1:19:13 - step 5100 | loss 0.0618 | steps time 1410.74ms
+INFO - 08/01/26 02:04:01 - 1:19:15 - step 5200 | loss 0.0687 | steps time 1412.00ms
+INFO - 08/01/26 02:04:03 - 1:19:16 - step 5300 | loss 0.0666 | steps time 1410.53ms
+INFO - 08/01/26 02:04:04 - 1:19:18 - step 5400 | loss 0.0713 | steps time 1411.25ms
+INFO - 08/01/26 02:04:06 - 1:19:19 - step 5500 | loss 0.0674 | steps time 1410.87ms
+INFO - 08/01/26 02:04:06 - 1:19:19 - step 5500 train loss: 0.06867767782509326 test loss: 0.5241857171058655
+INFO - 08/01/26 02:04:07 - 1:19:21 - step 5600 | loss 0.0710 | steps time 1411.35ms
+INFO - 08/01/26 02:04:08 - 1:19:22 - step 5700 | loss 0.0694 | steps time 1410.97ms
+INFO - 08/01/26 02:04:10 - 1:19:23 - step 5800 | loss 0.0695 | steps time 1411.61ms
+INFO - 08/01/26 02:04:11 - 1:19:25 - step 5900 | loss 0.0698 | steps time 1412.83ms
+INFO - 08/01/26 02:04:13 - 1:19:26 - step 6000 | loss 0.0678 | steps time 1413.97ms
+INFO - 08/01/26 02:04:13 - 1:19:26 - step 6000 train loss: 0.06794965095072984 test loss: 0.5271503329277039
+INFO - 08/01/26 02:04:14 - 1:19:28 - step 6100 | loss 0.0688 | steps time 1415.63ms
+INFO - 08/01/26 02:04:16 - 1:19:29 - step 6200 | loss 0.0660 | steps time 1418.63ms
+INFO - 08/01/26 02:04:17 - 1:19:30 - step 6300 | loss 0.0687 | steps time 1417.38ms
+INFO - 08/01/26 02:04:18 - 1:19:32 - step 6400 | loss 0.0678 | steps time 1415.10ms
+INFO - 08/01/26 02:04:20 - 1:19:33 - step 6500 | loss 0.0654 | steps time 1412.74ms
+INFO - 08/01/26 02:04:20 - 1:19:33 - step 6500 train loss: 0.06795026199519634 test loss: 0.5343496203422546
+INFO - 08/01/26 02:04:21 - 1:19:35 - step 6600 | loss 0.0752 | steps time 1411.36ms
+INFO - 08/01/26 02:04:23 - 1:19:36 - step 6700 | loss 0.0654 | steps time 1413.80ms
+INFO - 08/01/26 02:04:24 - 1:19:38 - step 6800 | loss 0.0662 | steps time 1412.80ms
+INFO - 08/01/26 02:04:26 - 1:19:39 - step 6900 | loss 0.0638 | steps time 1414.45ms
+INFO - 08/01/26 02:04:27 - 1:19:40 - step 7000 | loss 0.0696 | steps time 1414.33ms
+INFO - 08/01/26 02:04:27 - 1:19:40 - step 7000 train loss: 0.06729625254124404 test loss: 0.538578450679779
+INFO - 08/01/26 02:04:28 - 1:19:42 - step 7100 | loss 0.0682 | steps time 1407.78ms
+INFO - 08/01/26 02:04:30 - 1:19:43 - step 7200 | loss 0.0673 | steps time 1415.04ms
+INFO - 08/01/26 02:04:31 - 1:19:45 - step 7300 | loss 0.0630 | steps time 1410.52ms
+INFO - 08/01/26 02:04:33 - 1:19:46 - step 7400 | loss 0.0679 | steps time 1415.81ms
+INFO - 08/01/26 02:04:34 - 1:19:48 - step 7500 | loss 0.0649 | steps time 1414.50ms
+INFO - 08/01/26 02:04:34 - 1:19:48 - step 7500 train loss: 0.06687821482867003 test loss: 0.5437828302383423
+INFO - 08/01/26 02:04:35 - 1:19:49 - step 7600 | loss 0.0668 | steps time 1413.41ms
+INFO - 08/01/26 02:04:37 - 1:19:50 - step 7700 | loss 0.0670 | steps time 1413.40ms
+INFO - 08/01/26 02:04:38 - 1:19:52 - step 7800 | loss 0.0623 | steps time 1414.18ms
+INFO - 08/01/26 02:04:40 - 1:19:53 - step 7900 | loss 0.0735 | steps time 1409.76ms
+INFO - 08/01/26 02:04:41 - 1:19:55 - step 8000 | loss 0.0689 | steps time 1413.43ms
+INFO - 08/01/26 02:04:41 - 1:19:55 - step 8000 train loss: 0.06675942876935005 test loss: 0.5532070398330688
+INFO - 08/01/26 02:04:43 - 1:19:56 - step 8100 | loss 0.0639 | steps time 1413.93ms
+INFO - 08/01/26 02:04:44 - 1:19:58 - step 8200 | loss 0.0679 | steps time 1416.95ms
+INFO - 08/01/26 02:04:45 - 1:19:59 - step 8300 | loss 0.0696 | steps time 1413.16ms
+INFO - 08/01/26 02:04:47 - 1:20:00 - step 8400 | loss 0.0647 | steps time 1411.06ms
+INFO - 08/01/26 02:04:48 - 1:20:02 - step 8500 | loss 0.0644 | steps time 1414.05ms
+INFO - 08/01/26 02:04:48 - 1:20:02 - step 8500 train loss: 0.06658325894922018 test loss: 0.5519381761550903
+INFO - 08/01/26 02:04:50 - 1:20:03 - step 8600 | loss 0.0640 | steps time 1411.81ms
+INFO - 08/01/26 02:04:51 - 1:20:05 - step 8700 | loss 0.0586 | steps time 1409.77ms
+INFO - 08/01/26 02:04:53 - 1:20:06 - step 8800 | loss 0.0653 | steps time 1411.00ms
+INFO - 08/01/26 02:04:54 - 1:20:07 - step 8900 | loss 0.0635 | steps time 1410.50ms
+INFO - 08/01/26 02:04:55 - 1:20:09 - step 9000 | loss 0.0665 | steps time 1412.83ms
+INFO - 08/01/26 02:04:55 - 1:20:09 - step 9000 train loss: 0.06627794509381056 test loss: 0.5541666746139526
+INFO - 08/01/26 02:04:57 - 1:20:10 - step 9100 | loss 0.0638 | steps time 1422.31ms
+INFO - 08/01/26 02:04:58 - 1:20:12 - step 9200 | loss 0.0685 | steps time 1405.87ms
+INFO - 08/01/26 02:05:00 - 1:20:13 - step 9300 | loss 0.0665 | steps time 1377.85ms
+INFO - 08/01/26 02:05:01 - 1:20:14 - step 9400 | loss 0.0664 | steps time 1381.16ms
+INFO - 08/01/26 02:05:02 - 1:20:16 - step 9500 | loss 0.0647 | steps time 1379.19ms
+INFO - 08/01/26 02:05:02 - 1:20:16 - step 9500 train loss: 0.06576467217504978 test loss: 0.5584895014762878
+INFO - 08/01/26 02:05:04 - 1:20:17 - step 9600 | loss 0.0723 | steps time 1380.43ms
+INFO - 08/01/26 02:05:05 - 1:20:19 - step 9700 | loss 0.0618 | steps time 1382.72ms
+INFO - 08/01/26 02:05:07 - 1:20:20 - step 9800 | loss 0.0712 | steps time 1377.26ms
+INFO - 08/01/26 02:05:08 - 1:20:21 - step 9900 | loss 0.0657 | steps time 1377.47ms
+INFO - 08/01/26 02:05:09 - 1:20:23 - step 10000 | loss 0.0649 | steps time 1373.64ms
+INFO - 08/01/26 02:05:09 - 1:20:23 - step 10000 train loss: 0.0656242956072092 test loss: 0.5580509901046753
+INFO - 08/01/26 02:05:10 - 1:20:23 - [Epoch 7 AFTER_TRAIN] CPU: 0.0% | RAM: 1574.1MB
+INFO - 08/01/26 02:05:10 - 1:20:24 - Sample with temperature 1.0 to 1.0
+INFO - 08/01/26 02:05:10 - 1:20:24 - 0 / 50000 samples generated, 0 scored
+INFO - 08/01/26 02:12:31 - 1:27:45 - ### Score distribution ###
+INFO - 08/01/26 02:12:31 - 1:27:45 - Invalid examples: before local search: 0, after: 0
+INFO - 08/01/26 02:12:31 - 1:27:45 - Valid examples: 50000
+INFO - 08/01/26 02:12:31 - 1:27:45 - Mean score: 158.70054
+INFO - 08/01/26 02:12:31 - 1:27:45 - Median score: 159.0
+INFO - 08/01/26 02:12:31 - 1:27:45 - Stdev score: 1.9464273631424318
+INFO - 08/01/26 02:12:31 - 1:27:45 - Max score: 163
+INFO - 08/01/26 02:12:31 - 1:27:45 - Top 1 percentile score: 161.0
+INFO - 08/01/26 02:12:31 - 1:27:45 - Distribution of scores:
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 151: Count: 1
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 152: Count: 48
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 153: Count: 662
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 154: Count: 2341
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 155: Count: 3361
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 156: Count: 2146
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 157: Count: 911
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 158: Count: 568
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 159: Count: 20520
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 160: Count: 15942
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 161: Count: 3123
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 162: Count: 376
+INFO - 08/01/26 02:12:31 - 1:27:45 - Score 163: Count: 1
+INFO - 08/01/26 02:12:31 - 1:27:45 - --------------------------------
+INFO - 08/01/26 02:12:32 - 1:27:45 - [Epoch 7 AFTER_SAMPLE] CPU: 0.0% | RAM: 1859.1MB
+INFO - 08/01/26 02:12:32 - 1:27:45 - Unique processing: 17598 examples left, 32402 duplicates
+INFO - 08/01/26 02:12:32 - 1:27:45 - ### Score distribution ###
+INFO - 08/01/26 02:12:32 - 1:27:45 - Valid examples: 17598
+INFO - 08/01/26 02:12:32 - 1:27:45 - Mean score: 157.0955222184339
+INFO - 08/01/26 02:12:32 - 1:27:45 - Median score: 157.0
+INFO - 08/01/26 02:12:32 - 1:27:45 - Stdev score: 2.4434785528516247
+INFO - 08/01/26 02:12:32 - 1:27:45 - Max score: 163
+INFO - 08/01/26 02:12:32 - 1:27:45 - Top 1 percentile score: 161.0
+INFO - 08/01/26 02:12:32 - 1:27:45 - Distribution of scores:
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 151: Count: 1
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 152: Count: 48
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 153: Count: 662
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 154: Count: 2341
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 155: Count: 3361
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 156: Count: 2146
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 157: Count: 910
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 158: Count: 560
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 159: Count: 3731
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 160: Count: 3008
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 161: Count: 731
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 162: Count: 98
+INFO - 08/01/26 02:12:32 - 1:27:45 - Score 163: Count: 1
+INFO - 08/01/26 02:12:32 - 1:27:45 - --------------------------------
+INFO - 08/01/26 02:12:32 - 1:27:45 - New train and test generated. Size are train: 4500, test 500
+INFO - 08/01/26 02:12:32 - 1:27:45 - Unique data computed for original train set: 5000, generated train set: 2158
+INFO - 08/01/26 02:12:32 - 1:27:45 - Final train and test generated. Size are train: 5000, test 500
+INFO - 08/01/26 02:12:32 - 1:27:46 - [Epoch 7 AFTER_UPDATE_DATASETS] CPU: 0.0% | RAM: 1862.1MB
+INFO - 08/01/26 02:12:33 - 1:27:46 - ### Score distribution ###
+INFO - 08/01/26 02:12:33 - 1:27:46 - Valid examples: 5000
+INFO - 08/01/26 02:12:33 - 1:27:46 - Mean score: 159.9794
+INFO - 08/01/26 02:12:33 - 1:27:46 - Median score: 160.0
+INFO - 08/01/26 02:12:33 - 1:27:46 - Stdev score: 0.6504308203417256
+INFO - 08/01/26 02:12:33 - 1:27:46 - Max score: 163
+INFO - 08/01/26 02:12:33 - 1:27:46 - Top 1 percentile score: 162.0
+INFO - 08/01/26 02:12:33 - 1:27:46 - Distribution of scores:
+INFO - 08/01/26 02:12:33 - 1:27:46 - Score 159: Count: 1018
+INFO - 08/01/26 02:12:33 - 1:27:46 - Score 160: Count: 3158
+INFO - 08/01/26 02:12:33 - 1:27:46 - Score 161: Count: 734
+INFO - 08/01/26 02:12:33 - 1:27:46 - Score 162: Count: 89
+INFO - 08/01/26 02:12:33 - 1:27:46 - Score 163: Count: 1
+INFO - 08/01/26 02:12:33 - 1:27:46 - --------------------------------
+INFO - 08/01/26 02:12:33 - 1:27:46 - ==== Starting Epoch 8 =====
+INFO - 08/01/26 02:12:33 - 1:27:46 - [Epoch 8 START] CPU: 0.0% | RAM: 1521.6MB
+INFO - 08/01/26 02:12:34 - 1:27:47 - Memory allocated: 100.72MB, reserved: 144.00MB
+INFO - 08/01/26 02:12:35 - 1:27:49 - step 100 | loss 0.0999 | steps time 1382.13ms
+INFO - 08/01/26 02:12:37 - 1:27:50 - step 200 | loss 0.0866 | steps time 1388.34ms
+INFO - 08/01/26 02:12:38 - 1:27:51 - step 300 | loss 0.0714 | steps time 1396.28ms
+INFO - 08/01/26 02:12:39 - 1:27:53 - step 400 | loss 0.0747 | steps time 1372.90ms
+INFO - 08/01/26 02:12:41 - 1:27:54 - step 500 | loss 0.0758 | steps time 1391.48ms
+INFO - 08/01/26 02:12:41 - 1:27:54 - step 500 train loss: 0.09209117656946182 test loss: 0.16212598979473114
+INFO - 08/01/26 02:12:42 - 1:27:56 - step 600 | loss 0.0725 | steps time 1389.69ms
+INFO - 08/01/26 02:12:44 - 1:27:57 - step 700 | loss 0.0734 | steps time 1392.64ms
+INFO - 08/01/26 02:12:45 - 1:27:58 - step 800 | loss 0.0730 | steps time 1392.76ms
+INFO - 08/01/26 02:12:46 - 1:28:00 - step 900 | loss 0.0672 | steps time 1392.44ms
+INFO - 08/01/26 02:12:48 - 1:28:01 - step 1000 | loss 0.0718 | steps time 1378.86ms
+INFO - 08/01/26 02:12:48 - 1:28:01 - step 1000 train loss: 0.07107347418367863 test loss: 0.18199601769447327
+INFO - 08/01/26 02:12:49 - 1:28:03 - step 1100 | loss 0.0658 | steps time 1394.33ms
+INFO - 08/01/26 02:12:51 - 1:28:04 - step 1200 | loss 0.0735 | steps time 1384.89ms
+INFO - 08/01/26 02:12:52 - 1:28:05 - step 1300 | loss 0.0661 | steps time 1398.82ms
+INFO - 08/01/26 02:12:53 - 1:28:07 - step 1400 | loss 0.0704 | steps time 1379.18ms
+INFO - 08/01/26 02:12:55 - 1:28:08 - step 1500 | loss 0.0709 | steps time 1390.08ms
+INFO - 08/01/26 02:12:55 - 1:28:08 - step 1500 train loss: 0.06836152770370245 test loss: 0.1905403435230255
+INFO - 08/01/26 02:12:56 - 1:28:10 - step 1600 | loss 0.0669 | steps time 1393.03ms
+INFO - 08/01/26 02:12:58 - 1:28:11 - step 1700 | loss 0.0670 | steps time 1394.08ms
+INFO - 08/01/26 02:12:59 - 1:28:12 - step 1800 | loss 0.0653 | steps time 1396.96ms
+INFO - 08/01/26 02:13:00 - 1:28:14 - step 1900 | loss 0.0659 | steps time 1397.39ms
+INFO - 08/01/26 02:13:02 - 1:28:15 - step 2000 | loss 0.0670 | steps time 1394.43ms
+INFO - 08/01/26 02:13:02 - 1:28:15 - step 2000 train loss: 0.06719931469857693 test loss: 0.2038271129131317
+INFO - 08/01/26 02:13:03 - 1:28:17 - step 2100 | loss 0.0632 | steps time 1397.52ms
+INFO - 08/01/26 02:13:05 - 1:28:18 - step 2200 | loss 0.0681 | steps time 1395.57ms
+INFO - 08/01/26 02:13:06 - 1:28:19 - step 2300 | loss 0.0661 | steps time 1398.20ms
+INFO - 08/01/26 02:13:07 - 1:28:21 - step 2400 | loss 0.0668 | steps time 1402.66ms
+INFO - 08/01/26 02:13:09 - 1:28:22 - step 2500 | loss 0.0660 | steps time 1400.02ms
+INFO - 08/01/26 02:13:09 - 1:28:22 - step 2500 train loss: 0.06620876397192478 test loss: 0.21092016994953156
+INFO - 08/01/26 02:13:10 - 1:28:24 - step 2600 | loss 0.0627 | steps time 1400.05ms
+INFO - 08/01/26 02:13:12 - 1:28:25 - step 2700 | loss 0.0657 | steps time 1387.48ms
+INFO - 08/01/26 02:13:13 - 1:28:26 - step 2800 | loss 0.0681 | steps time 1399.40ms
+INFO - 08/01/26 02:13:14 - 1:28:28 - step 2900 | loss 0.0631 | steps time 1400.64ms
+INFO - 08/01/26 02:13:16 - 1:28:29 - step 3000 | loss 0.0690 | steps time 1393.73ms
+INFO - 08/01/26 02:13:16 - 1:28:29 - step 3000 train loss: 0.0655713279992342 test loss: 0.21914251148700714
+INFO - 08/01/26 02:13:17 - 1:28:31 - step 3100 | loss 0.0605 | steps time 1374.99ms
+INFO - 08/01/26 02:13:19 - 1:28:32 - step 3200 | loss 0.0650 | steps time 1346.87ms
+INFO - 08/01/26 02:13:20 - 1:28:33 - step 3300 | loss 0.0638 | steps time 1350.36ms
+INFO - 08/01/26 02:13:21 - 1:28:35 - step 3400 | loss 0.0644 | steps time 1360.48ms
+INFO - 08/01/26 02:13:23 - 1:28:36 - step 3500 | loss 0.0673 | steps time 1362.22ms
+INFO - 08/01/26 02:13:23 - 1:28:36 - step 3500 train loss: 0.06512268420308828 test loss: 0.23316538333892822
+INFO - 08/01/26 02:13:24 - 1:28:37 - step 3600 | loss 0.0655 | steps time 1360.83ms
+INFO - 08/01/26 02:13:25 - 1:28:39 - step 3700 | loss 0.0617 | steps time 1363.05ms
+INFO - 08/01/26 02:13:27 - 1:28:40 - step 3800 | loss 0.0628 | steps time 1359.75ms
+INFO - 08/01/26 02:13:28 - 1:28:42 - step 3900 | loss 0.0639 | steps time 1360.06ms
+INFO - 08/01/26 02:13:29 - 1:28:43 - step 4000 | loss 0.0659 | steps time 1362.93ms
+INFO - 08/01/26 02:13:29 - 1:28:43 - step 4000 train loss: 0.06484305335581303 test loss: 0.2418459951877594
+INFO - 08/01/26 02:13:31 - 1:28:44 - step 4100 | loss 0.0630 | steps time 1404.70ms
+INFO - 08/01/26 02:13:32 - 1:28:46 - step 4200 | loss 0.0607 | steps time 1402.57ms
+INFO - 08/01/26 02:13:34 - 1:28:47 - step 4300 | loss 0.0617 | steps time 1409.88ms
+INFO - 08/01/26 02:13:35 - 1:28:49 - step 4400 | loss 0.0679 | steps time 1399.96ms
+INFO - 08/01/26 02:13:37 - 1:28:50 - step 4500 | loss 0.0628 | steps time 1396.50ms
+INFO - 08/01/26 02:13:37 - 1:28:50 - step 4500 train loss: 0.06405190709978342 test loss: 0.24537840485572815
+INFO - 08/01/26 02:13:38 - 1:28:51 - step 4600 | loss 0.0622 | steps time 1400.30ms
+INFO - 08/01/26 02:13:39 - 1:28:53 - step 4700 | loss 0.0682 | steps time 1398.21ms
+INFO - 08/01/26 02:13:41 - 1:28:54 - step 4800 | loss 0.0626 | steps time 1396.83ms
+INFO - 08/01/26 02:13:42 - 1:28:56 - step 4900 | loss 0.0617 | steps time 1390.40ms
+INFO - 08/01/26 02:13:44 - 1:28:57 - step 5000 | loss 0.0665 | steps time 1397.20ms
+INFO - 08/01/26 02:13:44 - 1:28:57 - step 5000 train loss: 0.06405541376769543 test loss: 0.2592708468437195
+INFO - 08/01/26 02:13:45 - 1:28:58 - step 5100 | loss 0.0613 | steps time 1395.13ms
+INFO - 08/01/26 02:13:46 - 1:29:00 - step 5200 | loss 0.0638 | steps time 1396.17ms
+INFO - 08/01/26 02:13:48 - 1:29:01 - step 5300 | loss 0.0613 | steps time 1393.22ms
+INFO - 08/01/26 02:13:49 - 1:29:03 - step 5400 | loss 0.0600 | steps time 1398.20ms
+INFO - 08/01/26 02:13:51 - 1:29:04 - step 5500 | loss 0.0653 | steps time 1402.62ms
+INFO - 08/01/26 02:13:51 - 1:29:04 - step 5500 train loss: 0.06332904566079378 test loss: 0.2687045931816101
+INFO - 08/01/26 02:13:52 - 1:29:05 - step 5600 | loss 0.0663 | steps time 1396.07ms
+INFO - 08/01/26 02:13:53 - 1:29:07 - step 5700 | loss 0.0632 | steps time 1398.67ms
+INFO - 08/01/26 02:13:55 - 1:29:08 - step 5800 | loss 0.0631 | steps time 1394.00ms
+INFO - 08/01/26 02:13:56 - 1:29:10 - step 5900 | loss 0.0643 | steps time 1382.24ms
+INFO - 08/01/26 02:13:58 - 1:29:11 - step 6000 | loss 0.0652 | steps time 1392.79ms
+INFO - 08/01/26 02:13:58 - 1:29:11 - step 6000 train loss: 0.06334374444186687 test loss: 0.27403053641319275
+INFO - 08/01/26 02:13:59 - 1:29:12 - step 6100 | loss 0.0609 | steps time 1400.58ms
+INFO - 08/01/26 02:14:00 - 1:29:14 - step 6200 | loss 0.0592 | steps time 1390.27ms
+INFO - 08/01/26 02:14:02 - 1:29:15 - step 6300 | loss 0.0656 | steps time 1395.04ms
+INFO - 08/01/26 02:14:03 - 1:29:17 - step 6400 | loss 0.0626 | steps time 1395.76ms
+INFO - 08/01/26 02:14:05 - 1:29:18 - step 6500 | loss 0.0655 | steps time 1409.12ms
+INFO - 08/01/26 02:14:05 - 1:29:18 - step 6500 train loss: 0.06290375300496817 test loss: 0.2860826849937439
+INFO - 08/01/26 02:14:06 - 1:29:19 - step 6600 | loss 0.0625 | steps time 1396.49ms
+INFO - 08/01/26 02:14:07 - 1:29:21 - step 6700 | loss 0.0630 | steps time 1397.07ms
+INFO - 08/01/26 02:14:09 - 1:29:22 - step 6800 | loss 0.0621 | steps time 1395.84ms
+INFO - 08/01/26 02:14:10 - 1:29:24 - step 6900 | loss 0.0664 | steps time 1409.90ms
+INFO - 08/01/26 02:14:12 - 1:29:25 - step 7000 | loss 0.0650 | steps time 1397.07ms
+INFO - 08/01/26 02:14:12 - 1:29:25 - step 7000 train loss: 0.06288518884778023 test loss: 0.2889377474784851
+INFO - 08/01/26 02:14:13 - 1:29:27 - step 7100 | loss 0.0673 | steps time 1410.16ms
+INFO - 08/01/26 02:14:14 - 1:29:28 - step 7200 | loss 0.0617 | steps time 1399.66ms
+INFO - 08/01/26 02:14:16 - 1:29:29 - step 7300 | loss 0.0621 | steps time 1399.47ms
+INFO - 08/01/26 02:14:17 - 1:29:31 - step 7400 | loss 0.0664 | steps time 1398.51ms
+INFO - 08/01/26 02:14:19 - 1:29:32 - step 7500 | loss 0.0652 | steps time 1406.48ms
+INFO - 08/01/26 02:14:19 - 1:29:32 - step 7500 train loss: 0.06271836990863085 test loss: 0.298429012298584
+INFO - 08/01/26 02:14:20 - 1:29:34 - step 7600 | loss 0.0612 | steps time 1404.35ms
+INFO - 08/01/26 02:14:22 - 1:29:35 - step 7700 | loss 0.0620 | steps time 1400.73ms
+INFO - 08/01/26 02:14:23 - 1:29:36 - step 7800 | loss 0.0629 | steps time 1399.99ms
+INFO - 08/01/26 02:14:24 - 1:29:38 - step 7900 | loss 0.0660 | steps time 1401.45ms
+INFO - 08/01/26 02:14:26 - 1:29:39 - step 8000 | loss 0.0612 | steps time 1398.00ms
+INFO - 08/01/26 02:14:26 - 1:29:39 - step 8000 train loss: 0.06248272840678692 test loss: 0.29912862181663513
+INFO - 08/01/26 02:14:27 - 1:29:41 - step 8100 | loss 0.0657 | steps time 1400.60ms
+INFO - 08/01/26 02:14:29 - 1:29:42 - step 8200 | loss 0.0620 | steps time 1385.97ms
+INFO - 08/01/26 02:14:30 - 1:29:43 - step 8300 | loss 0.0613 | steps time 1398.60ms
+INFO - 08/01/26 02:14:31 - 1:29:45 - step 8400 | loss 0.0606 | steps time 1399.74ms
+INFO - 08/01/26 02:14:33 - 1:29:46 - step 8500 | loss 0.0648 | steps time 1401.52ms
+INFO - 08/01/26 02:14:33 - 1:29:46 - step 8500 train loss: 0.06219551189988851 test loss: 0.3079100549221039
+INFO - 08/01/26 02:14:34 - 1:29:48 - step 8600 | loss 0.0641 | steps time 1400.31ms
+INFO - 08/01/26 02:14:36 - 1:29:49 - step 8700 | loss 0.0601 | steps time 1398.43ms
+INFO - 08/01/26 02:14:37 - 1:29:50 - step 8800 | loss 0.0641 | steps time 1398.68ms
+INFO - 08/01/26 02:14:38 - 1:29:52 - step 8900 | loss 0.0645 | steps time 1398.68ms
+INFO - 08/01/26 02:14:40 - 1:29:53 - step 9000 | loss 0.0635 | steps time 1406.24ms
+INFO - 08/01/26 02:14:40 - 1:29:53 - step 9000 train loss: 0.06195727550238371 test loss: 0.3143019676208496
+INFO - 08/01/26 02:14:41 - 1:29:55 - step 9100 | loss 0.0598 | steps time 1403.81ms
+INFO - 08/01/26 02:14:43 - 1:29:56 - step 9200 | loss 0.0632 | steps time 1410.11ms
+INFO - 08/01/26 02:14:44 - 1:29:58 - step 9300 | loss 0.0609 | steps time 1403.32ms
+INFO - 08/01/26 02:14:45 - 1:29:59 - step 9400 | loss 0.0591 | steps time 1403.19ms
+INFO - 08/01/26 02:14:47 - 1:30:00 - step 9500 | loss 0.0587 | steps time 1403.78ms
+INFO - 08/01/26 02:14:47 - 1:30:00 - step 9500 train loss: 0.061807359904050826 test loss: 0.3279331922531128
+INFO - 08/01/26 02:14:48 - 1:30:02 - step 9600 | loss 0.0591 | steps time 1401.45ms
+INFO - 08/01/26 02:14:50 - 1:30:03 - step 9700 | loss 0.0618 | steps time 1395.39ms
+INFO - 08/01/26 02:14:51 - 1:30:05 - step 9800 | loss 0.0615 | steps time 1392.80ms
+INFO - 08/01/26 02:14:52 - 1:30:06 - step 9900 | loss 0.0626 | steps time 1395.89ms
+INFO - 08/01/26 02:14:54 - 1:30:07 - step 10000 | loss 0.0610 | steps time 1392.21ms
+INFO - 08/01/26 02:14:54 - 1:30:07 - step 10000 train loss: 0.061617249011993405 test loss: 0.33192238211631775
+INFO - 08/01/26 02:14:54 - 1:30:08 - [Epoch 8 AFTER_TRAIN] CPU: 0.0% | RAM: 1521.6MB
+INFO - 08/01/26 02:14:55 - 1:30:08 - Sample with temperature 1.0 to 1.0
+INFO - 08/01/26 02:14:55 - 1:30:08 - 0 / 50000 samples generated, 0 scored
+INFO - 08/01/26 02:22:11 - 1:37:25 - ### Score distribution ###
+INFO - 08/01/26 02:22:11 - 1:37:25 - Invalid examples: before local search: 0, after: 0
+INFO - 08/01/26 02:22:11 - 1:37:25 - Valid examples: 50000
+INFO - 08/01/26 02:22:11 - 1:37:25 - Mean score: 159.64108
+INFO - 08/01/26 02:22:11 - 1:37:25 - Median score: 160.0
+INFO - 08/01/26 02:22:11 - 1:37:25 - Stdev score: 1.6083370817597198
+INFO - 08/01/26 02:22:11 - 1:37:25 - Max score: 163
+INFO - 08/01/26 02:22:11 - 1:37:25 - Top 1 percentile score: 162.0
+INFO - 08/01/26 02:22:11 - 1:37:25 - Distribution of scores:
+INFO - 08/01/26 02:22:11 - 1:37:25 - Score 152: Count: 20
+INFO - 08/01/26 02:22:11 - 1:37:25 - Score 153: Count: 258
+INFO - 08/01/26 02:22:11 - 1:37:25 - Score 154: Count: 1086
+INFO - 08/01/26 02:22:11 - 1:37:25 - Score 155: Count: 1568
+INFO - 08/01/26 02:22:11 - 1:37:25 - Score 156: Count: 1019
+INFO - 08/01/26 02:22:11 - 1:37:25 - Score 157: Count: 467
+INFO - 08/01/26 02:22:11 - 1:37:25 - Score 158: Count: 341
+INFO - 08/01/26 02:22:11 - 1:37:25 - Score 159: Count: 7140
+INFO - 08/01/26 02:22:11 - 1:37:25 - Score 160: Count: 27837
+INFO - 08/01/26 02:22:11 - 1:37:25 - Score 161: Count: 8878
+INFO - 08/01/26 02:22:11 - 1:37:25 - Score 162: Count: 1361
+INFO - 08/01/26 02:22:11 - 1:37:25 - Score 163: Count: 25
+INFO - 08/01/26 02:22:11 - 1:37:25 - --------------------------------
+INFO - 08/01/26 02:22:11 - 1:37:25 - [Epoch 8 AFTER_SAMPLE] CPU: 0.0% | RAM: 1848.6MB
+INFO - 08/01/26 02:22:12 - 1:37:25 - Unique processing: 12313 examples left, 37687 duplicates
+INFO - 08/01/26 02:22:12 - 1:37:25 - ### Score distribution ###
+INFO - 08/01/26 02:22:12 - 1:37:25 - Valid examples: 12313
+INFO - 08/01/26 02:22:12 - 1:37:25 - Mean score: 158.2033623000081
+INFO - 08/01/26 02:22:12 - 1:37:25 - Median score: 159
+INFO - 08/01/26 02:22:12 - 1:37:25 - Stdev score: 2.525483838009606
+INFO - 08/01/26 02:22:12 - 1:37:25 - Max score: 163
+INFO - 08/01/26 02:22:12 - 1:37:25 - Top 1 percentile score: 162.0
+INFO - 08/01/26 02:22:12 - 1:37:25 - Distribution of scores:
+INFO - 08/01/26 02:22:12 - 1:37:25 - Score 152: Count: 20
+INFO - 08/01/26 02:22:12 - 1:37:25 - Score 153: Count: 258
+INFO - 08/01/26 02:22:12 - 1:37:25 - Score 154: Count: 1086
+INFO - 08/01/26 02:22:12 - 1:37:25 - Score 155: Count: 1568
+INFO - 08/01/26 02:22:12 - 1:37:25 - Score 156: Count: 1019
+INFO - 08/01/26 02:22:12 - 1:37:25 - Score 157: Count: 467
+INFO - 08/01/26 02:22:12 - 1:37:25 - Score 158: Count: 334
+INFO - 08/01/26 02:22:12 - 1:37:25 - Score 159: Count: 1663
+INFO - 08/01/26 02:22:12 - 1:37:25 - Score 160: Count: 4151
+INFO - 08/01/26 02:22:12 - 1:37:25 - Score 161: Count: 1495
+INFO - 08/01/26 02:22:12 - 1:37:25 - Score 162: Count: 243
+INFO - 08/01/26 02:22:12 - 1:37:25 - Score 163: Count: 9
+INFO - 08/01/26 02:22:12 - 1:37:25 - --------------------------------
+INFO - 08/01/26 02:22:12 - 1:37:25 - New train and test generated. Size are train: 4500, test 500
+INFO - 08/01/26 02:22:12 - 1:37:25 - Unique data computed for original train set: 5000, generated train set: 1705
+INFO - 08/01/26 02:22:12 - 1:37:25 - Final train and test generated. Size are train: 5000, test 500
+INFO - 08/01/26 02:22:12 - 1:37:26 - [Epoch 8 AFTER_UPDATE_DATASETS] CPU: 10.0% | RAM: 1848.6MB
+INFO - 08/01/26 02:22:12 - 1:37:26 - ### Score distribution ###
+INFO - 08/01/26 02:22:12 - 1:37:26 - Valid examples: 5000
+INFO - 08/01/26 02:22:12 - 1:37:26 - Mean score: 160.397
+INFO - 08/01/26 02:22:12 - 1:37:26 - Median score: 160.0
+INFO - 08/01/26 02:22:12 - 1:37:26 - Stdev score: 0.5870774497341874
+INFO - 08/01/26 02:22:12 - 1:37:26 - Max score: 163
+INFO - 08/01/26 02:22:12 - 1:37:26 - Top 1 percentile score: 162.0
+INFO - 08/01/26 02:22:12 - 1:37:26 - Distribution of scores:
+INFO - 08/01/26 02:22:12 - 1:37:26 - Score 160: Count: 3270
+INFO - 08/01/26 02:22:12 - 1:37:26 - Score 161: Count: 1483
+INFO - 08/01/26 02:22:12 - 1:37:26 - Score 162: Count: 239
+INFO - 08/01/26 02:22:12 - 1:37:26 - Score 163: Count: 8
+INFO - 08/01/26 02:22:12 - 1:37:26 - --------------------------------
+INFO - 08/01/26 02:22:12 - 1:37:26 - ==== Starting Epoch 9 =====
+INFO - 08/01/26 02:22:13 - 1:37:26 - [Epoch 9 START] CPU: 0.0% | RAM: 1505.1MB
+INFO - 08/01/26 02:22:14 - 1:37:27 - Memory allocated: 100.72MB, reserved: 144.00MB
+INFO - 08/01/26 02:22:15 - 1:37:29 - step 100 | loss 0.0847 | steps time 1365.34ms
+INFO - 08/01/26 02:22:16 - 1:37:30 - step 200 | loss 0.0733 | steps time 1375.06ms
+INFO - 08/01/26 02:22:18 - 1:37:31 - step 300 | loss 0.0658 | steps time 1382.70ms
+INFO - 08/01/26 02:22:19 - 1:37:33 - step 400 | loss 0.0656 | steps time 1382.20ms
+INFO - 08/01/26 02:22:21 - 1:37:34 - step 500 | loss 0.0657 | steps time 1378.49ms
+INFO - 08/01/26 02:22:21 - 1:37:34 - step 500 train loss: 0.07111828174442053 test loss: 0.11046890169382095
+INFO - 08/01/26 02:22:22 - 1:37:36 - step 600 | loss 0.0627 | steps time 1379.76ms
+INFO - 08/01/26 02:22:23 - 1:37:37 - step 700 | loss 0.0655 | steps time 1379.64ms
+INFO - 08/01/26 02:22:25 - 1:37:38 - step 800 | loss 0.0673 | steps time 1383.79ms
+INFO - 08/01/26 02:22:26 - 1:37:40 - step 900 | loss 0.0653 | steps time 1381.32ms
+INFO - 08/01/26 02:22:28 - 1:37:41 - step 1000 | loss 0.0660 | steps time 1373.73ms
+INFO - 08/01/26 02:22:28 - 1:37:41 - step 1000 train loss: 0.06385286010056734 test loss: 0.11504475772380829
+INFO - 08/01/26 02:22:29 - 1:37:42 - step 1100 | loss 0.0626 | steps time 1395.89ms
+INFO - 08/01/26 02:22:30 - 1:37:44 - step 1200 | loss 0.0602 | steps time 1362.68ms
+INFO - 08/01/26 02:22:32 - 1:37:45 - step 1300 | loss 0.0652 | steps time 1354.87ms
+INFO - 08/01/26 02:22:33 - 1:37:47 - step 1400 | loss 0.0649 | steps time 1383.11ms
+INFO - 08/01/26 02:22:34 - 1:37:48 - step 1500 | loss 0.0636 | steps time 1382.54ms
+INFO - 08/01/26 02:22:34 - 1:37:48 - step 1500 train loss: 0.06254574035853147 test loss: 0.11783866584300995
+INFO - 08/01/26 02:22:36 - 1:37:49 - step 1600 | loss 0.0611 | steps time 1376.59ms
+INFO - 08/01/26 02:22:37 - 1:37:51 - step 1700 | loss 0.0590 | steps time 1378.32ms
+INFO - 08/01/26 02:22:39 - 1:37:52 - step 1800 | loss 0.0605 | steps time 1381.77ms
+INFO - 08/01/26 02:22:40 - 1:37:54 - step 1900 | loss 0.0617 | steps time 1379.48ms
+INFO - 08/01/26 02:22:41 - 1:37:55 - step 2000 | loss 0.0605 | steps time 1379.16ms
+INFO - 08/01/26 02:22:41 - 1:37:55 - step 2000 train loss: 0.061949540324509146 test loss: 0.11776050180196762
+INFO - 08/01/26 02:22:43 - 1:37:56 - step 2100 | loss 0.0621 | steps time 1380.98ms
+INFO - 08/01/26 02:22:44 - 1:37:58 - step 2200 | loss 0.0621 | steps time 1384.10ms
+INFO - 08/01/26 02:22:46 - 1:37:59 - step 2300 | loss 0.0629 | steps time 1382.89ms
+INFO - 08/01/26 02:22:47 - 1:38:00 - step 2400 | loss 0.0632 | steps time 1386.21ms
+INFO - 08/01/26 02:22:48 - 1:38:02 - step 2500 | loss 0.0630 | steps time 1386.33ms
+INFO - 08/01/26 02:22:48 - 1:38:02 - step 2500 train loss: 0.06152688109874725 test loss: 0.12242476642131805
+INFO - 08/01/26 02:22:50 - 1:38:03 - step 2600 | loss 0.0640 | steps time 1386.01ms
+INFO - 08/01/26 02:22:51 - 1:38:05 - step 2700 | loss 0.0684 | steps time 1385.85ms
+INFO - 08/01/26 02:22:53 - 1:38:06 - step 2800 | loss 0.0607 | steps time 1380.97ms
+INFO - 08/01/26 02:22:54 - 1:38:07 - step 2900 | loss 0.0595 | steps time 1374.87ms
+INFO - 08/01/26 02:22:55 - 1:38:09 - step 3000 | loss 0.0607 | steps time 1377.40ms
+INFO - 08/01/26 02:22:55 - 1:38:09 - step 3000 train loss: 0.0610754993930459 test loss: 0.12087877094745636
+INFO - 08/01/26 02:22:57 - 1:38:10 - step 3100 | loss 0.0611 | steps time 1381.66ms
+INFO - 08/01/26 02:22:58 - 1:38:12 - step 3200 | loss 0.0590 | steps time 1383.75ms
+INFO - 08/01/26 02:22:59 - 1:38:13 - step 3300 | loss 0.0633 | steps time 1391.27ms
+INFO - 08/01/26 02:23:01 - 1:38:14 - step 3400 | loss 0.0604 | steps time 1391.98ms
+INFO - 08/01/26 02:23:02 - 1:38:16 - step 3500 | loss 0.0601 | steps time 1393.13ms
+INFO - 08/01/26 02:23:02 - 1:38:16 - step 3500 train loss: 0.061041018836200236 test loss: 0.11773918569087982
+INFO - 08/01/26 02:23:04 - 1:38:17 - step 3600 | loss 0.0584 | steps time 1391.50ms
+INFO - 08/01/26 02:23:05 - 1:38:19 - step 3700 | loss 0.0594 | steps time 1395.29ms
+INFO - 08/01/26 02:23:07 - 1:38:20 - step 3800 | loss 0.0635 | steps time 1394.76ms
+INFO - 08/01/26 02:23:08 - 1:38:21 - step 3900 | loss 0.0621 | steps time 1397.17ms
+INFO - 08/01/26 02:23:09 - 1:38:23 - step 4000 | loss 0.0614 | steps time 1386.59ms
+INFO - 08/01/26 02:23:09 - 1:38:23 - step 4000 train loss: 0.060558087944984434 test loss: 0.1217486709356308
+INFO - 08/01/26 02:23:11 - 1:38:24 - step 4100 | loss 0.0600 | steps time 1390.47ms
+INFO - 08/01/26 02:23:12 - 1:38:26 - step 4200 | loss 0.0588 | steps time 1391.37ms
+INFO - 08/01/26 02:23:14 - 1:38:27 - step 4300 | loss 0.0610 | steps time 1395.04ms
+INFO - 08/01/26 02:23:15 - 1:38:28 - step 4400 | loss 0.0607 | steps time 1393.99ms
+INFO - 08/01/26 02:23:16 - 1:38:30 - step 4500 | loss 0.0587 | steps time 1393.70ms
+INFO - 08/01/26 02:23:16 - 1:38:30 - step 4500 train loss: 0.06037002670019865 test loss: 0.11962951719760895
+INFO - 08/01/26 02:23:18 - 1:38:31 - step 4600 | loss 0.0608 | steps time 1391.68ms
+INFO - 08/01/26 02:23:19 - 1:38:33 - step 4700 | loss 0.0623 | steps time 1396.93ms
+INFO - 08/01/26 02:23:21 - 1:38:34 - step 4800 | loss 0.0595 | steps time 1391.12ms
+INFO - 08/01/26 02:23:22 - 1:38:35 - step 4900 | loss 0.0626 | steps time 1390.35ms
+INFO - 08/01/26 02:23:23 - 1:38:37 - step 5000 | loss 0.0636 | steps time 1394.99ms
+INFO - 08/01/26 02:23:23 - 1:38:37 - step 5000 train loss: 0.060252631105482575 test loss: 0.1202831044793129
+INFO - 08/01/26 02:23:25 - 1:38:38 - step 5100 | loss 0.0615 | steps time 1384.88ms
+INFO - 08/01/26 02:23:26 - 1:38:40 - step 5200 | loss 0.0603 | steps time 1392.79ms
+INFO - 08/01/26 02:23:28 - 1:38:41 - step 5300 | loss 0.0598 | steps time 1368.60ms
+INFO - 08/01/26 02:23:29 - 1:38:42 - step 5400 | loss 0.0623 | steps time 1352.93ms
+INFO - 08/01/26 02:23:30 - 1:38:44 - step 5500 | loss 0.0580 | steps time 1378.18ms
+INFO - 08/01/26 02:23:30 - 1:38:44 - step 5500 train loss: 0.059967256046831605 test loss: 0.1196083202958107
+INFO - 08/01/26 02:23:32 - 1:38:45 - step 5600 | loss 0.0597 | steps time 1385.03ms
+INFO - 08/01/26 02:23:33 - 1:38:47 - step 5700 | loss 0.0593 | steps time 1386.18ms
+INFO - 08/01/26 02:23:34 - 1:38:48 - step 5800 | loss 0.0607 | steps time 1389.51ms
+INFO - 08/01/26 02:23:36 - 1:38:49 - step 5900 | loss 0.0593 | steps time 1384.72ms
+INFO - 08/01/26 02:23:37 - 1:38:51 - step 6000 | loss 0.0606 | steps time 1387.14ms
+INFO - 08/01/26 02:23:37 - 1:38:51 - step 6000 train loss: 0.06001701630651951 test loss: 0.12113191932439804
+INFO - 08/01/26 02:23:39 - 1:38:52 - step 6100 | loss 0.0590 | steps time 1384.53ms
+INFO - 08/01/26 02:23:40 - 1:38:53 - step 6200 | loss 0.0596 | steps time 1382.95ms
+INFO - 08/01/26 02:23:41 - 1:38:55 - step 6300 | loss 0.0624 | steps time 1392.17ms
+INFO - 08/01/26 02:23:43 - 1:38:56 - step 6400 | loss 0.0583 | steps time 1390.78ms
+INFO - 08/01/26 02:23:44 - 1:38:58 - step 6500 | loss 0.0617 | steps time 1391.49ms
+INFO - 08/01/26 02:23:44 - 1:38:58 - step 6500 train loss: 0.059819275625050065 test loss: 0.12454833090305328
+INFO - 08/01/26 02:23:46 - 1:38:59 - step 6600 | loss 0.0573 | steps time 1393.75ms
+INFO - 08/01/26 02:23:47 - 1:39:01 - step 6700 | loss 0.0579 | steps time 1396.51ms
+INFO - 08/01/26 02:23:48 - 1:39:02 - step 6800 | loss 0.0582 | steps time 1396.08ms
+INFO - 08/01/26 02:23:50 - 1:39:03 - step 6900 | loss 0.0594 | steps time 1394.94ms
+INFO - 08/01/26 02:23:51 - 1:39:05 - step 7000 | loss 0.0592 | steps time 1383.98ms
+INFO - 08/01/26 02:23:51 - 1:39:05 - step 7000 train loss: 0.05942439064383507 test loss: 0.12565121054649353
+INFO - 08/01/26 02:23:53 - 1:39:06 - step 7100 | loss 0.0593 | steps time 1387.98ms
+INFO - 08/01/26 02:23:54 - 1:39:08 - step 7200 | loss 0.0596 | steps time 1389.13ms
+INFO - 08/01/26 02:23:55 - 1:39:09 - step 7300 | loss 0.0627 | steps time 1396.02ms
+INFO - 08/01/26 02:23:57 - 1:39:10 - step 7400 | loss 0.0586 | steps time 1394.64ms
+INFO - 08/01/26 02:23:58 - 1:39:12 - step 7500 | loss 0.0598 | steps time 1395.71ms
+INFO - 08/01/26 02:23:58 - 1:39:12 - step 7500 train loss: 0.05942420320212841 test loss: 0.12408951669931412
+INFO - 08/01/26 02:24:00 - 1:39:13 - step 7600 | loss 0.0608 | steps time 1396.99ms
+INFO - 08/01/26 02:24:01 - 1:39:15 - step 7700 | loss 0.0634 | steps time 1393.29ms
+INFO - 08/01/26 02:24:02 - 1:39:16 - step 7800 | loss 0.0583 | steps time 1393.41ms
+INFO - 08/01/26 02:24:04 - 1:39:17 - step 7900 | loss 0.0602 | steps time 1395.26ms
+INFO - 08/01/26 02:24:05 - 1:39:19 - step 8000 | loss 0.0599 | steps time 1394.53ms
+INFO - 08/01/26 02:24:05 - 1:39:19 - step 8000 train loss: 0.059510563150048254 test loss: 0.12175895273685455
+INFO - 08/01/26 02:24:07 - 1:39:20 - step 8100 | loss 0.0587 | steps time 1390.32ms
+INFO - 08/01/26 02:24:08 - 1:39:22 - step 8200 | loss 0.0584 | steps time 1393.47ms
+INFO - 08/01/26 02:24:09 - 1:39:23 - step 8300 | loss 0.0601 | steps time 1389.06ms
+INFO - 08/01/26 02:24:11 - 1:39:24 - step 8400 | loss 0.0591 | steps time 1395.13ms
+INFO - 08/01/26 02:24:12 - 1:39:26 - step 8500 | loss 0.0598 | steps time 1393.92ms
+INFO - 08/01/26 02:24:12 - 1:39:26 - step 8500 train loss: 0.059182305954396726 test loss: 0.12248041480779648
+INFO - 08/01/26 02:24:14 - 1:39:27 - step 8600 | loss 0.0581 | steps time 1394.53ms
+INFO - 08/01/26 02:24:15 - 1:39:29 - step 8700 | loss 0.0576 | steps time 1391.88ms
+INFO - 08/01/26 02:24:16 - 1:39:30 - step 8800 | loss 0.0556 | steps time 1388.51ms
+INFO - 08/01/26 02:24:18 - 1:39:31 - step 8900 | loss 0.0582 | steps time 1397.11ms
+INFO - 08/01/26 02:24:19 - 1:39:33 - step 9000 | loss 0.0615 | steps time 1392.25ms
+INFO - 08/01/26 02:24:19 - 1:39:33 - step 9000 train loss: 0.05910003040730953 test loss: 0.12319700419902802
+INFO - 08/01/26 02:24:21 - 1:39:34 - step 9100 | loss 0.0580 | steps time 1389.09ms
+INFO - 08/01/26 02:24:22 - 1:39:36 - step 9200 | loss 0.0597 | steps time 1395.39ms
+INFO - 08/01/26 02:24:23 - 1:39:37 - step 9300 | loss 0.0565 | steps time 1391.03ms
+INFO - 08/01/26 02:24:25 - 1:39:38 - step 9400 | loss 0.0630 | steps time 1366.94ms
+INFO - 08/01/26 02:24:26 - 1:39:40 - step 9500 | loss 0.0588 | steps time 1365.48ms
+INFO - 08/01/26 02:24:26 - 1:39:40 - step 9500 train loss: 0.058945952869951725 test loss: 0.1261722296476364
+INFO - 08/01/26 02:24:28 - 1:39:41 - step 9600 | loss 0.0598 | steps time 1362.01ms
+INFO - 08/01/26 02:24:29 - 1:39:42 - step 9700 | loss 0.0625 | steps time 1394.31ms
+INFO - 08/01/26 02:24:30 - 1:39:44 - step 9800 | loss 0.0591 | steps time 1394.81ms
+INFO - 08/01/26 02:24:32 - 1:39:45 - step 9900 | loss 0.0583 | steps time 1390.31ms
+INFO - 08/01/26 02:24:33 - 1:39:47 - step 10000 | loss 0.0596 | steps time 1389.88ms
+INFO - 08/01/26 02:24:33 - 1:39:47 - step 10000 train loss: 0.05896009340137243 test loss: 0.12513160705566406
+INFO - 08/01/26 02:24:34 - 1:39:47 - [Epoch 9 AFTER_TRAIN] CPU: 0.0% | RAM: 1505.1MB
+INFO - 08/01/26 02:24:34 - 1:39:48 - Sample with temperature 1.0 to 1.0
+INFO - 08/01/26 02:24:34 - 1:39:48 - 0 / 50000 samples generated, 0 scored
+INFO - 08/01/26 02:31:45 - 1:46:58 - ### Score distribution ###
+INFO - 08/01/26 02:31:45 - 1:46:58 - Invalid examples: before local search: 0, after: 0
+INFO - 08/01/26 02:31:45 - 1:46:58 - Valid examples: 50000
+INFO - 08/01/26 02:31:45 - 1:46:58 - Mean score: 160.23926
+INFO - 08/01/26 02:31:45 - 1:46:58 - Median score: 160.0
+INFO - 08/01/26 02:31:45 - 1:46:58 - Stdev score: 1.308361146082293
+INFO - 08/01/26 02:31:45 - 1:46:58 - Max score: 164
+INFO - 08/01/26 02:31:45 - 1:46:58 - Top 1 percentile score: 162.0
+INFO - 08/01/26 02:31:45 - 1:46:58 - Distribution of scores:
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 152: Count: 7
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 153: Count: 151
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 154: Count: 566
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 155: Count: 721
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 156: Count: 499
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 157: Count: 215
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 158: Count: 170
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 159: Count: 410
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 160: Count: 27517
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 161: Count: 16155
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 162: Count: 3458
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 163: Count: 127
+INFO - 08/01/26 02:31:45 - 1:46:58 - Score 164: Count: 4
+INFO - 08/01/26 02:31:45 - 1:46:58 - --------------------------------
+INFO - 08/01/26 02:31:45 - 1:46:59 - [Epoch 9 AFTER_SAMPLE] CPU: 0.0% | RAM: 1841.1MB
+INFO - 08/01/26 02:31:45 - 1:46:59 - Unique processing: 9648 examples left, 40352 duplicates
+INFO - 08/01/26 02:31:45 - 1:46:59 - ### Score distribution ###
+INFO - 08/01/26 02:31:45 - 1:46:59 - Valid examples: 9648
+INFO - 08/01/26 02:31:45 - 1:46:59 - Mean score: 159.16853233830847
+INFO - 08/01/26 02:31:45 - 1:46:59 - Median score: 160.0
+INFO - 08/01/26 02:31:45 - 1:46:59 - Stdev score: 2.3918932574909544
+INFO - 08/01/26 02:31:45 - 1:46:59 - Max score: 164
+INFO - 08/01/26 02:31:45 - 1:46:59 - Top 1 percentile score: 162.0
+INFO - 08/01/26 02:31:45 - 1:46:59 - Distribution of scores:
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 152: Count: 7
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 153: Count: 151
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 154: Count: 566
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 155: Count: 721
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 156: Count: 499
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 157: Count: 215
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 158: Count: 169
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 159: Count: 380
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 160: Count: 4057
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 161: Count: 2339
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 162: Count: 522
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 163: Count: 20
+INFO - 08/01/26 02:31:45 - 1:46:59 - Score 164: Count: 2
+INFO - 08/01/26 02:31:45 - 1:46:59 - --------------------------------
+INFO - 08/01/26 02:31:45 - 1:46:59 - New train and test generated. Size are train: 4500, test 500
+INFO - 08/01/26 02:31:45 - 1:46:59 - Unique data computed for original train set: 5000, generated train set: 1394
+INFO - 08/01/26 02:31:45 - 1:46:59 - Final train and test generated. Size are train: 5000, test 500
+INFO - 08/01/26 02:31:46 - 1:46:59 - [Epoch 9 AFTER_UPDATE_DATASETS] CPU: 0.0% | RAM: 1844.1MB
+INFO - 08/01/26 02:31:46 - 1:47:00 - ### Score distribution ###
+INFO - 08/01/26 02:31:46 - 1:47:00 - Valid examples: 5000
+INFO - 08/01/26 02:31:46 - 1:47:00 - Mean score: 160.6836
+INFO - 08/01/26 02:31:46 - 1:47:00 - Median score: 161.0
+INFO - 08/01/26 02:31:46 - 1:47:00 - Stdev score: 0.6675179068992878
+INFO - 08/01/26 02:31:46 - 1:47:00 - Max score: 164
+INFO - 08/01/26 02:31:46 - 1:47:00 - Top 1 percentile score: 162.0
+INFO - 08/01/26 02:31:46 - 1:47:00 - Distribution of scores:
+INFO - 08/01/26 02:31:46 - 1:47:00 - Score 160: Count: 2129
+INFO - 08/01/26 02:31:46 - 1:47:00 - Score 161: Count: 2348
+INFO - 08/01/26 02:31:46 - 1:47:00 - Score 162: Count: 501
+INFO - 08/01/26 02:31:46 - 1:47:00 - Score 163: Count: 20
+INFO - 08/01/26 02:31:46 - 1:47:00 - Score 164: Count: 2
+INFO - 08/01/26 02:31:46 - 1:47:00 - --------------------------------

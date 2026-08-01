@@ -1,0 +1,14 @@
+{
+  "generation": 4,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "balanced_c4_local_search",
+  "patch_description": "This version repairs the input graph by greedily retaining a C4-free subset of its original edges, then performs balanced saturation using the characterization that adding an edge is valid exactly when its endpoints have no length-three path between them.\n\nSeveral input-dependent repair orders are tried. The best repaired graph is then improved through a small number of delete-and-refill perturbations: deleting a few high-degree edges can unlock several new valid edges. Every candidate is explicitly checked using the common-neighbor invariant, and a conservative repair fallback is included before returning.\n\nThe algorithm never substitutes a hard-coded construction: all edge priorities, repair choices, and perturbations are derived from the supplied adjacency matrix and RNG.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:20:44.623966",
+  "llm_cost": 0.06618750000000001,
+  "llm_model": "gpt-5.6-terra"
+}

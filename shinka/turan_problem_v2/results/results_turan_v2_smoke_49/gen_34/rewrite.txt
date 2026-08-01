@@ -1,0 +1,436 @@
+# EVOLVE-BLOCK-START
+"""Bitset input-aware ruin/refill search for dense C4-free graphs."""
+
+import numpy as np
+
+
+def construct_new_graph(A, rng=None):
+    """
+    Improve the supplied adjacency matrix through deletions and additions.
+
+    The maintained invariant is that every two distinct vertices have at most
+    one common neighbor.  Bit masks make the safe insertion test inexpensive:
+    uv may be inserted exactly when no edge joins N(u) to N(v).
+    """
+    if A.dtype != np.uint8:
+        raise TypeError("A must have dtype np.uint8")
+    if A.ndim != 2 or A.shape[0] != A.shape[1]:
+        raise ValueError("A must be a square adjacency matrix")
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    n = A.shape[0]
+    iu, ju = np.triu_indices(n, 1)
+    pair_count = len(iu)
+
+    source = ((A != 0) | (A.T != 0)).astype(np.uint8)
+    np.fill_diagonal(source, 0)
+    source_upper = source[iu, ju].astype(bool)
+    source_edges = np.flatnonzero(source_upper)
+    source_degree = source.sum(axis=1).astype(np.int32)
+
+    ARCHIVE_LIMIT = 10
+
+    def valid_matrix(H):
+        X = H.astype(np.int16, copy=False)
+        common = X @ X
+        np.fill_diagonal(common, 0)
+        return not np.any(common > 1)
+
+    def masks_to_matrix(masks):
+        H = np.zeros((n, n), dtype=np.uint8)
+        for u, bits in enumerate(masks):
+            x = bits
+            while x:
+                low = x & -x
+                v = low.bit_length() - 1
+                H[u, v] = 1
+                x ^= low
+        np.fill_diagonal(H, 0)
+        return H
+
+    def matrix_to_masks(H):
+        masks = [0] * n
+        for u in range(n):
+            bits = 0
+            for v in np.flatnonzero(H[u]):
+                bits |= 1 << int(v)
+            masks[u] = bits
+        return masks
+
+    def edge_count(masks):
+        return sum(x.bit_count() for x in masks) // 2
+
+    def legal_add(masks, u, v):
+        """
+        uv is legal iff there is no length-three u-v path.
+
+        If x-u-v-y would be closed by uv, then x in N(u), y in N(v), and
+        xy is already an edge.  Conversely every new C4 has this form.
+        """
+        nv = masks[v]
+        x = masks[u]
+        while x:
+            low = x & -x
+            w = low.bit_length() - 1
+            if masks[w] & nv:
+                return False
+            x ^= low
+        return True
+
+    def insertion_loss(masks, u, v):
+        """
+        Count pairs newly blocked by uv, namely x-y paths x-u-v-y.
+
+        This is an exact local estimate of the number of formerly absent
+        candidate edges that become impossible after the insertion.
+        """
+        nu = masks[u]
+        nv = masks[v]
+        loss = 0
+        x = nu
+        while x:
+            low = x & -x
+            w = low.bit_length() - 1
+            possible = nv & ~masks[w]
+            possible &= ~low       # do not count the diagonal pair w-w
+            loss += possible.bit_count()
+            x ^= low
+        return loss
+
+    def add_edge(masks, degree, u, v):
+        masks[u] |= 1 << v
+        masks[v] |= 1 << u
+        degree[u] += 1
+        degree[v] += 1
+
+    def saturate(masks, degree, policy=0, banned=None):
+        """
+        Reach a C4-maximal graph using safe insertions.
+
+        Primary ordering minimizes newly blocked future pairs.  Secondary
+        ordering keeps degrees near the 6--7 range typical of dense graphs on
+        49 vertices.  Banned deleted edges are initially withheld so exchange
+        moves cannot immediately undo themselves.
+        """
+        masks = masks[:]
+        degree = degree[:]
+        banned = set() if banned is None else set(banned)
+        ban_active = bool(banned)
+
+        for _ in range(pair_count):
+            best_key = None
+            choices = []
+
+            for u in range(n - 1):
+                row = masks[u]
+                du = degree[u]
+                for v in range(u + 1, n):
+                    if (row >> v) & 1:
+                        continue
+                    key_id = u * n + v
+                    if ban_active and key_id in banned:
+                        continue
+                    if not legal_add(masks, u, v):
+                        continue
+
+                    dv = degree[v]
+                    loss = insertion_loss(masks, u, v)
+                    total = du + dv
+                    high = max(du, dv)
+                    imbalance = abs(du - dv)
+                    excess = max(0, du - 7) + max(0, dv - 7)
+
+                    if policy % 4 == 0:
+                        key = (loss, total, high, imbalance)
+                    elif policy % 4 == 1:
+                        key = (loss, high, total, imbalance)
+                    elif policy % 4 == 2:
+                        key = (loss, total + 2 * excess, imbalance, high)
+                    else:
+                        key = (loss, imbalance, total, high)
+
+                    if best_key is None or key < best_key:
+                        best_key = key
+                        choices = [(u, v)]
+                    elif key == best_key:
+                        choices.append((u, v))
+
+            if not choices:
+                if ban_active:
+                    ban_active = False
+                    continue
+                break
+
+            # Preserve input information only as a tie breaker; it never
+            # overrides the structural future-loss score.
+            input_choices = [
+                (u, v) for u, v in choices if source[u, v] != 0
+            ]
+            if input_choices and rng.random() < 0.52:
+                choices = input_choices
+
+            u, v = choices[int(rng.integers(len(choices)))]
+            # Explicit local guard, even though choices were already tested.
+            if legal_add(masks, u, v):
+                add_edge(masks, degree, u, v)
+
+        return masks, degree
+
+    def source_order(style):
+        if source_edges.size == 0:
+            return source_edges
+
+        u = iu[source_edges]
+        v = ju[source_edges]
+        du = source_degree[u]
+        dv = source_degree[v]
+        load = du + dv
+        product = du * dv
+        imbalance = np.abs(du - dv)
+        noise = rng.random(source_edges.size)
+
+        if style == 0:
+            return source_edges[np.lexsort((noise, load))]
+        if style == 1:
+            return source_edges[np.lexsort((noise, product))]
+        if style == 2:
+            return source_edges[np.lexsort((noise, imbalance))]
+        if style == 3:
+            return source_edges[np.lexsort((noise, -load))]
+        if style == 4:
+            return source_edges[np.lexsort((noise, -product))]
+        if style == 5:
+            return source_edges[np.lexsort((noise, -imbalance))]
+        return source_edges[rng.permutation(source_edges.size)]
+
+    def input_scaffold(style, limit=None):
+        """
+        Retain a C4-free subset of actual input edges.  This is deliberately
+        constructive rather than replacing A by a fixed extremal graph.
+        """
+        masks = [0] * n
+        degree = [0] * n
+        order = source_order(style)
+        if limit is not None:
+            order = order[:min(len(order), int(limit))]
+
+        for e in order:
+            u = int(iu[e])
+            v = int(ju[e])
+            if legal_add(masks, u, v):
+                add_edge(masks, degree, u, v)
+
+        return masks, degree
+
+    def archive_add(archive, masks, degree):
+        H = masks_to_matrix(masks)
+        if not valid_matrix(H):
+            return archive
+
+        sig = tuple(masks)
+        for _, _, _, old_sig in archive:
+            if sig == old_sig:
+                return archive
+
+        archive.append((edge_count(masks), masks[:], degree[:], sig))
+        archive.sort(key=lambda item: item[0], reverse=True)
+        return archive[:ARCHIVE_LIMIT]
+
+    def removal_pool(masks, degree, count, broad):
+        """
+        Edges with high endpoint degree product usually participate in many
+        obstructing length-three paths, hence are useful ruin candidates.
+        """
+        scored = []
+        for u in range(n - 1):
+            x = masks[u] >> (u + 1)
+            v = u + 1
+            while x:
+                if x & 1:
+                    pressure = (
+                        5 * (degree[u] - 1) * (degree[v] - 1)
+                        + degree[u] + degree[v]
+                    )
+                    scored.append((pressure, u, v))
+                x >>= 1
+                v += 1
+
+        if not scored:
+            return []
+
+        scored.sort(reverse=True)
+        divisor = 2 if broad else 4
+        pool = scored[:max(count + 5, len(scored) // divisor + 4)]
+
+        chosen = []
+        used = set()
+        for pick in range(count):
+            available = [
+                item for item in pool
+                if (item[1], item[2]) not in
+                [(old[1], old[2]) for old in chosen]
+            ]
+            if pick and available and pick % 3 != 2:
+                disjoint = [
+                    item for item in available
+                    if item[1] not in used and item[2] not in used
+                ]
+                if disjoint:
+                    available = disjoint
+
+            if not available:
+                break
+
+            item = available[int(rng.integers(len(available)))]
+            chosen.append(item)
+            used.add(item[1])
+            used.add(item[2])
+
+        return chosen
+
+    archive = []
+
+    # Diverse source-derived starting states.  Prefix scaffolds retain a
+    # genuine portion of A while allowing the completion phase more freedom.
+    plans = (
+        (0, None), (1, None), (2, None), (3, None),
+        (4, None), (5, None), (6, None), (6, None),
+        (0, 18), (1, 26), (2, 34), (3, 44),
+        (4, 54), (5, 66), (6, 30), (6, 48),
+    )
+
+    for trial, (style, limit) in enumerate(plans):
+        masks, degree = input_scaffold(style, limit)
+        masks, degree = saturate(masks, degree, policy=trial)
+        archive = archive_add(archive, masks, degree)
+
+    # Empty input is still handled through the same addition machinery.
+    if not archive:
+        masks = [0] * n
+        degree = [0] * n
+        masks, degree = saturate(masks, degree, policy=0)
+        archive = archive_add(archive, masks, degree)
+
+    # Bounded tabu ruin-and-refill search over the elite input-derived states.
+    schedule = (
+        (2, False, 0), (2, True, 1), (3, False, 2),
+        (3, True, 3), (4, False, 0), (4, True, 1),
+        (3, False, 2), (5, True, 3), (4, False, 1),
+        (2, True, 2), (5, False, 0), (3, True, 1),
+        (6, True, 2), (4, False, 3), (3, False, 0),
+        (5, True, 1), (2, False, 2), (4, True, 3),
+        (5, False, 0), (3, True, 1), (4, False, 2),
+        (6, True, 3), (2, True, 0), (5, False, 1),
+    )
+
+    for round_id, (remove_count, broad, policy) in enumerate(schedule):
+        bases = archive[:min(5, len(archive))]
+        proposals = []
+
+        for rank, (_, base_masks, base_degree, _) in enumerate(bases):
+            attempts = 2 if rank == 0 else 1
+
+            for attempt in range(attempts):
+                masks = base_masks[:]
+                degree = base_degree[:]
+
+                removed = removal_pool(
+                    masks, degree, remove_count,
+                    broad=(broad or ((round_id + attempt) % 4 == 0)),
+                )
+                if not removed:
+                    continue
+
+                banned = set()
+                for _, u, v in removed:
+                    if (masks[u] >> v) & 1:
+                        masks[u] &= ~(1 << v)
+                        masks[v] &= ~(1 << u)
+                        degree[u] -= 1
+                        degree[v] -= 1
+                        banned.add(u * n + v)
+
+                # Deletions preserve validity, but verify before refill.
+                partial = masks_to_matrix(masks)
+                if not valid_matrix(partial):
+                    continue
+
+                masks, degree = saturate(
+                    masks, degree,
+                    policy=(policy + rank + attempt) % 4,
+                    banned=banned,
+                )
+
+                candidate = masks_to_matrix(masks)
+                if valid_matrix(candidate):
+                    proposals.append((masks, degree))
+
+        for masks, degree in proposals:
+            archive = archive_add(archive, masks, degree)
+
+    best_masks = archive[0][1][:]
+    best = masks_to_matrix(best_masks)
+
+    # Mandatory explicit final validation and conservative deletion repair.
+    repair_limit = n * n
+    for _ in range(repair_limit):
+        if valid_matrix(best):
+            break
+
+        common = best.astype(np.int16) @ best.astype(np.int16)
+        np.fill_diagonal(common, 0)
+        bad = np.argwhere(np.triu(common > 1, 1))
+        if bad.size == 0:
+            break
+
+        u, v = map(int, bad[0])
+        shared = np.flatnonzero(best[u] & best[v])
+        if shared.size == 0:
+            break
+
+        degree = best.sum(axis=1)
+        w = int(shared[np.argmax(degree[shared])])
+        if degree[u] >= degree[v]:
+            best[u, w] = 0
+            best[w, u] = 0
+        else:
+            best[v, w] = 0
+            best[w, v] = 0
+
+    # Refill only after validity has been explicitly established.
+    if valid_matrix(best):
+        masks = matrix_to_masks(best)
+        degree = [x.bit_count() for x in masks]
+        masks, degree = saturate(masks, degree, policy=1)
+        best = masks_to_matrix(masks)
+
+    # Last deletion-only emergency fallback.
+    for _ in range(repair_limit):
+        if valid_matrix(best):
+            break
+        common = best.astype(np.int16) @ best.astype(np.int16)
+        np.fill_diagonal(common, 0)
+        bad = np.argwhere(np.triu(common > 1, 1))
+        if bad.size == 0:
+            break
+        u, v = map(int, bad[0])
+        shared = np.flatnonzero(best[u] & best[v])
+        if shared.size:
+            w = int(shared[0])
+            best[u, w] = 0
+            best[w, u] = 0
+
+    np.fill_diagonal(best, 0)
+    return best.astype(np.uint8, copy=False)
+
+
+# EVOLVE-BLOCK-END
+
+
+# The following code remains fixed (not evolved)
+
+def run_graph_construction(A, rng = None):
+    """Run the graph construction algorithm on A"""
+    return construct_new_graph(A = A, rng = rng)

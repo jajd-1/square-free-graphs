@@ -1,0 +1,14 @@
+{
+  "generation": 35,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "input_beam_refill",
+  "patch_description": "This redesign uses an input-derived beam/archive pipeline rather than a single repair trajectory. It first creates multiple C4-free scaffolds by retaining differently ordered subsets of the input edges, then completes each scaffold with an exact length-three-path legality test and a future-loss heuristic. An elite archive is improved through bounded obstruction-aware edge deletions followed by tabu refill. Every stage explicitly checks the common-neighbor invariant before candidates are retained or returned.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:40:26.771297",
+  "llm_cost": 0.0883175,
+  "llm_model": "gpt-5.6-terra"
+}

@@ -1,0 +1,14 @@
+{
+  "generation": 12,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "bitset_exchange_refill",
+  "patch_description": "The current approach uses five source-repair styles, a matrix-cube-based saturation routine, a four-state archive, and fourteen exchange moves with removals of two to four edges. Its strongest components are source-dependent repairs and banned-edge refill exchanges, but repeated dense matrix multiplications make it expensive to explore many trajectories.\n\nThis version replaces repeated `A @ A @ A` legality computations with exact Python integer bitset tests. An insertion `uv` is accepted only when no neighbor of `u` is adjacent to a neighbor of `v`, exactly preserving the C4-free invariant. The faster legality test permits a broader search configuration: five source-derived starts, a five-state archive, and twenty bounded ruin-and-refill exchanges. Saturation prioritizes balanced degrees around 6--7, lightly favors supplied input edges, and randomizes near-tied choices. Exchange removals target high degree-product edges while preferring disjoint deletions, then temporarily ban removed edges so refill is encouraged to find genuine replacements rather than immediately undoing the move.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:26:15.042314",
+  "llm_cost": 0.08641750000000001,
+  "llm_model": "gpt-5.6-terra"
+}

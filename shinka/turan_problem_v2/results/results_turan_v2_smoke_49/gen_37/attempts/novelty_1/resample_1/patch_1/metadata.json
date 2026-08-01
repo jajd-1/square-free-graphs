@@ -1,0 +1,14 @@
+{
+  "generation": 37,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "obstruction_archive_search",
+  "patch_description": "The current program uses 6 repair starts, 5 source-greedy starts, a small archive of 6 candidates, and degree-only saturation keys. Its main weakness is that degree balancing alone does not estimate how many legal future edges an insertion destroys.\n\nThis version uses:\n- 4 conflict-directed repairs and 10 input-derived greedy scaffold starts.\n- Archive size increased from 6 to 8.\n- A stronger saturation score based on exact length-three-path obstruction information. Candidate edges are scored by estimated future legal-edge loss, degree load, imbalance, and excessive degree pressure.\n- 20 bounded ruin/refill moves with tabu-deleted edges.\n- Explicit C4 validation after every repair, saturation, and exchange phase.\n\nThe key change is the obstruction-aware saturation policy: it favors legal additions which preserve more remaining legal pairs, rather than only selecting low-degree endpoints.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:41:37.086547",
+  "llm_cost": 0.08796000000000001,
+  "llm_model": "gpt-5.6-terra"
+}

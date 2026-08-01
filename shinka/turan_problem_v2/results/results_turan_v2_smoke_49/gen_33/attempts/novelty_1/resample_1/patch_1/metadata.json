@@ -1,0 +1,14 @@
+{
+  "generation": 33,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "adaptive_pathswap_beam",
+  "patch_description": "This version keeps the input-derived scaffold philosophy of the prior programs, but changes the local-search emphasis from broad percentile-based kicks to adaptive path-unlocking swaps.\n\nThe main ideas are:\n\n- Start from several different C4-free repairs of actual input edges, using source-degree, source-centrality, balance, and randomized orderings.\n- Saturate each scaffold with a legality-preserving greedy process. Candidate insertions are scored using both estimated future legal-edge destruction and degree-balancing pressure.\n- Maintain a compact archive of distinct valid states.\n- Use a new path-unlocking ruin/refill phase: missing edges blocked by a unique length-three path identify specific existing edges whose deletion can unlock replacements. Edge deletion scores combine those unlock credits, endpoint degree, and local imbalance.\n- Try both single-edge and multi-edge removals. Removed edges are temporarily banned during refill, encouraging genuinely new replacements rather than simply restoring the deleted edge.\n- Explicitly validate the \u201cat most one common neighbor\u201d invariant after every scaffold, refill, swap candidate, and final repair.\n\nThe algorithm remains input-dependent throughout: all initial states are constructed from the supplied adjacency matrix, while later additions and deletions directly edit those states rather than returning a fixed graph construction.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:39:36.526409",
+  "llm_cost": 0.090265,
+  "llm_model": "gpt-5.6-terra"
+}

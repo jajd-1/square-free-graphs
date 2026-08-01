@@ -1,0 +1,227 @@
+<NAME>
+repair_refill_search
+</NAME>
+
+<DESCRIPTION>
+This algorithm treats the supplied matrix as a genuine starting state rather than replacing it with a fixed construction. It first symmetrizes and repairs the input using targeted deletions: edges participating in the largest number of common-neighbor violations are removed first. This preserves more useful structure than deleting arbitrary edges.
+
+After repair, it repeatedly adds only edges with no existing length-three path between their endpoints. That condition is exactly the safe edge-addition criterion for maintaining C4-freeness. Additions are selected with a degree-balancing score, favoring lower-degree endpoints and lower estimated blocking cost.
+
+Several randomized repair trajectories are tried from the original input. The best saturated result is then improved with bounded one- and two-edge perturbations: remove structurally expensive edges, greedily refill, and retain only strictly better C4-free graphs. Every repair and refill stage explicitly checks the common-neighbor invariant.
+</DESCRIPTION>
+
+<CODE>
+```python
+# EVOLVE-BLOCK-START
+"""Repair, balanced augmentation, and bounded perturbation search for C4-free graphs."""
+
+import numpy as np
+
+
+def construct_new_graph(A, rng=None):
+    """
+    Improve the supplied graph by repairing C4 violations, greedily adding
+    safe edges, and applying a small bounded destroy-and-refill local search.
+    """
+    if A.dtype != np.uint8:
+        raise TypeError("A must have dtype np.uint8")
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    n = A.shape[0]
+    if A.ndim != 2 or A.shape[1] != n:
+        raise ValueError("A must be a square adjacency matrix")
+
+    # Work on a fresh graph, but retain every edge from the supplied state
+    # initially.  Symmetrization makes the invariant meaningful even if an
+    # incoming matrix is imperfect.
+    initial = ((A != 0) | (A.T != 0)).astype(np.uint8)
+    np.fill_diagonal(initial, 0)
+
+    def common_counts(B):
+        X = B.astype(np.int16, copy=False)
+        return X @ X
+
+    def is_c4_free(B):
+        C = common_counts(B)
+        return not np.any(np.triu(C > 1, k=1))
+
+    def repair(B, randomized=True):
+        """
+        Remove edges that occur in many currently witnessed C4s.  Every chosen
+        edge belongs to at least one violating common-neighbor pair, so each
+        deletion makes definite progress toward validity.
+        """
+        B = B.copy()
+
+        # At most all possible edges can be deleted; this is a hard bound.
+        for _ in range(n * (n - 1) // 2):
+            C = common_counts(B)
+            bad = np.argwhere(np.triu(C > 1, k=1))
+            if len(bad) == 0:
+                break
+
+            score = np.zeros((n, n), dtype=np.int16)
+
+            # For a bad pair u,v, all edges from u or v to their common
+            # neighbors are candidate edges for destroying that violation.
+            for u, v in bad:
+                common = np.flatnonzero(B[u] & B[v])
+                score[u, common] += 1
+                score[common, u] += 1
+                score[v, common] += 1
+                score[common, v] += 1
+
+            mx = int(score.max())
+            candidates = np.argwhere(np.triu(score >= max(1, mx - 1), k=1))
+
+            if len(candidates) == 0:
+                # Conservative emergency fallback; normally unreachable.
+                u, v = bad[0]
+                common = np.flatnonzero(B[u] & B[v])
+                w = int(common[0])
+                B[u, w] = B[w, u] = 0
+                continue
+
+            # Among similarly useful deletions, prefer removing edges incident
+            # to high-degree vertices, which tends to preserve balance.
+            deg = B.sum(axis=1).astype(np.int16)
+            values = score[candidates[:, 0], candidates[:, 1]] * 100
+            values += deg[candidates[:, 0]] + deg[candidates[:, 1]]
+            best_value = values.max()
+            finalists = candidates[values == best_value]
+
+            if randomized and len(finalists) > 1:
+                u, v = finalists[int(rng.integers(len(finalists)))]
+            else:
+                u, v = finalists[0]
+
+            B[u, v] = 0
+            B[v, u] = 0
+
+        # Explicit final validity check.  The loop bound above is sufficient,
+        # but this fallback keeps validity mandatory under all circumstances.
+        if not is_c4_free(B):
+            for u in range(n):
+                for v in range(u + 1, n):
+                    if B[u, v]:
+                        B[u, v] = B[v, u] = 0
+                        if is_c4_free(B):
+                            return B
+            return np.zeros((n, n), dtype=np.uint8)
+
+        return B
+
+    def refill(B, randomized=True):
+        """
+        Saturate a C4-free graph.  For a missing edge uv, adding uv is safe
+        exactly when there is no length-three u--v path.
+        """
+        B = B.copy()
+        upper_i, upper_j = np.triu_indices(n, k=1)
+
+        # A C4-free graph on 49 vertices has only O(n^(3/2)) useful additions;
+        # this hard cap is generous and prevents any accidental long search.
+        for _ in range(n * (n - 1) // 2):
+            X = B.astype(np.int16, copy=False)
+            paths3 = (X @ X) @ X
+
+            missing = B[upper_i, upper_j] == 0
+            safe = missing & (paths3[upper_i, upper_j] == 0)
+            if not np.any(safe):
+                break
+
+            us = upper_i[safe]
+            vs = upper_j[safe]
+            deg = B.sum(axis=1).astype(np.int16)
+
+            # Degree-balanced additions are preferred.  The small product term
+            # estimates the number of future cross-neighbor pairs an edge may
+            # constrain, while abs(degree difference) discourages imbalance.
+            du = deg[us]
+            dv = deg[vs]
+            cost = 20 * (du + dv) + 3 * np.abs(du - dv) + du * dv
+            best_cost = cost.min()
+            finalists = np.flatnonzero(cost == best_cost)
+
+            if randomized and len(finalists) > 1:
+                pick = int(finalists[int(rng.integers(len(finalists)))])
+            else:
+                pick = int(finalists[0])
+
+            u = int(us[pick])
+            v = int(vs[pick])
+            B[u, v] = 1
+            B[v, u] = 1
+
+        # Explicit invariant verification after the whole augmentation phase.
+        if not is_c4_free(B):
+            B = repair(B, randomized=False)
+        return B
+
+    # Different repair choices can leave substantially different useful cores.
+    # All trajectories still begin from the actual supplied matrix.
+    best = None
+    best_edges = -1
+    trajectories = 4
+
+    for trial in range(trajectories):
+        B = repair(initial, randomized=(trial != 0))
+        B = refill(B, randomized=(trial != 0))
+        edge_count = int(B.sum() // 2)
+        if edge_count > best_edges:
+            best = B
+            best_edges = edge_count
+
+    # Bounded local search: delete high-degree / high-blocking edges and refill.
+    # Only strict improvements are retained, so it cannot damage the result.
+    for step in range(12):
+        candidate = best.copy()
+        edges = np.argwhere(np.triu(candidate, k=1))
+        if len(edges) == 0:
+            break
+
+        deg = candidate.sum(axis=1).astype(np.int16)
+        edge_weight = deg[edges[:, 0]] * deg[edges[:, 1]]
+        edge_weight += 2 * (deg[edges[:, 0]] + deg[edges[:, 1]])
+
+        # Randomly choose among the most structurally expensive edges.
+        order = np.argsort(edge_weight)[::-1]
+        pool_size = min(len(order), 10)
+        chosen = int(order[int(rng.integers(pool_size))])
+        u, v = edges[chosen]
+        candidate[u, v] = candidate[v, u] = 0
+
+        # Every fourth perturbation removes a second expensive edge, allowing
+        # escape from one-edge saturated configurations.
+        if step % 4 == 3 and len(edges) > 1:
+            remaining = edges[edges[:, 0] != u]
+            remaining = remaining[remaining[:, 1] != v]
+            if len(remaining):
+                x, y = remaining[int(rng.integers(len(remaining)))]
+                candidate[x, y] = candidate[y, x] = 0
+
+        # Deletion preserves C4-freeness; refill explicitly verifies afterward.
+        candidate = refill(candidate, randomized=True)
+        candidate_edges = int(candidate.sum() // 2)
+
+        if candidate_edges > best_edges and is_c4_free(candidate):
+            best = candidate
+            best_edges = candidate_edges
+
+    # Final mandatory validation; repair is conservative insurance only.
+    if not is_c4_free(best):
+        best = refill(repair(best, randomized=False), randomized=False)
+
+    return best.astype(np.uint8, copy=False)
+
+# EVOLVE-BLOCK-END
+
+
+# The following code remains fixed (not evolved)
+
+def run_graph_construction(A, rng = None):
+    """Run the graph construction algorithm on A"""
+    return construct_new_graph(A = A, rng = rng)
+```

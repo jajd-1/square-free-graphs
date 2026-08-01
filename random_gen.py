@@ -139,7 +139,7 @@ def edge_adder(A):
     return A
 
 
-def greedy_vs_max(min_n = 30, max_n = 40, iters = 50**2):
+def greedy_vs_max(min_n = 20, max_n = 21, iters = 10**4):
     greedy_vs_max = defaultdict(list)
     for n in range(min_n, max_n + 1):
         max_found = 0
@@ -218,4 +218,14 @@ def plotter(min_n = 4, max_n = 10, iters = 10**5):
     plt.show()
 
 # plotter()    
+
+python train.py \
+--gensize 10000 \
+--env_name square \
+--exp_name square_experiment4 \
+--N 25 \
+--max_steps 5000 \
+--max_epochs 5 \
+--num_samples_from_model 5000 \
+--pop_size 1000 \
 

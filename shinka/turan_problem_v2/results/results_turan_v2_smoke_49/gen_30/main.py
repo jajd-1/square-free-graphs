@@ -1,0 +1,391 @@
+# EVOLVE-BLOCK-START
+"""Adaptive input-derived ruin/refill search for dense C4-free graphs."""
+
+import numpy as np
+
+
+def construct_new_graph(A, rng=None):
+    """
+    Transform A into a dense C4-free graph by retaining, deleting, and adding
+    edges from an input-derived search state.
+
+    All retained states satisfy the invariant that every off-diagonal entry of
+    B @ B is at most one.  Consequently, every accepted state is C4-free.
+    """
+    if A.dtype != np.uint8:
+        raise TypeError("A must have dtype np.uint8")
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    n = A.shape[0]
+    iu, ju = np.triu_indices(n, 1)
+    m = iu.size
+
+    source = ((A != 0) | (A.T != 0)).astype(np.uint8)
+    np.fill_diagonal(source, 0)
+    source_upper = source[iu, ju].astype(bool)
+    source_degree = source.sum(axis=1).astype(np.int32)
+    source_edges = np.flatnonzero(source_upper)
+
+    edge_index = -np.ones((n, n), dtype=np.int32)
+    edge_index[iu, ju] = np.arange(m, dtype=np.int32)
+    edge_index[ju, iu] = np.arange(m, dtype=np.int32)
+
+    ARCHIVE_LIMIT = 16
+
+    def count_edges(B):
+        return int(B.sum() // 2)
+
+    def valid(B):
+        X = B.astype(np.int16)
+        common = X @ X
+        np.fill_diagonal(common, 0)
+        return not np.any(common > 1)
+
+    def insertion_legal(B, u, v):
+        """Test directly whether adding uv would create a four-cycle."""
+        nu = np.flatnonzero(B[u])
+        nv = np.flatnonzero(B[v])
+        if nu.size == 0 or nv.size == 0:
+            return True
+        return not np.any(B[np.ix_(nu, nv)])
+
+    def legal_information(B):
+        """
+        For a C4-free B, missing uv is insertable iff no length-three walk
+        joins u and v.
+        """
+        X = B.astype(np.int16)
+        p3 = (X @ X) @ X
+        legal = (B == 0) & (p3 == 0)
+        np.fill_diagonal(legal, False)
+        return legal, p3
+
+    def saturate(B, banned=None, source_bias=0.35):
+        """
+        Greedily fill a valid state.
+
+        X @ L @ X estimates legal candidate edges lost by a proposed edge:
+        each currently legal pair between N(u) and N(v) becomes blocked after
+        uv is inserted.  Low loss is preferred, with degree balance breaking
+        ties.  Removed edges can temporarily be banned during refill.
+        """
+        B = B.copy()
+        forbidden = (
+            np.zeros(m, dtype=bool) if banned is None else banned.copy()
+        )
+
+        for step in range(m):
+            legal, _ = legal_information(B)
+            available = np.flatnonzero(legal[iu, ju] & ~forbidden)
+
+            if available.size == 0 and np.any(forbidden):
+                forbidden[:] = False
+                available = np.flatnonzero(legal[iu, ju])
+
+            if available.size == 0:
+                break
+
+            X = B.astype(np.int16)
+            L = legal.astype(np.int16)
+            loss_matrix = (X @ L) @ X
+            degree = B.sum(axis=1).astype(np.int32)
+
+            au = iu[available]
+            av = ju[available]
+            loss = loss_matrix[au, av].astype(np.int32)
+            load = degree[au] + degree[av]
+
+            # Dense C4-free graphs on 49 vertices are approximately 6--7
+            # regular.  Penalize feeding vertices already substantially above
+            # that range without forbidding useful exceptional vertices.
+            overload = (
+                2 * np.maximum(degree[au] - 7, 0)
+                + 2 * np.maximum(degree[av] - 7, 0)
+            )
+            imbalance = np.abs(degree[au] - degree[av])
+
+            score = 4 * loss + load + overload + imbalance // 2
+            low = int(score.min())
+
+            # A narrow random band creates genuinely different basins without
+            # accepting clearly inferior insertions.
+            band = available[score <= low + 1]
+            if band.size == 0:
+                band = available[score == low]
+
+            preferred = band[source_upper[band]]
+            if preferred.size and rng.random() < source_bias:
+                band = preferred
+
+            e = int(band[int(rng.integers(band.size))])
+            u = int(iu[e])
+            v = int(ju[e])
+
+            # The matrix criterion and this local criterion are redundant by
+            # design; retaining both makes preservation conservative.
+            if insertion_legal(B, u, v):
+                B[u, v] = 1
+                B[v, u] = 1
+
+        return B
+
+    def source_order(style):
+        """Several genuinely input-dependent source-edge orderings."""
+        if source_edges.size == 0:
+            return source_edges
+
+        e = source_edges
+        du = source_degree[iu[e]]
+        dv = source_degree[ju[e]]
+        load = du + dv
+        product = du * dv
+        spread = np.abs(du - dv)
+        noise = rng.random(e.size)
+
+        if style == 0:
+            return e[np.lexsort((noise, load))]
+        if style == 1:
+            return e[np.lexsort((noise, -load))]
+        if style == 2:
+            return e[np.lexsort((noise, product))]
+        if style == 3:
+            return e[np.lexsort((noise, -product))]
+        if style == 4:
+            return e[np.lexsort((noise, spread))]
+        if style == 5:
+            return e[np.lexsort((noise, -spread))]
+        if style == 6:
+            # Favor source edges incident to moderately loaded source vertices.
+            centrality = np.abs(load - np.median(load))
+            return e[np.lexsort((noise, centrality))]
+        return e[rng.permutation(e.size)]
+
+    def scaffold(style, limit=None):
+        """Construct a C4-free subset made entirely from input edges."""
+        B = np.zeros((n, n), dtype=np.uint8)
+        order = source_order(style)
+        if limit is not None:
+            order = order[:min(order.size, int(limit))]
+
+        for e in order:
+            u = int(iu[e])
+            v = int(ju[e])
+            if insertion_legal(B, u, v):
+                B[u, v] = 1
+                B[v, u] = 1
+        return B
+
+    def archive_insert(archive, B):
+        """Keep valid, distinct, high-edge-count candidates."""
+        if not valid(B):
+            return archive
+
+        signature = B[iu, ju].tobytes()
+        for _, _, old_signature in archive:
+            if signature == old_signature:
+                return archive
+
+        archive.append((count_edges(B), B.copy(), signature))
+        archive.sort(key=lambda item: item[0], reverse=True)
+        return archive[:ARCHIVE_LIMIT]
+
+    def unlock_scores(B, present):
+        """
+        Credit edges on unique length-three obstructions.
+
+        If an absent xy has one path x-a-b-y, removing any edge of that path
+        makes xy immediately legal.  These are useful edges to remove in a
+        ruin/refill move.
+        """
+        _, p3 = legal_information(B)
+        credit = np.zeros(m, dtype=np.int32)
+        blocked = np.argwhere(np.triu((B == 0) & (p3 == 1), 1))
+
+        for x, y in blocked:
+            x = int(x)
+            y = int(y)
+            nx = np.flatnonzero(B[x])
+            ny = np.flatnonzero(B[y])
+            if nx.size == 0 or ny.size == 0:
+                continue
+
+            aa = nx[np.any(B[np.ix_(nx, ny)], axis=1)]
+            if aa.size != 1:
+                continue
+            a = int(aa[0])
+
+            bb = ny[B[a, ny] != 0]
+            if bb.size != 1:
+                continue
+            b = int(bb[0])
+
+            credit[int(edge_index[x, a])] += 1
+            credit[int(edge_index[a, b])] += 1
+            credit[int(edge_index[b, y])] += 1
+
+        degree = B.sum(axis=1).astype(np.int32)
+        result = 18 * credit[present]
+        result += degree[iu[present]] + degree[ju[present]]
+        result += np.maximum(degree[iu[present]] - 7, 0)
+        result += np.maximum(degree[ju[present]] - 7, 0)
+        return result
+
+    archive = []
+
+    # Both full and bounded repairs use real edges of A.  Prefix scaffolds are
+    # especially useful when the supplied graph is dense and an early maximal
+    # repair would otherwise lock the search into one basin.
+    plans = (
+        (0, None), (1, None), (2, None), (3, None),
+        (4, None), (5, None), (6, None),
+        (0, 16), (1, 22), (2, 30), (3, 38),
+        (4, 46), (5, 54), (7, 34), (7, 48),
+    )
+
+    for k, (style, limit) in enumerate(plans):
+        B = scaffold(style, limit)
+        if valid(B):
+            bias = 0.48 if k < 7 else 0.25
+            B = saturate(B, source_bias=bias)
+            if valid(B):
+                archive = archive_insert(archive, B)
+
+    # Only an edgeless input has no possible input-derived scaffold.
+    if not archive:
+        B = np.zeros((n, n), dtype=np.uint8)
+        B = saturate(B, source_bias=0.0)
+        archive = archive_insert(archive, B)
+
+    # Include small exact unlock attempts and larger ruin moves.  The larger
+    # moves are important because maximal C4-free graphs often require several
+    # coordinated deletions before a denser basin becomes accessible.
+    schedule = (
+        (1, 88), (1, 78), (2, 86), (2, 78), (2, 70), (2, 62),
+        (3, 82), (3, 74), (3, 66), (3, 56), (3, 46),
+        (4, 76), (4, 68), (4, 60), (4, 50), (4, 40),
+        (5, 70), (5, 60), (5, 50), (5, 40),
+        (6, 66), (6, 56), (6, 46),
+        (7, 60), (7, 48), (8, 54), (8, 42),
+        (3, 32), (4, 30), (5, 34), (6, 36),
+    )
+
+    for trial, (remove_count, percentile) in enumerate(schedule):
+        if len(archive) == 1 or rng.random() < 0.60:
+            base = archive[0][1]
+        else:
+            rank_limit = min(len(archive), 7)
+            base = archive[int(rng.integers(rank_limit))][1]
+
+        current = base.copy()
+        present = np.flatnonzero(current[iu, ju])
+        if present.size < remove_count:
+            continue
+
+        score = unlock_scores(current, present)
+        cutoff = np.percentile(score, percentile)
+        pool = present[score >= cutoff]
+        if pool.size < remove_count:
+            pool = present
+
+        selected = []
+        used = set()
+        for pick in range(remove_count):
+            choices = pool[~np.isin(pool, selected)]
+            if choices.size == 0:
+                choices = present[~np.isin(present, selected)]
+
+            # Spread most deletions, but allow concentrated deletions in some
+            # trials to dismantle one particularly obstructive neighborhood.
+            if pick and trial % 5 not in (0, 1):
+                disjoint = np.array(
+                    [e for e in choices
+                     if int(iu[e]) not in used and int(ju[e]) not in used],
+                    dtype=np.int64,
+                )
+                if disjoint.size:
+                    choices = disjoint
+
+            e = int(choices[int(rng.integers(choices.size))])
+            selected.append(e)
+            used.add(int(iu[e]))
+            used.add(int(ju[e]))
+
+        banned = np.zeros(m, dtype=bool)
+        for e in selected:
+            u = int(iu[e])
+            v = int(ju[e])
+            current[u, v] = 0
+            current[v, u] = 0
+            banned[e] = True
+
+        if not valid(current):
+            continue
+
+        candidate = saturate(
+            current,
+            banned=banned,
+            source_bias=0.18 if remove_count >= 5 else 0.32,
+        )
+        if valid(candidate):
+            archive = archive_insert(archive, candidate)
+
+    best = archive[0][1].copy()
+
+    # Explicit final verification.  This deletion-only repair is normally
+    # unused, but guarantees correctness in the event of an unexpected state.
+    for _ in range(n * n):
+        X = best.astype(np.int16)
+        common = X @ X
+        np.fill_diagonal(common, 0)
+        bad = np.argwhere(np.triu(common > 1, 1))
+        if bad.size == 0:
+            break
+
+        u, v = map(int, bad[0])
+        shared = np.flatnonzero(best[u] & best[v])
+        if shared.size == 0:
+            break
+
+        degree = best.sum(axis=1)
+        x = int(shared[np.argmax(degree[shared])])
+        if degree[u] >= degree[v]:
+            best[u, x] = 0
+            best[x, u] = 0
+        else:
+            best[v, x] = 0
+            best[x, v] = 0
+
+    if valid(best):
+        best = saturate(best, source_bias=0.20)
+
+    # Last-resort invariant preservation.
+    if not valid(best):
+        for _ in range(n * n):
+            X = best.astype(np.int16)
+            common = X @ X
+            np.fill_diagonal(common, 0)
+            bad = np.argwhere(np.triu(common > 1, 1))
+            if bad.size == 0:
+                break
+            u, v = map(int, bad[0])
+            shared = np.flatnonzero(best[u] & best[v])
+            if shared.size == 0:
+                break
+            x = int(shared[0])
+            best[u, x] = 0
+            best[x, u] = 0
+
+    np.fill_diagonal(best, 0)
+    return best.astype(np.uint8)
+
+
+# EVOLVE-BLOCK-END
+
+
+# The following code remains fixed (not evolved)
+
+def run_graph_construction(A, rng = None):
+    """Run the graph construction algorithm on A"""
+    return construct_new_graph(A = A, rng = rng)

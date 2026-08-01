@@ -1,0 +1,217 @@
+<NAME>
+repair_exchange_saturation
+</NAME>
+
+<DESCRIPTION>
+This approach keeps the input graph as the starting state, repairs it by deleting edges that participate in the largest number of current common-neighbor violations, then performs degree-balanced C4-safe saturation.
+
+After obtaining a maximal C4-free graph, it applies several small edge-exchange perturbations: delete a few strategically chosen high-degree edges, greedily refill using randomized balanced ordering, and retain the best valid result. Every candidate is explicitly repaired/verified using the common-neighbor characterization before it can be returned.
+
+Unlike the original one-pass repair and fixed lexicographic augmentation, this uses global violation scores and local search around the input-derived graph, which should provide more consistent improvements across different input matrices.
+</DESCRIPTION>
+
+<CODE>
+```python
+# EVOLVE-BLOCK-START
+"""Input-preserving repair, saturation, and small edge-exchange search."""
+
+import numpy as np
+
+
+def construct_new_graph(A, rng=None):
+    """
+    Transform the supplied adjacency matrix into a dense C4-free graph.
+
+    The graph is always manipulated by edge deletions and additions from the
+    input state.  A graph is C4-free exactly when no distinct pair of vertices
+    has more than one common neighbor.
+    """
+    if A.dtype != np.uint8:
+        raise TypeError("A must have dtype np.uint8")
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    n = A.shape[0]
+    if A.ndim != 2 or A.shape[1] != n:
+        raise ValueError("A must be a square adjacency matrix")
+
+    # Begin from the supplied graph, merely normalizing it to a simple
+    # undirected graph.  This is deliberately not a fixed construction.
+    G = ((A != 0) | (A.T != 0)).astype(np.uint8)
+    np.fill_diagonal(G, 0)
+
+    def common_counts(H):
+        return H.astype(np.int16) @ H.astype(np.int16)
+
+    def repair_c4(H):
+        """
+        Delete edges until every pair has at most one common neighbor.
+
+        For an edge uw, its score is the number of currently violating pairs
+        for which deleting uw removes one witnessed common-neighbor path.
+        Removing a maximum-score edge repairs many violations at once.
+        """
+        max_deletions = n * (n - 1) // 2
+
+        for _ in range(max_deletions):
+            C = common_counts(H)
+            bad = (C > 1)
+            np.fill_diagonal(bad, False)
+
+            if not np.any(bad):
+                return H
+
+            # support[u,w] counts violating pairs (u,v) for which w is a
+            # common neighbor.  The undirected edge score uses both directions.
+            support = bad.astype(np.int16) @ H.astype(np.int16)
+            score = support + support.T
+            score *= H
+
+            best = int(score.max())
+            if best <= 0:
+                # Conservative guaranteed-progress fallback.
+                ii, jj = np.where(np.triu(bad, 1))
+                i, j = int(ii[0]), int(jj[0])
+                common = np.flatnonzero(H[i] & H[j])
+                w = int(common[0])
+                if H[i].sum() >= H[j].sum():
+                    H[i, w] = 0
+                    H[w, i] = 0
+                else:
+                    H[j, w] = 0
+                    H[w, j] = 0
+                continue
+
+            candidates = np.argwhere(np.triu(score == best, 1))
+            if len(candidates) == 1:
+                u, v = candidates[0]
+            else:
+                # Among equally useful removals, prefer reducing degree peaks.
+                degrees = H.sum(axis=1)
+                values = degrees[candidates[:, 0]] + degrees[candidates[:, 1]]
+                top = candidates[values == values.max()]
+                u, v = top[int(rng.integers(len(top)))]
+
+            H[u, v] = 0
+            H[v, u] = 0
+
+        # The loop bound is enough to remove every edge, but retain a final
+        # explicit conservative verifier for robustness.
+        for _ in range(max_deletions):
+            C = common_counts(H)
+            bad = np.triu(C > 1, 1)
+            if not np.any(bad):
+                break
+            i, j = np.argwhere(bad)[0]
+            w = np.flatnonzero(H[i] & H[j])[0]
+            H[i, w] = H[w, i] = 0
+
+        return H
+
+    def can_add(H, u, v):
+        """
+        Adding uv creates a C4 iff an existing edge joins N(u) to N(v).
+        """
+        nu = np.flatnonzero(H[u])
+        nv = np.flatnonzero(H[v])
+        if len(nu) == 0 or len(nv) == 0:
+            return True
+        return not np.any(H[np.ix_(nu, nv)])
+
+    def saturate(H, randomized=True):
+        """
+        One complete pass is sufficient for maximality: adding edges can only
+        destroy future feasibility, never make an infeasible edge feasible.
+        Low current degree endpoints are considered first to encourage the
+        near-regular degree profile typical of dense C4-free graphs.
+        """
+        degrees = H.sum(axis=1).astype(np.float64)
+        missing = np.argwhere(np.triu(H == 0, 1))
+
+        if len(missing):
+            priority = degrees[missing[:, 0]] + degrees[missing[:, 1]]
+            if randomized:
+                priority = priority + rng.random(len(missing)) * 0.75
+            order = np.argsort(priority, kind="stable")
+
+            for k in order:
+                u, v = missing[k]
+                if H[u, v] == 0 and can_add(H, int(u), int(v)):
+                    H[u, v] = 1
+                    H[v, u] = 1
+                    degrees[u] += 1
+                    degrees[v] += 1
+
+        return H
+
+    def valid(H):
+        C = common_counts(H)
+        return not np.any(np.triu(C > 1, 1))
+
+    # Repair the actual input graph, then make it maximal.
+    G = repair_c4(G)
+    G = saturate(G, randomized=True)
+
+    # Explicit post-phase invariant check required for safe return.
+    if not valid(G):
+        G = saturate(repair_c4(G), randomized=True)
+
+    best = G.copy()
+    best_edges = int(best.sum() // 2)
+
+    # Small destruction/refill moves escape maximal graphs that are poor due
+    # to early edge choices.  The number of trials is fixed and inexpensive.
+    trials = 7
+    for trial in range(trials):
+        H = best.copy()
+        degrees = H.sum(axis=1)
+        edges = np.argwhere(np.triu(H, 1))
+        if len(edges) == 0:
+            break
+
+        # Delete two or three edges, biased toward high-degree regions where
+        # a deletion is most likely to unlock several new additions.
+        remove_count = 2 + (trial % 2)
+        for _ in range(remove_count):
+            edges = np.argwhere(np.triu(H, 1))
+            if len(edges) == 0:
+                break
+
+            weights = degrees[edges[:, 0]] + degrees[edges[:, 1]]
+            cutoff = np.percentile(weights, 65)
+            pool = edges[weights >= cutoff]
+            u, v = pool[int(rng.integers(len(pool)))]
+            H[u, v] = 0
+            H[v, u] = 0
+            degrees[u] -= 1
+            degrees[v] -= 1
+
+        # Deletions preserve C4-freeness; refill in a fresh randomized order.
+        H = saturate(H, randomized=True)
+
+        # Explicitly verify before comparison.  Repair is only an emergency
+        # fallback and should normally be unnecessary after safe additions.
+        if not valid(H):
+            H = saturate(repair_c4(H), randomized=True)
+
+        edge_count = int(H.sum() // 2)
+        if valid(H) and edge_count > best_edges:
+            best = H
+            best_edges = edge_count
+
+    # Final mandatory verification and conservative repair if needed.
+    if not valid(best):
+        best = saturate(repair_c4(best), randomized=False)
+
+    return best.astype(np.uint8, copy=False)
+
+# EVOLVE-BLOCK-END
+
+
+# The following code remains fixed (not evolved)
+
+def run_graph_construction(A, rng=None):
+    """Run the graph construction algorithm on A"""
+    return construct_new_graph(A=A, rng=rng)
+```

@@ -1,0 +1,14 @@
+{
+  "generation": 16,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "balanced_unlock_archive",
+  "patch_description": "The current approach uses a six-state archive, five input repairs, loss weight 4, load weight 1, and 18 destructive unlock kicks. The new configuration increases structural diversity at initialization by using seven input-derived repairs and three complementary saturation modes: strong future-loss preservation, stronger degree balancing, and a degree-cap mode that discourages early hubs above the typical degree-6/7 extremal range.\n\nThe archive is enlarged to eight states, while kicks use adaptive edge-unlocking scores combined with degree pressure. Kicks alternate between distributed removals and concentrated removals, and refill modes vary rather than repeatedly using one deterministic basin. All additions explicitly use the length-three-path legality condition, all deletion phases are monotone safe, and final validation checks the common-neighbor invariant.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:27:41.221085",
+  "llm_cost": 0.084275,
+  "llm_model": "gpt-5.6-terra"
+}

@@ -1,0 +1,14 @@
+{
+  "generation": 34,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "bitset_ruin_refill",
+  "patch_description": "This rewrite replaces repeated matrix-cube saturation with a faster bitset-based C4-safe insertion engine. It keeps the input graph relevant by building multiple source-edge-derived scaffolds under several orderings and bounded prefixes, then augments them using safe additions.\n\nFor each candidate insertion, the algorithm explicitly checks the C4 condition: adding uv is allowed only when no current edge joins N(u) and N(v). It estimates the number of future edges blocked by the insertion using the newly created length-three paths, preferring additions that preserve future flexibility and maintain balanced degrees.\n\nA compact elite archive is improved using bounded ruin-and-refill exchanges. High-pressure edges are temporarily deleted, banned during the first refill phase, and replaced with alternative edges where possible. Every archived candidate is explicitly validated using A @ A, and the final result has a conservative repair fallback.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:39:44.977515",
+  "llm_cost": 0.0961075,
+  "llm_model": "gpt-5.6-terra"
+}

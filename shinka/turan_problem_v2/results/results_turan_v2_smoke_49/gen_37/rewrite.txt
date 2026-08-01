@@ -1,0 +1,419 @@
+# EVOLVE-BLOCK-START
+import numpy as np
+
+
+def construct_new_graph(A, rng=None):
+    """
+    Input-sensitive archive search for dense C4-free graphs.
+
+    All initial scaffolds are obtained by retaining or repairing edges of A.
+    Later steps only delete and safely add edges.  Validity is maintained using
+    the invariant that no pair of vertices has more than one common neighbor.
+    """
+    if A.dtype != np.uint8:
+        raise TypeError("A must have dtype np.uint8")
+    if A.ndim != 2 or A.shape[0] != A.shape[1]:
+        raise ValueError("A must be a square adjacency matrix")
+
+    if rng is None:
+        rng = np.random.default_rng()
+
+    n = A.shape[0]
+    iu, ju = np.triu_indices(n, 1)
+    m = iu.size
+
+    source = ((A != 0) | (A.T != 0)).astype(np.uint8)
+    np.fill_diagonal(source, 0)
+    source_upper = source[iu, ju].astype(bool)
+    source_edges = np.flatnonzero(source_upper)
+    source_degree = source.sum(axis=1).astype(np.int32)
+
+    ARCHIVE_LIMIT = 8
+    START_REPAIRS = 4
+    START_GREEDIES = 10
+
+    def common(H):
+        X = H.astype(np.int16, copy=False)
+        return X @ X
+
+    def valid(H):
+        C = common(H)
+        np.fill_diagonal(C, 0)
+        return not np.any(C > 1)
+
+    def edge_count(H):
+        return int(H.sum() // 2)
+
+    def legal_add(H, u, v):
+        nu = np.flatnonzero(H[u])
+        nv = np.flatnonzero(H[v])
+        if nu.size == 0 or nv.size == 0:
+            return True
+        return not np.any(H[np.ix_(nu, nv)])
+
+    def legal_pairs(H):
+        """
+        For a C4-free graph, uv can be inserted iff no length-three u-v path
+        exists.  p3 is recomputed at each insertion to preserve exactness.
+        """
+        X = H.astype(np.int16, copy=False)
+        p2 = X @ X
+        p3 = p2 @ X
+        legal = (H == 0) & (p3 == 0)
+        np.fill_diagonal(legal, False)
+        return legal, p3
+
+    def repair(H, style):
+        """
+        Delete edges which support many currently invalid common-neighbor
+        pairs.  This is deletion-only and therefore cannot create a C4.
+        """
+        H = H.copy()
+
+        for _ in range(m):
+            C = common(H)
+            bad = C > 1
+            np.fill_diagonal(bad, False)
+
+            if not np.any(bad):
+                break
+
+            X = H.astype(np.int16, copy=False)
+            support = bad.astype(np.int16) @ X
+            score = (support + support.T) * X
+            best = int(score.max())
+            deg = H.sum(axis=1).astype(np.int32)
+
+            if best > 0:
+                choices = np.argwhere(np.triu(score == best, 1))
+
+                mode = style % 4
+                if mode == 0:
+                    weight = deg[choices[:, 0]] + deg[choices[:, 1]]
+                elif mode == 1:
+                    weight = deg[choices[:, 0]] * deg[choices[:, 1]]
+                elif mode == 2:
+                    weight = np.maximum(
+                        deg[choices[:, 0]], deg[choices[:, 1]]
+                    )
+                else:
+                    weight = np.abs(
+                        deg[choices[:, 0]] - deg[choices[:, 1]]
+                    )
+
+                choices = choices[weight == weight.max()]
+                u, v = choices[int(rng.integers(len(choices)))]
+                u, v = int(u), int(v)
+            else:
+                pairs = np.argwhere(np.triu(bad, 1))
+                a, b = pairs[int(rng.integers(len(pairs)))]
+                shared = np.flatnonzero(H[a] & H[b])
+                w = int(shared[int(rng.integers(len(shared)))])
+                if deg[a] >= deg[b]:
+                    u, v = int(a), w
+                else:
+                    u, v = int(b), w
+
+            H[u, v] = 0
+            H[v, u] = 0
+
+        # Conservative emergency cleanup.
+        for _ in range(m):
+            C = common(H)
+            bad_pairs = np.argwhere(np.triu(C > 1, 1))
+            if bad_pairs.size == 0:
+                break
+
+            a, b = map(int, bad_pairs[0])
+            shared = np.flatnonzero(H[a] & H[b])
+            if shared.size == 0:
+                continue
+
+            deg = H.sum(axis=1)
+            w = int(shared[np.argmax(deg[shared])])
+            if deg[a] >= deg[b]:
+                H[a, w] = H[w, a] = 0
+            else:
+                H[b, w] = H[w, b] = 0
+
+        return H
+
+    def source_order(style):
+        if source_edges.size == 0:
+            return source_edges
+
+        a = iu[source_edges]
+        b = ju[source_edges]
+        da = source_degree[a]
+        db = source_degree[b]
+
+        load = da + db
+        product = da * db
+        imbalance = np.abs(da - db)
+        minimum = np.minimum(da, db)
+        noise = rng.random(source_edges.size)
+
+        mode = style % 8
+        if mode == 0:
+            return source_edges[np.lexsort((noise, load))]
+        if mode == 1:
+            return source_edges[np.lexsort((noise, product))]
+        if mode == 2:
+            return source_edges[np.lexsort((noise, imbalance))]
+        if mode == 3:
+            return source_edges[np.lexsort((noise, -load))]
+        if mode == 4:
+            return source_edges[np.lexsort((noise, -product))]
+        if mode == 5:
+            return source_edges[np.lexsort((noise, minimum))]
+        if mode == 6:
+            return source_edges[np.lexsort((noise, -minimum))]
+        return source_edges[rng.permutation(source_edges.size)]
+
+    def build_scaffold(style, prefix=None):
+        H = np.zeros((n, n), dtype=np.uint8)
+        order = source_order(style)
+
+        if prefix is not None:
+            order = order[:min(int(prefix), order.size)]
+
+        for e in order:
+            u, v = int(iu[e]), int(ju[e])
+            if legal_add(H, u, v):
+                H[u, v] = 1
+                H[v, u] = 1
+
+        return H
+
+    def saturate(H, policy=0, banned=None):
+        """
+        Exact safe saturation.  The future-loss estimate scores legal edges by
+        the number of currently legal pairs likely blocked by their insertion.
+        """
+        H = H.copy()
+        forbidden = (
+            np.zeros(m, dtype=bool) if banned is None else banned.copy()
+        )
+        forbid_active = bool(np.any(forbidden))
+
+        for _ in range(m):
+            legal, _ = legal_pairs(H)
+            available = np.flatnonzero(
+                legal[iu, ju] & ~forbidden
+            )
+
+            if available.size == 0 and forbid_active:
+                forbidden[:] = False
+                forbid_active = False
+                available = np.flatnonzero(legal[iu, ju])
+
+            if available.size == 0:
+                break
+
+            X = H.astype(np.int16, copy=False)
+            L = legal.astype(np.int16, copy=False)
+
+            # Approximate the legal-pair destruction caused by adding uv.
+            future_loss = (X @ L) @ X
+            degree = H.sum(axis=1).astype(np.int32)
+
+            au = iu[available]
+            av = ju[available]
+            du = degree[au]
+            dv = degree[av]
+
+            loss = future_loss[au, av].astype(np.int32)
+            total = du + dv
+            high = np.maximum(du, dv)
+            imbalance = np.abs(du - dv)
+            excess6 = np.maximum(du - 6, 0) + np.maximum(dv - 6, 0)
+            excess7 = (
+                np.maximum(du - 7, 0) ** 2
+                + np.maximum(dv - 7, 0) ** 2
+            )
+
+            mode = policy % 5
+            if mode == 0:
+                score = 6 * loss + total + excess6
+            elif mode == 1:
+                score = 5 * loss + 2 * total + imbalance + excess7
+            elif mode == 2:
+                score = 7 * loss + imbalance + 2 * excess6
+            elif mode == 3:
+                score = 5 * loss + high + excess7
+            else:
+                score = 6 * loss + total + 2 * imbalance + excess6
+
+            best = score.min()
+            band = available[score <= best + 1]
+            if band.size == 0:
+                band = available[score == best]
+
+            preferred = band[source_upper[band]]
+            if preferred.size and rng.random() < 0.48:
+                band = preferred
+
+            e = int(band[int(rng.integers(band.size))])
+            u, v = int(iu[e]), int(ju[e])
+
+            # Independent local guard against any matrix-count issue.
+            if legal_add(H, u, v):
+                H[u, v] = 1
+                H[v, u] = 1
+
+        return H
+
+    def archive_insert(archive, H):
+        if not valid(H):
+            return archive
+
+        sig = H[iu, ju].tobytes()
+        for _, _, old_sig in archive:
+            if sig == old_sig:
+                return archive
+
+        archive.append((edge_count(H), H.copy(), sig))
+        archive.sort(key=lambda x: x[0], reverse=True)
+        return archive[:ARCHIVE_LIMIT]
+
+    def normalize(H, policy):
+        if not valid(H):
+            H = repair(H, policy)
+        if valid(H):
+            H = saturate(H, policy)
+        if not valid(H):
+            H = repair(H, policy + 1)
+        return H
+
+    def choose_removed(H, count, broad, trial):
+        """
+        Prefer deleting edges whose removal unlocks large cross-neighborhood
+        regions.  Some moves distribute deletions; others deliberately make
+        a larger local structural change.
+        """
+        degree = H.sum(axis=1).astype(np.int32)
+        present = np.flatnonzero(H[iu, ju])
+
+        if present.size < count:
+            return np.empty(0, dtype=np.int64)
+
+        u = iu[present]
+        v = ju[present]
+        unlock = (degree[u] - 1) * (degree[v] - 1)
+        score = (
+            10 * unlock
+            + degree[u] + degree[v]
+            + np.maximum(degree[u] - 7, 0) ** 2
+            + np.maximum(degree[v] - 7, 0) ** 2
+        )
+
+        order = np.argsort(score)[::-1]
+        divisor = 2 if broad else 4
+        pool = present[order[:max(count + 5, len(present) // divisor + 4)]]
+
+        chosen = []
+        used = set()
+
+        for k in range(count):
+            remain = [e for e in pool if int(e) not in chosen]
+            if not remain:
+                remain = [e for e in present if int(e) not in chosen]
+            if not remain:
+                break
+
+            if k > 0 and trial % 3 != 0:
+                disjoint = [
+                    e for e in remain
+                    if int(iu[e]) not in used and int(ju[e]) not in used
+                ]
+                if disjoint:
+                    remain = disjoint
+
+            e = int(remain[int(rng.integers(len(remain)))])
+            chosen.append(e)
+            used.add(int(iu[e]))
+            used.add(int(ju[e]))
+
+        return np.asarray(chosen, dtype=np.int64)
+
+    archive = []
+
+    # Conflict-directed repaired input starts.
+    for style in range(START_REPAIRS):
+        candidate = normalize(repair(source, style), style)
+        archive = archive_insert(archive, candidate)
+
+    # Input-edge retention starts, including shorter prefixes for diversification.
+    prefix_plan = (None, None, None, None, None, None, 28, 40, 54, 68)
+    for style in range(START_GREEDIES):
+        candidate = build_scaffold(style, prefix_plan[style])
+        candidate = normalize(candidate, style + 2)
+        archive = archive_insert(archive, candidate)
+
+    if not archive:
+        empty = np.zeros((n, n), dtype=np.uint8)
+        archive = archive_insert(archive, saturate(empty, 0))
+
+    kick_schedule = (
+        (2, False), (2, True), (3, False), (3, True),
+        (4, False), (3, False), (4, True), (5, False),
+        (2, True), (4, False), (5, True), (3, True),
+        (5, False), (4, True), (6, True), (3, False),
+        (4, False), (2, True), (5, True), (3, True),
+    )
+
+    for trial, (remove_count, broad) in enumerate(kick_schedule):
+        current_archive = archive[:min(5, len(archive))]
+
+        for rank, (_, base, _) in enumerate(current_archive):
+            attempts = 2 if rank == 0 else 1
+
+            for attempt in range(attempts):
+                removed = choose_removed(
+                    base,
+                    remove_count,
+                    broad or ((trial + attempt) % 4 == 0),
+                    trial + rank,
+                )
+                if removed.size < remove_count:
+                    continue
+
+                candidate = base.copy()
+                banned = np.zeros(m, dtype=bool)
+
+                for e in removed:
+                    u, v = int(iu[e]), int(ju[e])
+                    candidate[u, v] = 0
+                    candidate[v, u] = 0
+                    banned[e] = True
+
+                if not valid(candidate):
+                    candidate = repair(candidate, trial)
+
+                if valid(candidate):
+                    candidate = saturate(
+                        candidate,
+                        policy=trial + attempt + rank,
+                        banned=banned,
+                    )
+
+                if valid(candidate):
+                    archive = archive_insert(archive, candidate)
+
+    result = archive[0][1].copy()
+
+    # Mandatory final invariant verification and deletion-only recovery.
+    if not valid(result):
+        result = repair(result, 0)
+
+    if valid(result):
+        result = saturate(result, 1)
+
+    if not valid(result):
+        result = repair(result, 1)
+
+    np.fill_diagonal(result, 0)
+    return result.astype(np.uint8, copy=False)
+
+
+# EVOLVE-BLOCK-END

@@ -1,0 +1,14 @@
+{
+  "generation": 24,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "tabu_beam_c4_search",
+  "patch_description": "The current program uses five source-retention starts, a four-state archive, and fourteen single-base exchange trials. Its saturation score heavily weights matrix-computed future-loss estimates, which can become overly greedy and produces relatively weak mean density (146.94).\n\nThis version uses a bitset representation for much faster safe-edge testing, allowing a broader search configuration: four conflict-directed repairs, four constructive source-preserving starts, a four-member elite archive, and a tabu ruin-and-refill beam. Each exchange round evaluates the best several archive members rather than only one selected base. Removed edges are temporarily taboo during refill, forcing the search to exploit newly unlocked edges instead of immediately restoring the deleted edges. Saturation prioritizes lower endpoint degree/load, with an explicit target degree near 6--7, which is more consistent with dense near-regular C4-free graphs on 49 vertices. Every generated candidate is explicitly checked using the common-neighbor criterion before archive insertion and before return.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:35:01.729771",
+  "llm_cost": 0.08202000000000001,
+  "llm_model": "gpt-5.6-terra"
+}

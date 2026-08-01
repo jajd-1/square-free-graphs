@@ -1,0 +1,14 @@
+{
+  "generation": 14,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 1,
+  "patch_name": "bitset_multistart_exchange",
+  "patch_description": "The current program uses 4 repair starts, a beam of width 3, 6 ruin rounds, and degree-only greedy saturation. The new configuration replaces repeated matrix-based repair with faster source-derived bitset repairs, expands diversification to 6 input-dependent starts, keeps a width-5 archive, and uses 20 bounded ruin-and-refill exchanges.\n\nThe saturation criterion now combines endpoint degree, degree product, and a stronger penalty for degrees above the typical 6--7 range. Removed edges are temporarily banned during refill so that exchanges explore genuinely different local maxima instead of immediately restoring the deleted edges. All additions use the exact bitset length-three-path test, and final matrix verification remains explicit.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:26:57.586317",
+  "llm_cost": 0.081695,
+  "llm_model": "gpt-5.6-terra"
+}

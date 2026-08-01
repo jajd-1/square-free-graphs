@@ -1,0 +1,14 @@
+{
+  "generation": 32,
+  "novelty_attempt": 1,
+  "resample_attempt": 1,
+  "patch_attempt": 1,
+  "success": true,
+  "num_applied": 3,
+  "patch_name": "deeper_archive_exchange",
+  "patch_description": "Restore a larger elite archive and a longer, more varied ruin-and-refill schedule. Dense C4-free graphs commonly sit behind multi-edge saturation barriers: deleting only two or three edges may refill to the same maximal graph, whereas occasional 5--6 edge moves can reach a different degree distribution and then gain edges after refill. Retaining six archive states also prevents the search from repeatedly exploring only the current best basin.\n\nThis is still fully input-aware: every base state comes from repairing or greedily retaining edges from the supplied matrix, and every proposal is produced by deleting and adding edges to those states. Validity remains preserved because deletions cannot create C4s and all refill additions use `legal_add`, followed by explicit `valid` checks.",
+  "error_msg": null,
+  "timestamp": "2026-07-28T22:38:26.022251",
+  "llm_cost": 0.0406875,
+  "llm_model": "gpt-5.6-terra"
+}
